@@ -1,0 +1,6 @@
+oro;6
+plata;5
+bronce;4
+platino;3
+roca;2
+carbon;1

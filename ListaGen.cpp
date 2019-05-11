@@ -3,93 +3,149 @@
 #include <stdlib.h>
 #include "ListaGen.h"
 
+/* TDA Lista Void
+ * Implementación: Array dinamico de bloques secuenciales de nodos
+ *  __
+ * |B1|->N1 ->N2 ->N3 ->N4
+ * |B2|->N5 ->N6 ->N7 ->N8
+ * |B3|->N9 ->N10->N11->N12
+ * |B4|->N13->N14->N15->N16
+ * |__|
+ */
+
+const int INDEX_BLOCK_SIZE = 16; //Tamaño de los bloques del indice
+
 struct ListaGenStruct
 {
-    Nodo* nodos;
+    Nodo* nodos; //Indice de bloques de nodos, cada bloque esta compuesto por 4 nodos secuenciales uno tras el otro
     int cantNodos;
 };
 
 struct NodoStruct
 {
     void* objeto;
+    Nodo siguiente;
 };
 
 ListaGen newListaGen()
 {
     ListaGen lista = new ListaGenStruct;
+    lista->nodos = new Nodo[INDEX_BLOCK_SIZE];
     lista->cantNodos = 0;
     return lista;
 }
 
 void eliminarListaGen(ListaGen lista)
 {
-    int i;
-    for(i=0;i<lista->cantNodos;i++)
+    int i,j,k;
+    Nodo actual;
+
+    for(i=(lista->cantNodos-1)/4;i>=0;i--)
     {
-        delete lista->nodos[i];
+        for(j=(lista->cantNodos-1)%4;j>0;j--)
+        {
+            actual = lista->nodos[i]; //Posicionarse sobre el ultimo bloque de la lista
+            for(k=1;k<j;k++) actual = actual->siguiente; //Posicionarse sobre el ultimo nodo correspondiente a ese bloque
+            delete actual->siguiente; //Eliminar nodo
+            lista->cantNodos--; //Actualizar la cantidad actual de nodos
+        }
+        delete lista->nodos[i]; //Eliminar bloque
+        lista->cantNodos--; //Actualizar la cantidad actual de nodos
     }
-    delete lista->nodos;
-    delete lista;
+    delete[] lista->nodos; //Eliminar indice
+    delete lista; //Eliminar lista
 }
 
 void addObjeto(ListaGen lista, void* objeto)
 {
     int i;
+    Nodo actual;
 
-    if(lista->cantNodos==0) lista->nodos = new Nodo[1];
-    else
+    //cantNodos%64=0 (multiplos de 16x4, 64, 128, 192...) indica que la lista esta actualmente
+    //a maxima capacidad y hay que agregar mas bloques
+    if(lista->cantNodos%64 == 0)
     {
-        Nodo* temp = new Nodo[lista->cantNodos];
+        Nodo* temp = new Nodo[lista->cantNodos/4];
 
-        for(i=0;i<lista->cantNodos;i++) temp[i]=lista->nodos[i];
-        delete lista->nodos;
-        lista->nodos = new Nodo[lista->cantNodos+1];
-        for(i=0;i<lista->cantNodos;i++) lista->nodos[i]=temp[i];
-        delete temp;
+        for(i=0;i<lista->cantNodos/4;i++) temp[i]=lista->nodos[i]; //Se transfieren los punteros de los bloques a un array temporal
+        delete lista->nodos; //Se elimina el indice
+        lista->nodos = new Nodo[(lista->cantNodos/4)+INDEX_BLOCK_SIZE]; //Se crea de nuevo pero con mas bloques
+        for(i=0;i<lista->cantNodos/4;i++) lista->nodos[i]=temp[i]; //Se transfieren los punteros de los bloques de vuelta al indice de la lista
+        delete temp; //Se elimina el array temporal
     }
 
-    lista->nodos[lista->cantNodos] = new NodoStruct;
-    lista->nodos[lista->cantNodos]->objeto = objeto;
-    lista->cantNodos++;
+    if (lista->cantNodos%4 == 0) //Nuevo bloque
+    {
+        lista->nodos[lista->cantNodos/4] = new NodoStruct;
+        lista->nodos[lista->cantNodos/4]->objeto = objeto;
+        lista->nodos[lista->cantNodos/4]->siguiente = NULL;
+    }
+    else //Nuevo nodo en bloque ya existente
+    {
+        actual = lista->nodos[lista->cantNodos/4];
+        for(i=1;i<lista->cantNodos%4;i++) actual = actual->siguiente;
+        actual->siguiente = new NodoStruct;
+        actual->siguiente->objeto = objeto;
+        actual->siguiente->siguiente = NULL;
+    }
+    lista->cantNodos++; //Actualizar la cantidad de nodos de la lista
 }
 
 void* getObjeto(ListaGen lista, int numNodo)
 {
-    void* objeto = NULL;
+    int i;
+    Nodo actual;
 
-    if (!listaVacia(lista) && numNodo >= 0 && numNodo < lista->cantNodos)
-    {
-        objeto = lista->nodos[numNodo]->objeto;
-    }
-    else std::cout<<"Error al obtener objeto de la lista, nodo inexistente"<<std::endl;
-    return objeto;
+    actual = lista->nodos[numNodo/4]; //Posicionarse sobre el bloque correspondiente
+    for(i=0;i<numNodo%4;i++) actual = actual->siguiente; //Desplazar hasta el nodo que se busca
+
+    return actual->objeto; //Devolver el objeto pedido
 }
 
 void delObjeto(ListaGen lista, int numNodo)
 {
-    int i=0, j=0;
-    Nodo* temp = new Nodo[lista->cantNodos-1];
+    int i=0;
+    Nodo actual, temp;
 
-    if (!listaVacia(lista) && numNodo >= 0 && numNodo < lista->cantNodos)
+    actual = lista->nodos[numNodo/4];
+    for(i=0;i<numNodo%4;i++) actual = actual->siguiente; //Nodo a eliminar
+    temp = lista->nodos[numNodo/4];
+    for(i=0;i<(numNodo%4)-1;i++) temp = temp->siguiente; //Anterior a actual
+
+    if(numNodo < lista->cantNodos-1) //Si no es el ultimo nodo
     {
-        while(i<lista->cantNodos)
+        if(numNodo%4==0) lista->nodos[numNodo/4] = temp->siguiente; //Si es un nodo que se referencia en el array, actuar sobre el array
+        else if (numNodo%4!=3) temp->siguiente = temp->siguiente->siguiente; //Sino sobre el nodo, pero solo si no es el ultimo del bloque
+        //Si es el ultimo del bloque el for no hace ciclos y directamente se setea abajo el siguiente
+
+        //Si no es la ultima fila (y las otras dos condiciones son porque sino intenta acceder a una posicion inexistente)
+        if (numNodo/4 < lista->cantNodos/4 && !(lista->cantNodos%4==0 && (lista->cantNodos/4)-(numNodo/4)==1))
         {
-            if (i!=numNodo)
-            {
-                temp[j]=lista->nodos[i];
-                j++;
-            }
-            i++;
+            for(i=0;i<(3-numNodo%4);i++) temp = temp->siguiente; //Se posiciona sobre el ultimo nodo del bloque
+            temp->siguiente = lista->nodos[(numNodo/4)+1]; //Lo asigna como siguiente al primer nodo del proximo bloque
+            //Y corre una posicion a la fila siguiente
+            if(lista->nodos[(numNodo/4)+1]->siguiente!=NULL) lista->nodos[(numNodo/4)+1] = lista->nodos[(numNodo/4)+1]->siguiente;
+            else lista->nodos[(numNodo/4)+1] = 0; //O si el bloque siguiente solo tiene un nodo (que ahora se corrio hacia arriba), lo dirije a NULL
         }
 
-        lista->cantNodos--;
-        delete lista->nodos[numNodo];
-        delete lista->nodos;
-        lista->nodos = new Nodo[lista->cantNodos];
-        for(i=0;i<lista->cantNodos;i++) lista->nodos[i] = temp[i];
-        delete temp;
+        numNodo = numNodo + 4; //Avanzar al siguiente bloque para revisar
+        //Mientras no sea el ultimo bloque (y las otras dos condiciones son porque sino intenta acceder a una posicion inexistente)
+        while(numNodo/4 < lista->cantNodos/4 && !(lista->cantNodos%4==0 && (lista->cantNodos/4)-(numNodo/4)==1))
+        {
+            temp = lista->nodos[numNodo/4]; //Pararse sobre el primero
+            for(i=0;i<2;i++) temp = temp->siguiente; //Hacer 2 corrimientos (no son 3 porque un nodo se traslado al bloque de arriba)
+            temp->siguiente = lista->nodos[(numNodo/4)+1]; //Asignar como siguiente al ultimo del bloque al primero de la siguiente fila
+
+            //Correr una posicion a la fila siguiente
+            if(lista->nodos[(numNodo/4)+1]->siguiente != 0) lista->nodos[(numNodo/4)+1] = lista->nodos[(numNodo/4)+1]->siguiente;
+            else lista->nodos[(numNodo/4)+1] = 0; //O si el bloque siguiente solo tiene un nodo (que ahora se corrio hacia arriba), dirijirlo a NULL
+            numNodo = numNodo + 4;
+        }
     }
-    else std::cout<<"Error al eliminar de la lista, nodo inexistente"<<std::endl;
+    else if(numNodo%4==0) lista->nodos[numNodo/4] = NULL; //Si es el ultimo y ademas es el unico en su bloque
+    else temp->siguiente = NULL; //Si es el ultimo nodo simplemente se lo elimina y ya
+    delete actual; //Eliminar nodo seleccionado
+    lista->cantNodos--;
 }
 
 bool listaVacia(ListaGen lista)

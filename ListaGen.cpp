@@ -19,6 +19,7 @@ struct ListaGenStruct
 {
     Nodo* nodos; //Indice de bloques de nodos, cada bloque esta compuesto por 4 nodos secuenciales uno tras el otro
     int cantNodos;
+    int cantBloques; //Se utiliza para saber cuando hay indices de mas y borrarlos
 };
 
 struct NodoStruct
@@ -32,6 +33,7 @@ ListaGen newListaGen()
     ListaGen lista = new ListaGenStruct;
     lista->nodos = new Nodo[INDEX_BLOCK_SIZE];
     lista->cantNodos = 0;
+    lista->cantBloques = INDEX_BLOCK_SIZE;
     return lista;
 }
 
@@ -72,6 +74,7 @@ void addObjeto(ListaGen lista, void* objeto)
         lista->nodos = new Nodo[(lista->cantNodos/4)+INDEX_BLOCK_SIZE]; //Se crea de nuevo pero con mas bloques
         for(i=0;i<lista->cantNodos/4;i++) lista->nodos[i]=temp[i]; //Se transfieren los punteros de los bloques de vuelta al indice de la lista
         delete temp; //Se elimina el array temporal
+        lista->cantBloques = lista->cantBloques + INDEX_BLOCK_SIZE; //Se actualiza la cantidad de bloques maxima actual en la lista
     }
 
     if (lista->cantNodos%4 == 0) //Nuevo bloque
@@ -83,7 +86,7 @@ void addObjeto(ListaGen lista, void* objeto)
     else //Nuevo nodo en bloque ya existente
     {
         actual = lista->nodos[lista->cantNodos/4];
-        for(i=1;i<lista->cantNodos%4;i++) actual = actual->siguiente;
+        for(i=1;i<lista->cantNodos%4;i++) actual = actual->siguiente; //Posicionarse sobre el ultimo nodo del bloque antes de crearlo
         actual->siguiente = new NodoStruct;
         actual->siguiente->objeto = objeto;
         actual->siguiente->siguiente = NULL;
@@ -146,6 +149,19 @@ void delObjeto(ListaGen lista, int numNodo)
     else temp->siguiente = NULL; //Si es el ultimo nodo simplemente se lo elimina y ya
     delete actual; //Eliminar nodo seleccionado
     lista->cantNodos--;
+
+    //Finalmente, si hay demasiados indices creados, se eliminan algunos
+    if(lista->cantNodos/4 < (lista->cantBloques - INDEX_BLOCK_SIZE - 2))
+    {
+        Nodo* temp = new Nodo[lista->cantNodos/4];
+
+        for(i=0;i<lista->cantNodos/4;i++) temp[i]=lista->nodos[i]; //Se transfieren los punteros de los bloques a un array temporal
+        delete lista->nodos; //Se elimina el indice
+        lista->nodos = new Nodo[lista->cantBloques - INDEX_BLOCK_SIZE]; //Se crea de nuevo pero con menos bloques
+        for(i=0;i<lista->cantNodos/4;i++) lista->nodos[i]=temp[i]; //Se transfieren los punteros de los bloques de vuelta al indice de la lista
+        delete temp; //Se elimina el array temporal
+        lista->cantBloques = lista->cantBloques - INDEX_BLOCK_SIZE; //Se actualiza la cantidad de bloques maxima actual en la lista
+    }
 }
 
 bool listaVacia(ListaGen lista)

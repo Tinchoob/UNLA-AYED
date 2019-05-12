@@ -5,6 +5,14 @@
 #define NULL      0
 #endif
 
+/* TDA Lista Void
+ * Interfaz: Lista indexada
+ *
+ * objeto = getObjeto(lista, posicion);
+ * delObjeto(lista, posicion);
+ *
+ */
+
 struct ListaGenStruct;
 typedef struct ListaGenStruct* ListaGen;
 

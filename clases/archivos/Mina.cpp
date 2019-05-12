@@ -80,6 +80,7 @@ void setSeq(ptrMina mina, int seq[])
 void leerLineaMina(FILE* fMina, ptrMina mina)
 {
     char buffer, lectura[80];
+    char* valor;
     int i;
     int iniCampo=0, finCampo=0;
     int seq[5];
@@ -95,25 +96,35 @@ void leerLineaMina(FILE* fMina, ptrMina mina)
     }
 
     finCampo = posEnArray(lectura, iniCampo,';');
-    setPosX(mina,atoi(subString(lectura,iniCampo,finCampo)));
+    valor = subString(lectura,iniCampo,finCampo);
+    setPosX(mina,atoi(valor));
+    delete valor;
 
     iniCampo=finCampo+1;
     finCampo = posEnArray(lectura, iniCampo,';');
-    setPosY(mina,atoi(subString(lectura,iniCampo,finCampo)));
+    valor = subString(lectura,iniCampo,finCampo);
+    setPosY(mina,atoi(valor));
+    delete valor;
 
     iniCampo=finCampo+1;
     finCampo = posEnArray(lectura, iniCampo,';');
-    setCodItem(mina,atoi(subString(lectura,iniCampo,finCampo)));
+    valor = subString(lectura,iniCampo,finCampo);
+    setCodItem(mina,atoi(valor));
+    delete valor;
 
     iniCampo=finCampo+1;
     finCampo = posEnArray(lectura, iniCampo,';');
-    setIP(mina,atoi(subString(lectura,iniCampo,finCampo)));
+    valor = subString(lectura,iniCampo,finCampo);
+    setIP(mina,atoi(valor));
+    delete valor;
 
     for (i=0;i<5;i++)
     {
         iniCampo=finCampo+1;
         finCampo = posEnArray(lectura, iniCampo,';');
-        seq[i] = atoi(subString(lectura,iniCampo,finCampo));
+        valor = subString(lectura,iniCampo,finCampo);
+        seq[i] = atoi(valor);
+        delete valor;
     }
     setSeq(mina,seq);
 }

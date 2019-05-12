@@ -2,6 +2,9 @@
 #include "clases/archivos/Parametros.h"
 #include "clases/archivos/Comanda.h"
 #include "clases/archivos/Mina.h"
+#include "clases/listas/ListaGen.h"
+#include "clases/entidades/vagon.h"
+#include "clases/entidades/caja.h"
 
 #include <stdio.h>
 
@@ -9,6 +12,8 @@ using namespace std;
 
 int main()
 {
+    int i,j;
+
     /*ptrParametros parametros = newParametros();
     cargarParametros(parametros);
     cout<<getS(parametros)<<"\n";
@@ -34,20 +39,45 @@ int main()
     delComanda(comanda);*/
 
     /*FILE* fMina;
-    int i;
     int* seq;
-    ptrMina mina = newMina();
+    ListaGen lista = newListaGen();
 
+    j=0;
     fMina=fopen("minas.txt","r");
-    leerLineaMina(fMina, mina);
+    while(!feof(fMina))
+    {
+        addObjeto(lista,newMina());
+        leerLineaMina(fMina, (ptrMina)getObjeto(lista, j));
+        j++;
+
+    }
     fclose(fMina);
-    cout<<getPosX(mina)<<endl;
-    cout<<getPosY(mina)<<endl;
-    cout<<getCodItem(mina)<<endl;
-    cout<<getIP(mina)<<endl;
-    seq = getSeq(mina);
+
+    cout<<getPosX((ptrMina)getObjeto(lista, 1))<<endl;
+    cout<<getPosY((ptrMina)getObjeto(lista, 1))<<endl;
+    cout<<getCodItem((ptrMina)getObjeto(lista, 1))<<endl;
+    cout<<getIP((ptrMina)getObjeto(lista, 1))<<endl;
+    seq = getSeq((ptrMina)getObjeto(lista, 1));
     for(i=0;i<5;i++) cout<<seq[i]<<endl;
-    delMina(mina);*/
+    delMina((ptrMina)getObjeto(lista, 0));
+    delMina((ptrMina)getObjeto(lista, 1));
+    eliminarListaGen(lista);*/
+
+    ptrVagon vagon = newVagon();
+    ptrCaja caja;
+
+    setTipoRecurso(vagon, 1);
+
+    for(i=0;i<3;i++)
+    {
+        caja = newCaja();
+        setTipoRecurso(caja, 1);
+        setCantidad(caja, i+1);
+        addObjeto(getCajas(vagon), caja);
+    }
+    cout<<getCantidadTotalLingotes(vagon)<<endl;
+    delVagon(vagon);
+
     return 0;
 }
 

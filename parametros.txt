@@ -1,0 +1,10 @@
+S=2
+P=3
+A=3
+posXE=8
+posYE=7
+IM=2
+VM=4
+IB=9
+VB=4
+IP=3

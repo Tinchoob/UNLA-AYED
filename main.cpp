@@ -3,8 +3,9 @@
 #include "clases/archivos/Comanda.h"
 #include "clases/archivos/Mina.h"
 #include "clases/listas/ListaGen.h"
-#include "clases/entidades/vagon.h"
-#include "clases/entidades/caja.h"
+#include "clases/entidades/Vagon.h"
+#include "clases/entidades/Locomotora.h"
+#include "clases/entidades/Caja.h"
 
 #include <stdio.h>
 
@@ -63,7 +64,7 @@ int main()
     delMina((ptrMina)getObjeto(lista, 1));
     eliminarListaGen(lista);*/
 
-    ptrVagon vagon = newVagon();
+    /*ptrVagon vagon = newVagon();
     ptrCaja caja;
 
     setTipoRecurso(vagon, 1);
@@ -76,7 +77,35 @@ int main()
         addObjeto(getCajas(vagon), caja);
     }
     cout<<getCantidadTotalLingotes(vagon)<<endl;
-    delVagon(vagon);
+    delVagon(vagon);*/
+
+    ptrLocomotora locomotora = newLocomotora();
+    int xy[2];
+    xy[0]=5;
+    xy[1]=5;
+    setXYLocomotora(locomotora, xy);
+
+    addObjeto(getVagones(locomotora), newVagon());
+    xy[1]=6;
+    setXYVagon((ptrVagon)getObjeto(getVagones(locomotora), 0), xy);
+    setDireccionLocomotora(locomotora, 3);
+    setDireccionVagon((ptrVagon)getObjeto(getVagones(locomotora), 0), 3);
+
+    addObjeto(getVagones(locomotora), newVagon());
+    xy[1]=7;
+    setXYVagon((ptrVagon)getObjeto(getVagones(locomotora), 1), xy);
+    setDireccionLocomotora(locomotora, 3);
+    setDireccionVagon((ptrVagon)getObjeto(getVagones(locomotora), 1), 3);
+
+    setDireccionLocomotora(locomotora, 0);
+    moverLocomotora(locomotora);
+    moverLocomotora(locomotora);
+
+    setDireccionLocomotora(locomotora, 1);
+    moverLocomotora(locomotora);
+    moverLocomotora(locomotora);
+
+    delLocomotora(locomotora);
 
     return 0;
 }

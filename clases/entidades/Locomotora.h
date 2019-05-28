@@ -4,7 +4,7 @@
 #include "../listas/ListaGen.h"
 #include "Vagon.h"
 
-struct ptrLocomotora;
+struct locomotoraStruct;
 typedef struct locomotoraStruct* ptrLocomotora;
 
 /*
@@ -17,7 +17,8 @@ ptrLocomotora newLocomotora();
 
 /*
     PRE: locomotora debe apuntar a una estructura existente
-    POST: Se libera el espacio de memoria de la estructura a la que apuntaba locomotora
+    POST: Se libera el espacio de memoria de la estructura a la que apuntaba locomotora, adicionalmente se
+          llama a las rutinas de eliminación de los vagones para liberar la memoria que estos ocupan
 
     locomotora: puntero a una estructura de tipo locomotoraStruct
 */
@@ -97,10 +98,32 @@ void setHasChumbo(ptrLocomotora locomotora, bool hasChumbo);
 
 /*
     PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
-    POST: La locomotora y todos los vagones que tenga en su lista ejecutan sus respectivas rutinas de movimiento
+    POST: Se devuelve el valor de agregarVagon
+
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+    return: valor bool
+*/
+bool getAgregarVagon(ptrLocomotora locomotora);
+
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: Se le asigna el valor enviado por agregarVagon a locomotora->agregarVagon
+
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+    agregarVagon: valor bool
+*/
+void setAgregarVagon(ptrLocomotora locomotora, bool agregarVagon);
+
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: La ubicación de la locomotora se modifica según su dirección y todos los vagones que tenga en su lista
+          ejecutan sus respectivas rutinas de movimiento. Adicionalmente si el flag agregarVagon está seteado en true,
+          se añade un vagón a la ultima posición del tren
 
     locomotora: puntero a una estructura de tipo locomotoraStruct
 */
 void moverLocomotora(ptrLocomotora locomotora);
+
+
 
 #endif // LOCOMOTORA_H_INCLUDED

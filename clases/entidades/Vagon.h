@@ -7,14 +7,17 @@ struct vagonStruct;
 typedef struct vagonStruct* ptrVagon;
 
 /*
-    PRE: Se llama para asignar a un puntero que no puede estar inicializado
+    PRE: Se llama para asignar a un puntero que no puede estar inicializado, x e y deben contener valores mayores o iguales a cero
+         y deben estar dentro de los limites del mapa (definidos por los valores correspondientes en el archivo parametros), dirección
+         debe contener un valor entre 0 y 3 inclusive
     POST: Se devuelve un ptrVagon que apunta a una vagonStruct nueva
 
+    x: valor int
+    y: valor int
+    direccion: valor int
     return: puntero a nueva vagonStruct
-
-    Los valores internos se deben setear uno a uno con los set
 */
-ptrVagon newVagon();
+ptrVagon newVagon(int x, int y, int direccion);
 
 /*
     PRE: vagon debe apuntar a una estructura existente

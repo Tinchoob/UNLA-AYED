@@ -27,6 +27,7 @@ void delParametros(ptrParametros parametros);
     POST: Se devuelve el valor de s
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getS(ptrParametros parametros);
 
@@ -44,6 +45,7 @@ void setS(ptrParametros parametros, long s);
     POST: Se devuelve el valor de p
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getP(ptrParametros parametros);
 
@@ -61,6 +63,7 @@ void setP(ptrParametros parametros, long p);
     POST: Se devuelve el valor de a
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getA(ptrParametros parametros);
 
@@ -78,6 +81,7 @@ void setA(ptrParametros parametros, long a);
     POST: Se devuelve el valor de posXE
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getPosXE(ptrParametros parametros);
 
@@ -95,6 +99,7 @@ void setPosXE(ptrParametros parametros, long posXE);
     POST: Se devuelve el valor de posYE
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getPosYE(ptrParametros parametros);
 
@@ -112,6 +117,7 @@ void setPosYE(ptrParametros parametros, long posYE);
     POST: Se devuelve el valor de im
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getIM(ptrParametros parametros);
 
@@ -129,6 +135,7 @@ void setIM(ptrParametros parametros, long im);
     POST: Se devuelve el valor de vm
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getVM(ptrParametros parametros);
 
@@ -146,6 +153,7 @@ void setVM(ptrParametros parametros, long vm);
     POST: Se devuelve el valor de ib
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getIB(ptrParametros parametros);
 
@@ -163,6 +171,7 @@ void setIB(ptrParametros parametros, long ib);
     POST: Se devuelve el valor de vb
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getVB(ptrParametros parametros);
 
@@ -180,6 +189,7 @@ void setVB(ptrParametros parametros, long vb);
     POST: Se devuelve el valor de ip
 
     parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
 */
 long getIP(ptrParametros parametros);
 
@@ -191,6 +201,42 @@ long getIP(ptrParametros parametros);
     ip: valor long
 */
 void setIP(ptrParametros parametros, long ip);
+
+/*
+    PRE: parametros tiene que apuntar a una estructura parametrosStruct
+    POST: Se devuelve el valor de tx
+
+    parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
+*/
+long getTX(ptrParametros parametros);
+
+/*
+    PRE: parametros tiene que apuntar a una estructura parametrosStruct
+    POST: Se le asigna el valor enviado por a tx parametros->tx
+
+    parametros: puntero a una estructura de tipo parametrosStruct
+    tx: valor long
+*/
+void setTX(ptrParametros parametros, long tx);
+
+/*
+    PRE: parametros tiene que apuntar a una estructura parametrosStruct
+    POST: Se devuelve el valor de ty
+
+    parametros: puntero a una estructura de tipo parametrosStruct
+    return: valor long
+*/
+long getTY(ptrParametros parametros);
+
+/*
+    PRE: parametros tiene que apuntar a una estructura parametrosStruct
+    POST: Se le asigna el valor enviado por a ty parametros->ty
+
+    parametros: puntero a una estructura de tipo parametrosStruct
+    ty: valor long
+*/
+void setTY(ptrParametros parametros, long ty);
 
 /*
     PRE: parametros tiene que apuntar a una estructura parametrosStruct

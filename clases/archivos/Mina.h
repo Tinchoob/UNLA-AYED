@@ -27,6 +27,7 @@ void delMina(ptrMina mina);
     POST: Se devuelve el valor de posX
 
     mina: puntero a una estructura de tipo minaStruct
+    return: valor int
 */
 int getPosX(ptrMina mina);
 
@@ -44,6 +45,7 @@ void setPosX(ptrMina mina, int posX);
     POST: Se devuelve el valor de posY
 
     mina: puntero a una estructura de tipo minaStruct
+    return: valor int
 */
 int getPosY(ptrMina mina);
 
@@ -61,6 +63,7 @@ void setPosY(ptrMina mina, int posY);
     POST: Se devuelve el valor de codItem
 
     mina: puntero a una estructura de tipo minaStruct
+    return: valor int
 */
 int getCodItem(ptrMina mina);
 
@@ -78,6 +81,7 @@ void setCodItem(ptrMina mina, int codItem);
     POST: Se devuelve el valor de IP
 
     mina: puntero a una estructura de tipo minaStruct
+    return: valor int
 */
 int getIP(ptrMina mina);
 
@@ -95,6 +99,7 @@ void setIP(ptrMina mina, int IP);
     POST: Se devuelve un puntero al array de secuencias
 
     mina: puntero a una estructura de tipo minaStruct
+    return: puntero int*
 */
 int* getSeq(ptrMina mina);
 

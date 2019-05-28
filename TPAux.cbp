@@ -38,6 +38,8 @@
 		<Unit filename="clases/archivos/Mina.h" />
 		<Unit filename="clases/archivos/Parametros.cpp" />
 		<Unit filename="clases/archivos/Parametros.h" />
+		<Unit filename="clases/entidades/Bandido.cpp" />
+		<Unit filename="clases/entidades/Bandido.h" />
 		<Unit filename="clases/entidades/Caja.cpp" />
 		<Unit filename="clases/entidades/Caja.h" />
 		<Unit filename="clases/entidades/Locomotora.cpp" />

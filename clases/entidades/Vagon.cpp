@@ -10,13 +10,14 @@ struct vagonStruct
     int direccion;
 };
 
-ptrVagon newVagon()
+ptrVagon newVagon(int x, int y, int direccion)
 {
     ptrVagon vagon = new vagonStruct;
-    vagon->xy[0]=0;
-    vagon->xy[1]=0;
+    vagon->xy[0]=x;
+    vagon->xy[1]=y;
     vagon->tipoRecurso = 0;
     vagon->cajas = newListaGen();
+    vagon->direccion = direccion;
     return vagon;
 }
 
@@ -123,7 +124,7 @@ void moverVagon(ptrVagon vagon)
             vagon->xy[1]--;
             break;
     }
-    std::cout<<"Direccion Vagon: "<<vagon->direccion<<std::endl;
+    /*std::cout<<"Direccion Vagon: "<<vagon->direccion<<std::endl;
     std::cout<<"X Vagon: "<<vagon->xy[0]<<std::endl;
-    std::cout<<"Y Vagon: "<<vagon->xy[1]<<std::endl;
+    std::cout<<"Y Vagon: "<<vagon->xy[1]<<std::endl;*/
 }

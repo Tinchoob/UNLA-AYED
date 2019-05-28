@@ -7,6 +7,7 @@ struct locomotoraStruct
     int direccion;
     ListaGen vagones;
     bool hasChumbo; //XD
+    bool agregarVagon;
 };
 
 ptrLocomotora newLocomotora()
@@ -18,6 +19,7 @@ ptrLocomotora newLocomotora()
     locomotora->direccion = 0;
     locomotora->vagones = newListaGen();
     locomotora->hasChumbo = false;
+    locomotora->agregarVagon = false;
 
     return locomotora;
 }
@@ -73,10 +75,68 @@ void setHasChumbo(ptrLocomotora locomotora, bool hasChumbo)
     locomotora->hasChumbo = hasChumbo;
 }
 
+bool getAgregarVagon(ptrLocomotora locomotora)
+{
+    return locomotora->agregarVagon;
+}
+
+void setAgregarVagon(ptrLocomotora locomotora, bool agregarVagon)
+{
+    locomotora->agregarVagon = agregarVagon;
+}
+
+/*  Ok, en caso de que alguien necesite saber como anda esto:
+    La locomotora ejecuta la rutina de movimiento de todos los vagones que tiene en su lista y después la suya,
+    cuando hay un cambio de dirección en la locomotora se ejecuta el movimiento en esa dirección, sin embargo
+    los vagones solo cambian de dirección una vez que llegan a la posición en la que estaba la locomotora cuando giró.
+    El movimiento sería algo así:
+    L = Locomotora
+    Vx = Vagon
+
+    Giro a la derecha arrancando desde una dirección hacia arriba:
+
+    L     V1 L     V2 V1 L     V3 V2 V1 L
+    V1 -> V2    -> V3       ->
+    V2    V3
+    V3
+
+    Para este caso, si se considera que el XY de la locomotora y sus vagones en el arranque es:
+    L = 5;5
+    V1 = 5;6
+    V2 = 5;7
+    V3 = 5;8
+
+    El movimiento sería:
+
+    Primer movimiento:
+    L = 6;5
+    V1 = 5;5
+    V2 = 5;6
+    V2 = 5;7
+
+    Segundo movimiento:
+    L = 7;5
+    V1 = 6;5
+    V2 = 5;5
+    V2 = 5;6
+
+    Tercer movimiento:
+    L = 8;5
+    V1 = 7;5
+    V2 = 6;5
+    V2 = 5;5
+*/
 void moverLocomotora(ptrLocomotora locomotora)
 {
     int i, ultDireccionMov, temp;
-    ptrVagon vagon;
+    ptrVagon vagon, nuevoVagon;
+
+    if (getAgregarVagon(locomotora) && !listaVacia(getVagones(locomotora)))
+        nuevoVagon = newVagon(getXYVagon((ptrVagon)getUltimo(getVagones(locomotora)))[0],
+        getXYVagon((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))));
+    else if (getAgregarVagon(locomotora))
+        nuevoVagon = newVagon(getXYLocomotora(locomotora)[0], getXYLocomotora(locomotora)[1], getDireccionLocomotora(locomotora));
+
     switch(getDireccionLocomotora(locomotora))
     {
         //Derecha
@@ -112,7 +172,14 @@ void moverLocomotora(ptrLocomotora locomotora)
         }
         else ultDireccionMov = getDireccionVagon((ptrVagon)getObjeto(getVagones(locomotora), i));
     }
-    std::cout<<"Direccion Locomotora: "<<locomotora->direccion<<std::endl;
+
+    if(getAgregarVagon(locomotora))
+    {
+        setAgregarVagon(locomotora, false);
+        addObjeto(getVagones(locomotora), nuevoVagon);
+    }
+    //Lineas de testeo de la rutina de movimiento
+    /*std::cout<<"Direccion Locomotora: "<<locomotora->direccion<<std::endl;
     std::cout<<"X Locomotora: "<<locomotora->xy[0]<<std::endl;
-    std::cout<<"Y Locomotora: "<<locomotora->xy[1]<<std::endl;
+    std::cout<<"Y Locomotora: "<<locomotora->xy[1]<<std::endl;*/
 }

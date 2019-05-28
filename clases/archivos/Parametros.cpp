@@ -16,6 +16,8 @@ struct parametrosStruct
     long ib; //Máxima cantidad de intervalos para la aparición de bandidos
     long vb; //Tiempo máximo de vida de un bandido
     long ip; //Intervalos entre producciones de las minas
+    long tx; //Tamaño en X del mapa
+    long ty; //Tamaño en Y del mapa
 };
 
 ptrParametros newParametros()
@@ -129,6 +131,26 @@ void setIP(ptrParametros parametros, long ip)
     parametros->ip = ip;
 }
 
+long getTX(ptrParametros parametros)
+{
+    return parametros->tx;
+}
+
+void setTX(ptrParametros parametros, long tx)
+{
+    parametros->tx = tx;
+}
+
+long getTY(ptrParametros parametros)
+{
+    return parametros->ty;
+}
+
+void setTY(ptrParametros parametros, long ty)
+{
+    parametros->ty = ty;
+}
+
 void cargarParametros(ptrParametros parametros)
 {
     FILE* fParametros;
@@ -136,7 +158,7 @@ void cargarParametros(ptrParametros parametros)
     int i,j;
 
     fParametros = fopen("parametros.txt","r");
-    for(j=0;j<10;j++)
+    for(j=0;j<12;j++)
     {
         for (i=0;i<20;i++) lectura[i]=0;
         leerLineaParametros(lectura, fParametros);
@@ -150,6 +172,8 @@ void cargarParametros(ptrParametros parametros)
         else if (strstr(lectura,"IB=")) setIB(parametros, atoi(strstr(lectura,"=")+1));
         else if (strstr(lectura,"VB=")) setVB(parametros, atoi(strstr(lectura,"=")+1));
         else if (strstr(lectura,"IP=")) setIP(parametros, atoi(strstr(lectura,"=")+1));
+        else if (strstr(lectura,"TX=")) setTX(parametros, atoi(strstr(lectura,"=")+1));
+        else if (strstr(lectura,"TY=")) setTY(parametros, atoi(strstr(lectura,"=")+1));
     }
     fclose(fParametros);
 }

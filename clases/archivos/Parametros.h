@@ -1,6 +1,8 @@
 #ifndef PARAMETROS_H_INCLUDED
 #define PARAMETROS_H_INCLUDED
 
+#include <stdio.h>
+
 struct parametrosStruct;
 typedef struct parametrosStruct* ptrParametros;
 

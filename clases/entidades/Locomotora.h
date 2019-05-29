@@ -31,16 +31,16 @@ void delLocomotora(ptrLocomotora locomotora);
     locomotora: puntero a una estructura de tipo locomotoraStruct
     return: puntero a int
 */
-int* getXYLocomotora(ptrLocomotora locomotora);
+int* getXY(ptrLocomotora locomotora);
 
 /*
     PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
     POST: Se le asigna los valores enviados por xy a locomotora->xy
 
     locomotora: puntero a una estructura de tipo locomotoraStruct
-    xy: array de valores int, tambien acepta punteros int*
+    xy: array de valores int, tiene que tener como mínimo 2 posiciones
 */
-void setXYLocomotora(ptrLocomotora locomotora, int xy[]);
+void setXY(ptrLocomotora locomotora, int xy[]);
 
 /*
     PRE: locomotora tiene que apuntar a una estructura locomotoraStruct

@@ -1,6 +1,9 @@
 #ifndef BANDIDO_H_INCLUDED
 #define BANDIDO_H_INCLUDED
 
+#include "Locomotora.h"
+#include "../archivos/Parametros.h"
+
 struct bandidoStruct;
 typedef struct bandidoStruct* ptrBandido;
 
@@ -8,16 +11,18 @@ typedef struct bandidoStruct* ptrBandido;
     PRE: Se llama para asignar a un puntero que no puede estar inicializado, tipoRecurso debe
          contener un valor entre 1 y 6 inclusive, cantidad no puede superar el valor de p en parametros,
          tiempoVida no puede superar el valor de vb en parametros, xy tiene que tener como mínimo 2 posiciones
-         y los valores deben estar dentro de los bordes del mapa especificados en parametros
+         y los valores deben estar dentro de los bordes del mapa especificados en parametros, parametros
+         debe apuntar a una estructura existente
     POST: Se devuelve un ptrBandido que apunta a una bandidoStruct nueva
 
     tipoRecurso: valor int
     cantidad: valor int
     tiempoVida: valor int
     xy: array de valores int, también acepta punteros int*
+    parametros: puntero a estructura de tipo parametrosStruct
     return: puntero a nueva bandidoStruct
 */
-ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[]);
+ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros);
 
 /*
     PRE: bandido debe apuntar a una estructura existente
@@ -95,9 +100,27 @@ int* getXY(ptrBandido bandido);
     POST: Se le asigna los valores enviados por xy a bandido->xy
 
     bandido: puntero a una estructura de tipo bandidoStruct
-    xy: array de valores int, tambien acepta punteros int*
+    xy: array de valores int, tiene que tener como mínimo 2 posiciones
 */
 void setXY(ptrBandido bandido, int xy[]);
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se devuelve un puntero a bandido->parametros
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    return: puntero a una parametrosStruct
+*/
+ptrParametros getParametros(ptrBandido bandido);
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se cambia la referencia de bandido->parametros a la enviada por parametros
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    parametros: puntero a una estructura de tipo parametrosStruct
+*/
+void setParametros(ptrBandido bandido, ptrParametros parametros);
 
 /*
     PRE: bandido tiene que apuntar a una estructura bandidoStruct
@@ -106,9 +129,10 @@ void setXY(ptrBandido bandido, int xy[]);
           (0 para valido, 1 para eliminado)
 
     bandido: puntero a una estructura de tipo bandidoStruct
+    locomotora: puntero a una estructura de tipo locomotoraStruct
     return: valor int, indica con 0 que el bandido sigue vivo o con 1 que fue eliminado de la memoria
 */
-int tickBandido(ptrBandido bandido);
+int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros);
 
 
 #endif // BANDIDO_H_INCLUDED

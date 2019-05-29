@@ -29,12 +29,12 @@ void delVagon(ptrVagon vagon)
     delete vagon;
 }
 
-int* getXYVagon(ptrVagon vagon)
+int* getXY(ptrVagon vagon)
 {
     return vagon->xy;
 }
 
-void setXYVagon(ptrVagon vagon, int xy[])
+void setXY(ptrVagon vagon, int xy[])
 {
     vagon->xy[0] = xy[0];
     vagon->xy[1] = xy[1];

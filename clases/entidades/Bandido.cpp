@@ -1,4 +1,10 @@
 #include "Bandido.h"
+#include "../listas/ListaGen.h"
+#include "../funciones/Funciones.h"
+
+#include <iostream>
+#include <ctype.h>
+#include <cstdlib>
 
 struct bandidoStruct
 {
@@ -6,17 +12,18 @@ struct bandidoStruct
     int cantidad;
     int tiempoVida;
     int xy[2];
+    ptrParametros parametros;
 };
 
-ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[])
+ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros)
 {
     ptrBandido bandido = new bandidoStruct;
 
-    bandido->tipoRecurso = tipoRecurso;
-    bandido->cantidad = cantidad;
-    bandido->tiempoVida = tiempoVida;
-    bandido->xy[0] = xy[0];
-    bandido->xy[1] = xy[1];
+    setTipoRecurso(bandido, tipoRecurso);
+    bandido->parametros = parametros;
+    setCantidad(bandido, cantidad);
+    setTiempoVida(bandido, tiempoVida);
+    setXY(bandido, xy);
 
     return bandido;
 }
@@ -33,7 +40,9 @@ int getTipoRecurso(ptrBandido bandido)
 
 void setTipoRecurso(ptrBandido bandido, int tipoRecurso)
 {
-    bandido->tipoRecurso = tipoRecurso;
+    if(tipoRecurso>=1 && tipoRecurso<=6) bandido->tipoRecurso = tipoRecurso;
+    else if(tipoRecurso<1) bandido->tipoRecurso = 1;
+    else bandido->tipoRecurso = 6;
 }
 
 int getCantidad(ptrBandido bandido)
@@ -43,7 +52,9 @@ int getCantidad(ptrBandido bandido)
 
 void setCantidad(ptrBandido bandido, int cantidad)
 {
-    bandido->cantidad = cantidad;
+    if (cantidad>0 && cantidad<=getP(getParametros(bandido))) bandido->cantidad = cantidad;
+    else if (cantidad<=0) bandido->cantidad = 0;
+    else bandido->cantidad = getP(getParametros(bandido));
 }
 
 int getTiempoVida(ptrBandido bandido)
@@ -53,8 +64,9 @@ int getTiempoVida(ptrBandido bandido)
 
 void setTiempoVida(ptrBandido bandido, int tiempoVida)
 {
-    if (tiempoVida>=0) bandido->tiempoVida = tiempoVida;
-    else bandido->tiempoVida = 0;
+    if (tiempoVida>0 && tiempoVida<=getVB(getParametros(bandido))) bandido->tiempoVida = tiempoVida;
+    else if (tiempoVida<1) bandido->tiempoVida = 1;
+    else bandido->tiempoVida = getVB(getParametros(bandido));
 }
 
 int* getXY(ptrBandido bandido)
@@ -64,24 +76,69 @@ int* getXY(ptrBandido bandido)
 
 void setXY(ptrBandido bandido, int xy[])
 {
-    bandido->xy[0] = xy[0];
-    bandido->xy[1] = xy[1];
+    if (xy[0]>=0 && xy[0]<=getTX(getParametros(bandido))) bandido->xy[0] = xy[0];
+    else if (xy[0]<0) bandido->xy[0] = 0;
+    else bandido->xy[0] = getTX(getParametros(bandido));
+
+    if (xy[1]>=0 && xy[1]<=getTY(getParametros(bandido))) bandido->xy[1] = xy[1];
+    else if (xy[1]<0) bandido->xy[1] = 0;
+    else bandido->xy[1] = getTY(getParametros(bandido));
 }
 
-int tickBandido(ptrBandido bandido)
+ptrParametros getParametros(ptrBandido bandido)
 {
-    int ret;
+    return bandido->parametros;
+}
 
-    if (getTiempoVida(bandido)>0)
+void setParametros(ptrBandido bandido, ptrParametros parametros)
+{
+    bandido->parametros = parametros;
+}
+
+int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros)
+{
+    int ret, i;
+    char defender;
+    bool trenEnRango=false;
+
+    trenEnRango = enRango(bandido->xy, getA(parametros), getXY(locomotora));
+    i=0;
+    while (i<getSize(getVagones(locomotora)) && trenEnRango!=true)
     {
-        setTiempoVida(bandido, getTiempoVida(bandido)-1);
-        ret=0;
-    }
-    else
-    {
-        delBandido(bandido);
-        ret=1;
+        trenEnRango = enRango(bandido->xy, getA(parametros), getXY((ptrVagon)getObjeto(getVagones(locomotora), i)));
+        i++;
     }
 
+    if (trenEnRango)
+    {
+        std::cout<<"Eh wachin dame todo! (Dar/Resistirse? (D/R))"<<std::endl;
+        std::cin>>defender;
+        if (defender>90) defender = defender - 32;
+        if (defender=='D')
+        {
+            //
+        }
+        else if (defender=='R')
+        {
+            if (getHasChumbo(locomotora))
+            {
+                std::cout<<"Se ha usado el chumbo de la inimputabilidad, come plomo gato"<<std::endl;
+                setHasChumbo(locomotora, false);
+                system("pause");
+            }
+            else
+            {
+                if(!listaVacia(getVagones(locomotora)))
+                {
+                    delVagon((ptrVagon)getUltimo(getVagones(locomotora)));
+                    delObjeto(getVagones(locomotora), getSize(getVagones(locomotora)) - 1);
+                }
+            }
+        }
+        bandido->tiempoVida = 0;
+    }
+    bandido->tiempoVida = bandido->tiempoVida-1;
+    if (bandido->tiempoVida>0) ret=0;
+    else ret=1;
     return ret; //0 si el bandido sique viviendo, 1 si tiene que borrarse de la lista
 }

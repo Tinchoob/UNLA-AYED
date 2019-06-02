@@ -7,6 +7,7 @@
 #include "clases/entidades/Locomotora.h"
 #include "clases/entidades/Caja.h"
 #include "clases/entidades/Bandido.h"
+#include "clases/entidades/Moneda.h"
 
 #include <stdio.h>
 #include <time.h>
@@ -48,8 +49,9 @@ int main()
     ListaGen lstMinas = newListaGen();
     ptrLocomotora locomotora = newLocomotora();
     ListaGen lstBandidos = newListaGen();
+    ListaGen lstMonedas = newListaGen();
 
-    int i, j, k, ticksUltBandido=0;
+    int i, j, k, ticksUltBandido=0, ticksUltMoneda=0, monedas=0;
     int xy[2];
 
     //Init
@@ -59,7 +61,7 @@ int main()
 
     //Bucle
     char tecla = '0';
-    bool vagon, mina, estacion, bandido;
+    bool vagon, mina, estacion, bandido, moneda;
 
     addObjeto(getVagones(locomotora), newVagon(0, 1, 3));
     srand(time(NULL));
@@ -74,9 +76,16 @@ int main()
             addObjeto(lstBandidos, newBandido((rand()%6)+1, (rand()%getP(parametros))+1, (rand()%getVB(parametros))+1, xy, parametros));
         }
 
+        ticksUltMoneda++;
+        if(rand()%2==1 || ticksUltMoneda>=getIM(parametros))
+        {
+            ticksUltMoneda = 0;
+            addObjeto(lstMonedas, newMoneda(rand()%getTX(parametros) + 1, rand()%getTY(parametros) + 1, rand()%getVM(parametros) + 1, parametros));
+        }
+
         //Pantalla ---------------------------------------------------------------------
         system("cls");
-        cout<<endl;
+        cout<<"M: "<<monedas<<endl;
         cout<<(char)-55;
         for(i=0;i<getTX(parametros);i++) cout<<(char)-51;
         cout<<(char)-69;
@@ -89,6 +98,7 @@ int main()
                 mina = false;
                 estacion = false;
                 bandido = false;
+                moneda = false;
                 for(k=0;k<getSize(getVagones(locomotora));k++)
                 {
                     if(i==getXY((ptrVagon)getObjeto(getVagones(locomotora),k))[1] &&
@@ -101,6 +111,10 @@ int main()
                 for(k=0;k<getSize(lstBandidos);k++)
                 {
                     if(i==getXY((ptrBandido)getObjeto(lstBandidos,k))[1] && j==getXY((ptrBandido)getObjeto(lstBandidos,k))[0]) bandido = true;
+                }
+                for(k=0;k<getSize(lstMonedas);k++)
+                {
+                    if(i==getXY((ptrMoneda)getObjeto(lstMonedas,k))[1] && j==getXY((ptrMoneda)getObjeto(lstMonedas,k))[0]) moneda = true;
                 }
                 if (i==getPosYE(parametros) && j==getPosXE(parametros)) estacion = true;
 
@@ -129,6 +143,11 @@ int main()
                     gotoxy(j+1, i+2);
                     cout<<"B";
                 }
+                else if (moneda==true)
+                {
+                    gotoxy(j+1, i+2);
+                    cout<<"C";
+                }
             }
             gotoxy(getTX(parametros)+1, i+2);
             cout<<(char)-70;
@@ -138,8 +157,11 @@ int main()
         cout<<(char)-68;
         //Fin Pantalla -----------------------------------------------------------------
 
-        if (getPosXE(parametros)==getXY(locomotora)[0] && getPosYE(parametros)==getXY(locomotora)[1])
+        if (getPosXE(parametros)==getXY(locomotora)[0] && getPosYE(parametros)==getXY(locomotora)[1] && monedas>=5)
+        {
             setAgregarVagon(locomotora, true);
+            monedas = monedas - 5;
+        }
 
         fflush(stdin);
         scanf("%c",&tecla);
@@ -175,6 +197,19 @@ int main()
                 }
                 i++;
             }
+            i=0;
+            while(i<getSize(lstMonedas))
+            {
+                if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora, &monedas) == 1)
+                {
+                    //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos monedas en el mismo ciclo
+                    //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
+                    delMoneda((ptrMoneda)getObjeto(lstMonedas,i));
+                    delObjeto(lstMonedas, i);
+                    i--;
+                }
+                i++;
+            }
         }
     }
 
@@ -186,6 +221,8 @@ int main()
     delLocomotora(locomotora);
     for(i=0;i<getSize(lstBandidos);i++) delBandido((ptrBandido)getObjeto(lstBandidos, i));
     eliminarListaGen(lstBandidos);
+    for(i=0;i<getSize(lstMonedas);i++) delMoneda((ptrMoneda)getObjeto(lstMonedas, i));
+    eliminarListaGen(lstMonedas);
     return 0;
 }
 

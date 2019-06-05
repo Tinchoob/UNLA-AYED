@@ -15,9 +15,10 @@ typedef struct vagonStruct* ptrVagon;
     x: valor int
     y: valor int
     direccion: valor int
+    capacidad: valor int
     return: puntero a nueva vagonStruct
 */
-ptrVagon newVagon(int x, int y, int direccion);
+ptrVagon newVagon(int x, int y, int direccion, int capacidad);
 
 /*
     PRE: vagon debe apuntar a una estructura existente

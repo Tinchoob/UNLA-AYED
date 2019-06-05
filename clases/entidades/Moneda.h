@@ -84,16 +84,15 @@ ptrParametros getParametros(ptrMoneda moneda);
 void setParametros(ptrMoneda moneda, ptrParametros parametros);
 
 /*
-    PRE: moneda tiene que apuntar a una estructura monedaStruct, locomotora tiene que apuntar a una estructura locomotoraStruct,
-    la posición a la que apunta monedas debe estar inicializada
+    PRE: moneda tiene que apuntar a una estructura monedaStruct, locomotora tiene que apuntar a una estructura locomotoraStruct
     POST: Se resta 1 al valor de moneda->tiempoVida y se devuelve un valor que indica el estado de la moneda,
-    0 si aún tiene tiempo de vida, 1 en caso contrario
+    0 si aún tiene tiempo de vida, 1 en caso contrario, si la moneda está en las mismas coordenadas que la locomotora,
+    se incrementa en 1 el valor de locomotora->monedas
 
     moneda: puntero a una estructura de tipo monedaStruct
     locomotora: puntero a una estructura de tipo locomotoraStruct
-    monedas: puntero a int
     return: valor int
 */
-int tickMoneda(ptrMoneda moneda, ptrLocomotora locomotora, int* monedas);
+int tickMoneda(ptrMoneda moneda, ptrLocomotora locomotora);
 
 #endif // MONEDA_H_INCLUDED

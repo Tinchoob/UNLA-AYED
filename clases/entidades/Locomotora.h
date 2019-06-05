@@ -134,6 +134,24 @@ void setCantRecursos(ptrLocomotora locomotora, int cantRecursos[]);
 
 /*
     PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: Se devuelve el valor de locomotora->monedas
+
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+    return: valor int
+*/
+int getMonedas(ptrLocomotora locomotora);
+
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: Se le asigna el valor enviado por monedas a locomotora->monedas
+
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+    monedas: valor int
+*/
+void setMonedas(ptrLocomotora locomotora, int monedas);
+
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
     POST: La ubicación de la locomotora se modifica según su dirección y todos los vagones que tenga en su lista
           ejecutan sus respectivas rutinas de movimiento. Adicionalmente si el flag agregarVagon está seteado en true,
           se añade un vagón a la ultima posición del tren

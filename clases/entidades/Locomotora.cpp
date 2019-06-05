@@ -9,6 +9,7 @@ struct locomotoraStruct
     bool hasChumbo; //XD
     bool agregarVagon;
     int cantRecursos[6];
+    int monedas;
 };
 
 ptrLocomotora newLocomotora()
@@ -23,6 +24,7 @@ ptrLocomotora newLocomotora()
     locomotora->hasChumbo = false;
     locomotora->agregarVagon = false;
     for(i=0;i<6;i++) locomotora->cantRecursos[i] = 0;
+    locomotora->monedas = 0;
 
     return locomotora;
 }
@@ -99,6 +101,16 @@ void setCantRecursos(ptrLocomotora locomotora, int cantRecursos[])
     for (i=0;i<6;i++) locomotora->cantRecursos[i] = cantRecursos[i];
 }
 
+int getMonedas(ptrLocomotora locomotora)
+{
+    return locomotora->monedas;
+}
+
+void setMonedas(ptrLocomotora locomotora, int monedas)
+{
+    locomotora->monedas = monedas;
+}
+
 /*  Ok, en caso de que alguien necesite saber como anda esto:
     La locomotora ejecuta la rutina de movimiento de todos los vagones que tiene en su lista y después la suya,
     cuando hay un cambio de dirección en la locomotora se ejecuta el movimiento en esa dirección, sin embargo
@@ -147,9 +159,10 @@ void moverLocomotora(ptrLocomotora locomotora)
 
     if (getAgregarVagon(locomotora) && !listaVacia(getVagones(locomotora)))
         nuevoVagon = newVagon(getXY((ptrVagon)getUltimo(getVagones(locomotora)))[0],
-        getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))));
+        getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))),
+        5*getMonedas(locomotora));
     else if (getAgregarVagon(locomotora))
-        nuevoVagon = newVagon(getXY(locomotora)[0], getXY(locomotora)[1], getDireccionLocomotora(locomotora));
+        nuevoVagon = newVagon(getXY(locomotora)[0], getXY(locomotora)[1], getDireccionLocomotora(locomotora), 5*getMonedas(locomotora));
 
     switch(getDireccionLocomotora(locomotora))
     {
@@ -190,6 +203,7 @@ void moverLocomotora(ptrLocomotora locomotora)
     if(getAgregarVagon(locomotora))
     {
         setAgregarVagon(locomotora, false);
+        setMonedas(locomotora, 0);
         addObjeto(getVagones(locomotora), nuevoVagon);
     }
     //Lineas de testeo de la rutina de movimiento

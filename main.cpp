@@ -51,7 +51,7 @@ int main()
     ListaGen lstBandidos = newListaGen();
     ListaGen lstMonedas = newListaGen();
 
-    int i, j, k, ticksUltBandido=0, ticksUltMoneda=0, monedas=0;
+    int i, j, k, ticksUltBandido=0, ticksUltMoneda=0;
     int xy[2];
     bool perder = false;
 
@@ -64,7 +64,12 @@ int main()
     char tecla = '0';
     bool vagon, mina, estacion, bandido, moneda;
 
-    addObjeto(getVagones(locomotora), newVagon(0, 1, 3));
+    addObjeto(getVagones(locomotora), newVagon(0, 1, 3, 90));
+    addObjeto(getVagones(locomotora), newVagon(0, 2, 3, 90));
+    addObjeto(getVagones(locomotora), newVagon(0, 3, 3, 90));
+    addObjeto(getVagones(locomotora), newVagon(0, 4, 3, 90));
+    addObjeto(getVagones(locomotora), newVagon(0, 5, 3, 90));
+    addObjeto(getVagones(locomotora), newVagon(0, 6, 3, 90));
     srand(time(NULL));
     while (tecla != 'q' && perder != true)
     {
@@ -86,13 +91,22 @@ int main()
 
         //Pantalla ---------------------------------------------------------------------
         system("cls");
-        cout<<"Monedas: "<<monedas<<"  ";
+        cout<<"Monedas: "<<getMonedas(locomotora)<<"  ";
         cout<<"Oro: "<<getCantRecursos(locomotora)[0]<<"  ";
         cout<<"Plata: "<<getCantRecursos(locomotora)[1]<<"  ";
         cout<<"Bronce: "<<getCantRecursos(locomotora)[2]<<"  ";
         cout<<"Platino: "<<getCantRecursos(locomotora)[3]<<"  ";
         cout<<"Roca: "<<getCantRecursos(locomotora)[4]<<"  ";
         cout<<"Carbon: "<<getCantRecursos(locomotora)[5]<<endl;
+
+        for(i=0;i<getSize(getVagones(locomotora));i++)
+        {
+            ptrVagon vActual = (ptrVagon)getObjeto(getVagones(locomotora), i);
+            cout<<"V"<<i+1<<": "<<cantidadTotalLingotes(vActual)<<"/"<<getCapacidad(vActual)<<";"<<getTipoRecurso(vActual)<<"  ";
+        }
+        cout<<endl;
+
+        gotoxy(0,3);
         cout<<(char)-55;
         for(i=0;i<getTX(parametros);i++) cout<<(char)-51;
         cout<<(char)-69;
@@ -127,36 +141,36 @@ int main()
 
                 if (i==getXY(locomotora)[1] && j==getXY(locomotora)[0])
                 {
-                    gotoxy(j+1, i+2);
+                    gotoxy(j+1, i+4);
                     cout<<"L";
                 }
                 else if (vagon==true)
                 {
-                    gotoxy(j+1, i+2);
+                    gotoxy(j+1, i+4);
                     cout<<"V";
                 }
                 else if (mina==true)
                 {
-                    gotoxy(j+1, i+2);
+                    gotoxy(j+1, i+4);
                     cout<<"M";
                 }
                 else if (estacion==true)
                 {
-                    gotoxy(j+1, i+2);
+                    gotoxy(j+1, i+4);
                     cout<<"E";
                 }
                 else if (bandido==true)
                 {
-                    gotoxy(j+1, i+2);
+                    gotoxy(j+1, i+4);
                     cout<<"B";
                 }
                 else if (moneda==true)
                 {
-                    gotoxy(j+1, i+2);
+                    gotoxy(j+1, i+4);
                     cout<<"C";
                 }
             }
-            gotoxy(getTX(parametros)+1, i+2);
+            gotoxy(getTX(parametros)+1, i+4);
             cout<<(char)-70;
         }
         cout<<(char)-56;
@@ -164,11 +178,8 @@ int main()
         cout<<(char)-68;
         //Fin Pantalla -----------------------------------------------------------------
 
-        if (getPosXE(parametros)==getXY(locomotora)[0] && getPosYE(parametros)==getXY(locomotora)[1] && monedas>=5)
-        {
+        if (getPosXE(parametros)==getXY(locomotora)[0] && getPosYE(parametros)==getXY(locomotora)[1] && getMonedas(locomotora)>0)
             setAgregarVagon(locomotora, true);
-            monedas = monedas - 5;
-        }
 
         fflush(stdin);
         scanf("%c",&tecla);
@@ -211,7 +222,7 @@ int main()
             i=0;
             while(i<getSize(lstMonedas))
             {
-                if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora, &monedas) == 1)
+                if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora) == 1)
                 {
                     //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos monedas en el mismo ciclo
                     //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
@@ -318,7 +329,7 @@ void testMina()
 void testVagon()
 {
     int i;
-    ptrVagon vagon = newVagon(0,0,0);
+    ptrVagon vagon = newVagon(0,0,0,5);
     ptrCaja caja;
 
     setTipoRecurso(vagon, 1);
@@ -344,8 +355,8 @@ void testLocomotora()
     setXY(locomotora, xy);
     setDireccionLocomotora(locomotora, 3);
 
-    addObjeto(getVagones(locomotora), newVagon(5,6,3));
-    addObjeto(getVagones(locomotora), newVagon(5,7,3));
+    addObjeto(getVagones(locomotora), newVagon(5,6,3,5));
+    addObjeto(getVagones(locomotora), newVagon(5,7,3,5));
 
     setDireccionLocomotora(locomotora, 0);
     moverLocomotora(locomotora);

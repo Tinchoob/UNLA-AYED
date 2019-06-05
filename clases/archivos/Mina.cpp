@@ -5,6 +5,7 @@
 #include "Mina.h"
 #include "../funciones/Funciones.h"
 #include "../entidades/Caja.h"
+#include "../entidades/Vagon.h"
 
 struct minaStruct
 {
@@ -173,14 +174,38 @@ void leerLineaMina(FILE* fMina, ptrMina mina)
 
 void tickMina(ptrMina mina, ptrLocomotora locomotora)
 {
-    if (mina->contadorIntervalos>=mina->IP)
+    int i;
+    int* cantRecursos;
+    bool agregado;
+    ptrVagon vActual;
+
+    if (mina->contadorIntervalos >= mina->IP)
     {
-        if (mina->contadorProduccion>=5) mina->contadorProduccion = 0;
-        if (getSize(mina->lstCajas)<5) addObjeto(mina->lstCajas, newCaja(mina->codItem, (rand()%5)+1));
+        if (mina->contadorProduccion >= 5) mina->contadorProduccion = 0;
+        if (getSize(mina->lstCajas) < 5) addObjeto(mina->lstCajas, newCaja(mina->codItem, mina->seq[mina->contadorProduccion]));
         mina->contadorIntervalos = 0;
         mina->contadorProduccion++;
     }
     mina->contadorIntervalos++;
 
-    if(getXY(locomotora)[0] == mina->posX && getXY(locomotora)[1] == mina->posY) system("pause");
+    if(getXY(locomotora)[0] == mina->posX && getXY(locomotora)[1] == mina->posY && !listaVacia(mina->lstCajas))
+    {
+        i = 0;
+        agregado = false;
+        while(i<getSize(getVagones(locomotora)) && !agregado)
+        {
+            vActual = (ptrVagon)getObjeto(getVagones(locomotora), i);
+            if ((getTipoRecurso(vActual) == mina->codItem || getTipoRecurso(vActual) == 0) &&
+                (getCapacidad(vActual) - cantidadTotalLingotes(vActual)) >= getCantidad((ptrCaja)getUltimo(mina->lstCajas)))
+            {
+                agregado = true;
+                addObjeto(getCajas(vActual), getUltimo(mina->lstCajas));
+                if (getTipoRecurso(vActual) == 0) setTipoRecurso(vActual, mina->codItem);
+                cantRecursos = getCantRecursos(locomotora);
+                cantRecursos[mina->codItem-1] = cantRecursos[mina->codItem-1] + getCantidad((ptrCaja)getUltimo(mina->lstCajas));
+                delObjeto(mina->lstCajas, getSize(mina->lstCajas)-1);
+            }
+            i++;
+        }
+    }
 }

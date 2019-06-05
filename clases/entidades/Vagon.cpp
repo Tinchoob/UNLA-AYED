@@ -11,7 +11,7 @@ struct vagonStruct
     int capacidad;
 };
 
-ptrVagon newVagon(int x, int y, int direccion)
+ptrVagon newVagon(int x, int y, int direccion, int capacidad)
 {
     ptrVagon vagon = new vagonStruct;
     vagon->xy[0]=x;
@@ -19,6 +19,7 @@ ptrVagon newVagon(int x, int y, int direccion)
     vagon->tipoRecurso = 0;
     vagon->cajas = newListaGen();
     vagon->direccion = direccion;
+    vagon->capacidad = capacidad;
     return vagon;
 }
 

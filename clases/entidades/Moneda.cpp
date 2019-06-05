@@ -63,13 +63,13 @@ void setParametros(ptrMoneda moneda, ptrParametros parametros)
     moneda->parametros = parametros;
 }
 
-int tickMoneda(ptrMoneda moneda, ptrLocomotora locomotora, int* monedas)
+int tickMoneda(ptrMoneda moneda, ptrLocomotora locomotora)
 {
     int ret;
 
     if(getXY(locomotora)[0]==getXY(moneda)[0] && getXY(locomotora)[1]==getXY(moneda)[1])
     {
-        (*monedas)++;
+        setMonedas(locomotora, getMonedas(locomotora) + 1);
         moneda->tiempoVida = 0;
     }
     else moneda->tiempoVida = moneda->tiempoVida-1;

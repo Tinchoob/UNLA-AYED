@@ -51,7 +51,8 @@ void eliminarListaGen(ListaGen lista)
             delete actual->siguiente; //Eliminar nodo
             lista->cantNodos--; //Actualizar la cantidad actual de nodos
         }
-        delete lista->nodos[i]; //Eliminar bloque
+        //El if está para evitar que intente eliminar el nodo cero de la lista aún cuando este puede no haber sido creado aún (cantBloques = 0)
+        if (lista->cantNodos!=0) delete lista->nodos[i]; //Eliminar bloque
         lista->cantNodos--; //Actualizar la cantidad actual de nodos
     }
     delete[] lista->nodos; //Eliminar indice

@@ -116,6 +116,24 @@ void setAgregarVagon(ptrLocomotora locomotora, bool agregarVagon);
 
 /*
     PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: Se devuelve un puntero a locomotora->cantRecursos
+
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+    return: puntero a int
+*/
+int* getCantRecursos(ptrLocomotora locomotora);
+
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: Se le asigna los valores enviados por cantRecursos a locomotora->cantRecursos
+
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+    cantRecursos: array de valores int, tiene que tener como mínimo 6 posiciones
+*/
+void setCantRecursos(ptrLocomotora locomotora, int cantRecursos[]);
+
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
     POST: La ubicación de la locomotora se modifica según su dirección y todos los vagones que tenga en su lista
           ejecutan sus respectivas rutinas de movimiento. Adicionalmente si el flag agregarVagon está seteado en true,
           se añade un vagón a la ultima posición del tren

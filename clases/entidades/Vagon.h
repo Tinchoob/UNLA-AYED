@@ -98,11 +98,29 @@ void setDireccionVagon(ptrVagon vagon, int direccion);
 
 /*
     PRE: vagon tiene que apuntar a una estructura vagonStruct
+    POST: Se devuelve el valor de vagon->capacidad
+
+    vagon: puntero a una estructura de tipo vagonStruct
+    return: valor int
+*/
+int getCapacidad(ptrVagon vagon);
+
+/*
+    PRE: vagon tiene que apuntar a una estructura vagonStruct
+    POST: Se le asigna el valor enviado por capacidad a vagon->capacidad
+
+    vagon: puntero a una estructura de tipo vagonStruct
+    capacidad: valor int
+*/
+void setCapacidad(ptrVagon vagon, int capacidad);
+
+/*
+    PRE: vagon tiene que apuntar a una estructura vagonStruct
     POST: Se devuelve la cantidad total de lingotes en todas las cajas del vagon
 
     vagon: puntero a una estructura de tipo vagonStruct
 */
-int getCantidadTotalLingotes(ptrVagon vagon);
+int cantidadTotalLingotes(ptrVagon vagon);
 
 /*
     PRE: vagon tiene que apuntar a una estructura vagonStruct

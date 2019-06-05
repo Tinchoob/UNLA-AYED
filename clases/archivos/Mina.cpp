@@ -4,6 +4,7 @@
 #include <string.h>
 #include "Mina.h"
 #include "../funciones/Funciones.h"
+#include "../entidades/Caja.h"
 
 struct minaStruct
 {
@@ -12,16 +13,27 @@ struct minaStruct
     int codItem; //Codigo del item que va a producir.
     int IP; //Intervalo de produccion.
     int seq[5]; //Especificacion de la secuencia de produccion. Siempre serán 5 en total.
+
+    int contadorIntervalos; //Contador interno para tickMina, para saber cuando spawnear una caja
+    int contadorProduccion; //Contador interno para tickMina, para saber en que parte de la secuencia de producción se está
+    ListaGen lstCajas; //Lista de cajas producidas por la mina y que están en esperando se las retire
 };
 
 ptrMina newMina()
 {
     ptrMina mina = new minaStruct;
+    mina->contadorIntervalos = 0;
+    mina->contadorProduccion = 0;
+    mina->lstCajas = newListaGen();
     return mina;
 }
 
 void delMina(ptrMina mina)
 {
+    int i;
+
+    for (i=0;i<getSize(mina->lstCajas);i++) delCaja((ptrCaja)getObjeto(mina->lstCajas, i));
+    eliminarListaGen(mina->lstCajas);
     delete mina;
 }
 
@@ -76,6 +88,36 @@ void setSeq(ptrMina mina, int seq[])
     for (i=0;i<5;i++) mina->seq[i] = seq[i];
 }
 
+int getContadorIntervalos(ptrMina mina)
+{
+    return mina->contadorIntervalos;
+}
+
+void setContadorIntervalos(ptrMina mina, int contadorIntervalos)
+{
+    mina->contadorIntervalos = contadorIntervalos;
+}
+
+int getContadorProduccion(ptrMina mina)
+{
+    return mina->contadorProduccion;
+}
+
+void setContadorProduccion(ptrMina mina, int contadorProduccion)
+{
+    mina->contadorProduccion = contadorProduccion;
+}
+
+ListaGen getLstCajas(ptrMina mina)
+{
+    return mina->lstCajas;
+}
+
+void setLstCajas(ptrMina mina, ListaGen lstCajas)
+{
+    mina->lstCajas = lstCajas;
+}
+
 //posX;posY;codItem;IP;seq1;seq2;seq3;seq4;seq5
 void leerLineaMina(FILE* fMina, ptrMina mina)
 {
@@ -127,4 +169,18 @@ void leerLineaMina(FILE* fMina, ptrMina mina)
         delete valor;
     }
     setSeq(mina,seq);
+}
+
+void tickMina(ptrMina mina, ptrLocomotora locomotora)
+{
+    if (mina->contadorIntervalos>=mina->IP)
+    {
+        if (mina->contadorProduccion>=5) mina->contadorProduccion = 0;
+        if (getSize(mina->lstCajas)<5) addObjeto(mina->lstCajas, newCaja(mina->codItem, (rand()%5)+1));
+        mina->contadorIntervalos = 0;
+        mina->contadorProduccion++;
+    }
+    mina->contadorIntervalos++;
+
+    if(getXY(locomotora)[0] == mina->posX && getXY(locomotora)[1] == mina->posY) system("pause");
 }

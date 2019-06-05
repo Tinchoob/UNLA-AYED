@@ -5,14 +5,16 @@ struct cajaStruct;
 typedef struct cajaStruct* ptrCaja;
 
 /*
-    PRE: Se llama para asignar a un puntero que no puede estar inicializado
+    PRE: Se llama para asignar a un puntero que no puede estar inicializado, el valor de tipoRecurso debe estar entre 0 y 5 inclusive
     POST: Se devuelve un ptrCaja que apunta a una cajaStruct nueva
 
+    tipoRecurso: valor int
+    cantidad: valor int
     return: puntero a nueva cajaStruct
 
     Los valores internos se deben setear uno a uno con los set
 */
-ptrCaja newCaja();
+ptrCaja newCaja(int tipoRecurso, int cantidad);
 
 /*
     PRE: caja debe apuntar a una estructura existente

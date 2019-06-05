@@ -53,6 +53,7 @@ int main()
 
     int i, j, k, ticksUltBandido=0, ticksUltMoneda=0, monedas=0;
     int xy[2];
+    bool perder = false;
 
     //Init
     cargarParametros(parametros);
@@ -65,7 +66,7 @@ int main()
 
     addObjeto(getVagones(locomotora), newVagon(0, 1, 3));
     srand(time(NULL));
-    while (tecla != 'q')
+    while (tecla != 'q' && perder != true)
     {
         ticksUltBandido++;
         if(rand()%2==1 || ticksUltBandido>=getIB(parametros))
@@ -85,7 +86,13 @@ int main()
 
         //Pantalla ---------------------------------------------------------------------
         system("cls");
-        cout<<"M: "<<monedas<<endl;
+        cout<<"Monedas: "<<monedas<<"  ";
+        cout<<"Oro: "<<getCantRecursos(locomotora)[0]<<"  ";
+        cout<<"Plata: "<<getCantRecursos(locomotora)[1]<<"  ";
+        cout<<"Bronce: "<<getCantRecursos(locomotora)[2]<<"  ";
+        cout<<"Platino: "<<getCantRecursos(locomotora)[3]<<"  ";
+        cout<<"Roca: "<<getCantRecursos(locomotora)[4]<<"  ";
+        cout<<"Carbon: "<<getCantRecursos(locomotora)[5]<<endl;
         cout<<(char)-55;
         for(i=0;i<getTX(parametros);i++) cout<<(char)-51;
         cout<<(char)-69;
@@ -184,6 +191,8 @@ int main()
         if(tecla != 'q')
         {
             moverLocomotora(locomotora);
+
+            //Bandidos
             i=0;
             while(i<getSize(lstBandidos))
             {
@@ -197,6 +206,8 @@ int main()
                 }
                 i++;
             }
+
+            //Monedas
             i=0;
             while(i<getSize(lstMonedas))
             {
@@ -209,6 +220,23 @@ int main()
                     i--;
                 }
                 i++;
+            }
+
+            //Producción de las minas
+            for (i=0;i<getSize(lstMinas);i++) tickMina((ptrMina)getObjeto(lstMinas, i), locomotora);
+
+            //Chequeos para ver si pierde el jugador
+            if (getXY(locomotora)[0]<0 || getXY(locomotora)[1]<0 || getXY(locomotora)[0]>getTX(parametros)
+                || getXY(locomotora)[1]>getTY(parametros)) perder = true;
+            else
+            {
+                i=0;
+                while (!perder && i<getSize(getVagones(locomotora)))
+                {
+                    if (getXY(locomotora)[0] == getXY((ptrVagon)getObjeto(getVagones(locomotora), i))[0]
+                        && getXY(locomotora)[1] == getXY((ptrVagon)getObjeto(getVagones(locomotora), i))[1]) perder = true;
+                    i++;
+                }
             }
         }
     }
@@ -297,12 +325,12 @@ void testVagon()
 
     for(i=0;i<3;i++)
     {
-        caja = newCaja();
+        caja = newCaja(0,1);
         setTipoRecurso(caja, 1);
         setCantidad(caja, i+1);
         addObjeto(getCajas(vagon), caja);
     }
-    cout<<getCantidadTotalLingotes(vagon)<<endl;
+    cout<<cantidadTotalLingotes(vagon)<<endl;
     delVagon(vagon);
 }
 

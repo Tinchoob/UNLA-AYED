@@ -8,10 +8,12 @@ struct locomotoraStruct
     ListaGen vagones;
     bool hasChumbo; //XD
     bool agregarVagon;
+    int cantRecursos[6];
 };
 
 ptrLocomotora newLocomotora()
 {
+    int i;
     ptrLocomotora locomotora = new locomotoraStruct;
 
     locomotora->xy[0] = 0;
@@ -20,6 +22,7 @@ ptrLocomotora newLocomotora()
     locomotora->vagones = newListaGen();
     locomotora->hasChumbo = false;
     locomotora->agregarVagon = false;
+    for(i=0;i<6;i++) locomotora->cantRecursos[i] = 0;
 
     return locomotora;
 }
@@ -83,6 +86,17 @@ bool getAgregarVagon(ptrLocomotora locomotora)
 void setAgregarVagon(ptrLocomotora locomotora, bool agregarVagon)
 {
     locomotora->agregarVagon = agregarVagon;
+}
+
+int* getCantRecursos(ptrLocomotora locomotora)
+{
+    return locomotora->cantRecursos;
+}
+
+void setCantRecursos(ptrLocomotora locomotora, int cantRecursos[])
+{
+    int i;
+    for (i=0;i<6;i++) locomotora->cantRecursos[i] = cantRecursos[i];
 }
 
 /*  Ok, en caso de que alguien necesite saber como anda esto:

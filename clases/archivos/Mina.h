@@ -1,6 +1,9 @@
 #ifndef MINA_H_INCLUDED
 #define MINA_H_INCLUDED
 
+#include "../entidades/Locomotora.h"
+#include "../listas/ListaGen.h"
+
 struct minaStruct;
 typedef struct minaStruct* ptrMina;
 
@@ -114,6 +117,60 @@ int* getSeq(ptrMina mina);
 void setSeq(ptrMina mina, int seq[]);
 
 /*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se devuelve el valor de mina->contadorIntervalos
+
+    mina: puntero a una estructura de tipo minaStruct
+    return: valor int
+*/
+int getContadorIntervalos(ptrMina mina);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se le asigna el valor enviado por contadorIntervalos a mina->contadorIntervalos
+
+    mina: puntero a una estructura de tipo minaStruct
+    contadorIntervalos: valor int
+*/
+void setContadorIntervalos(ptrMina mina, int contadorIntervalos);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se devuelve el valor de mina->contadorProduccion
+
+    mina: puntero a una estructura de tipo minaStruct
+    return: valor int
+*/
+int getContadorProduccion(ptrMina mina);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se le asigna el valor enviado por contadorProduccion a mina->contadorProduccion
+
+    mina: puntero a una estructura de tipo minaStruct
+    contadorProduccion: valor int
+*/
+void setContadorProduccion(ptrMina mina, int contadorProduccion);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se devuelve un puntero a mina->lstCajas
+
+    mina: puntero a una estructura de tipo minaStruct
+    return: puntero a una ListaGenStruct
+*/
+ListaGen getLstCajas(ptrMina mina);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se cambia la referencia de mina->lstCajas a la direccion indicada por lstCajas
+
+    mina: puntero a una estructura de tipo minaStruct
+    lstCajas: puntero a una ListaGenStruct
+*/
+void setLstCajas(ptrMina mina, ListaGen lstCajas);
+
+/*
     PRE: mina y fMina tienen que estar inicializados
     POST: Se lee una linea del archivo que se indique por fMina
 
@@ -124,5 +181,16 @@ void setSeq(ptrMina mina, int seq[]);
     tiene que hacerse en otro lado y NO ACA
 */
 void leerLineaMina(FILE* fMina, ptrMina mina);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct, locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: Se ejecuta una cuenta de ticks desde la ultima vez que se spawneo una caja, en caso de que se haya
+    alcanzado el intervalo de producción de la mina, se genera una nueva caja acorde a la secuencia de la mina,
+    siempre y cuando haya menos de 5 cajas esperando ser retiradas
+
+    mina: puntero a una minaStruct
+    locomotora: puntero a una locomotoraStruct
+*/
+void tickMina(ptrMina mina, ptrLocomotora locomotora);
 
 #endif // MINA_H_INCLUDED

@@ -6,11 +6,11 @@ struct cajaStruct
     int cantidad;
 };
 
-ptrCaja newCaja()
+ptrCaja newCaja(int tipoRecurso, int cantidad)
 {
     ptrCaja caja = new cajaStruct();
-    caja->tipoRecurso = 0;
-    caja->cantidad = 0;
+    caja->tipoRecurso = tipoRecurso;
+    caja->cantidad = cantidad;
     return caja;
 }
 

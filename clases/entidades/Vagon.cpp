@@ -8,6 +8,7 @@ struct vagonStruct
     int tipoRecurso;
     ListaGen cajas;
     int direccion;
+    int capacidad;
 };
 
 ptrVagon newVagon(int x, int y, int direccion)
@@ -24,7 +25,7 @@ ptrVagon newVagon(int x, int y, int direccion)
 void delVagon(ptrVagon vagon)
 {
     int i;
-    for(i=0;i<getSize(vagon->cajas);i++) delete getObjeto(vagon->cajas, i);
+    for(i=0;i<getSize(vagon->cajas);i++) delCaja((ptrCaja)getObjeto(vagon->cajas, i));
     eliminarListaGen(vagon->cajas);
     delete vagon;
 }
@@ -70,7 +71,17 @@ void setDireccionVagon(ptrVagon vagon, int direccion)
     vagon->direccion = direccion;
 }
 
-int getCantidadTotalLingotes(ptrVagon vagon)
+int getCapacidad(ptrVagon vagon)
+{
+    return vagon->capacidad;
+}
+
+void setCapacidad(ptrVagon vagon, int capacidad)
+{
+    vagon->capacidad = capacidad;
+}
+
+int cantidadTotalLingotes(ptrVagon vagon)
 {
     int cantTotal = 0, i;
     ListaGen cajas = getCajas(vagon);

@@ -34,12 +34,12 @@ void delLocomotora(ptrLocomotora locomotora)
     delete locomotora;
 }
 
-int* getXYLocomotora(ptrLocomotora locomotora)
+int* getXY(ptrLocomotora locomotora)
 {
     return locomotora->xy;
 }
 
-void setXYLocomotora(ptrLocomotora locomotora, int xy[])
+void setXY(ptrLocomotora locomotora, int xy[])
 {
     locomotora->xy[0] = xy[0];
     locomotora->xy[1] = xy[1];
@@ -132,10 +132,10 @@ void moverLocomotora(ptrLocomotora locomotora)
     ptrVagon vagon, nuevoVagon;
 
     if (getAgregarVagon(locomotora) && !listaVacia(getVagones(locomotora)))
-        nuevoVagon = newVagon(getXYVagon((ptrVagon)getUltimo(getVagones(locomotora)))[0],
-        getXYVagon((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))));
+        nuevoVagon = newVagon(getXY((ptrVagon)getUltimo(getVagones(locomotora)))[0],
+        getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))));
     else if (getAgregarVagon(locomotora))
-        nuevoVagon = newVagon(getXYLocomotora(locomotora)[0], getXYLocomotora(locomotora)[1], getDireccionLocomotora(locomotora));
+        nuevoVagon = newVagon(getXY(locomotora)[0], getXY(locomotora)[1], getDireccionLocomotora(locomotora));
 
     switch(getDireccionLocomotora(locomotora))
     {

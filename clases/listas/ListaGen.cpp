@@ -65,7 +65,7 @@ void addObjeto(ListaGen lista, void* objeto)
 
     //cantNodos%64=0 (multiplos de 16x4, 64, 128, 192...) indica que la lista esta actualmente
     //a maxima capacidad y hay que agregar mas bloques
-    if(lista->cantNodos%64 == 0)
+    if(lista->cantNodos%64 == 0 && lista->cantNodos!=0)
     {
         Nodo* temp = new Nodo[lista->cantNodos/4];
 

@@ -33,16 +33,16 @@ void delVagon(ptrVagon vagon);
 
     vagon: puntero a una estructura de tipo vagonStruct
 */
-int* getXYVagon(ptrVagon vagon);
+int* getXY(ptrVagon vagon);
 
 /*
     PRE: vagon tiene que apuntar a una estructura vagonStruct
     POST: Se le asigna los valores enviados por xy a vagon->xy
 
     vagon: puntero a una estructura de tipo vagonStruct
-    xy: array de valores int, tambien acepta punteros int*
+    xy: array de valores int, tiene que tener como mínimo 2 posiciones
 */
-void setXYVagon(ptrVagon vagon, int xy[]);
+void setXY(ptrVagon vagon, int xy[]);
 
 /*
     PRE: vagon tiene que apuntar a una estructura vagonStruct

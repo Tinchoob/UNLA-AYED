@@ -27,3 +27,13 @@ long posEnArray(char entrada[], int comienzo, char caracter)
     if (i==longitud && pos==0) pos = longitud; //Linea para el final del array, no hay enter ni punto y coma, devolveria 0 y vuela todo
     return pos;
 }
+
+bool enRango(int puntoOrigen[], int rango, int puntoDestino[])
+{
+    bool ret = false;
+
+    if (puntoDestino[0]>=puntoOrigen[0]-rango && puntoDestino[0]<=puntoOrigen[0]+rango &&
+        puntoDestino[1]>=puntoOrigen[1]-rango && puntoDestino[1]<=puntoOrigen[1]+rango) ret = true;
+
+    return ret;
+}

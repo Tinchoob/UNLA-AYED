@@ -44,6 +44,8 @@
 		<Unit filename="clases/entidades/Caja.h" />
 		<Unit filename="clases/entidades/Locomotora.cpp" />
 		<Unit filename="clases/entidades/Locomotora.h" />
+		<Unit filename="clases/entidades/Moneda.cpp" />
+		<Unit filename="clases/entidades/Moneda.h" />
 		<Unit filename="clases/entidades/Vagon.cpp" />
 		<Unit filename="clases/entidades/Vagon.h" />
 		<Unit filename="clases/funciones/Funciones.cpp" />

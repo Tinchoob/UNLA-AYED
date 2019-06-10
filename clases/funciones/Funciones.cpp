@@ -37,3 +37,32 @@ bool enRango(int puntoOrigen[], int rango, int puntoDestino[])
 
     return ret;
 }
+
+char* tipoRecursoStr(int tipoRecurso)
+{
+    char* recurso;
+
+    switch (tipoRecurso)
+    {
+        case 1:
+            recurso = "Oro";
+            break;
+        case 2:
+            recurso = "Plata";
+            break;
+        case 3:
+            recurso = "Bronce";
+            break;
+        case 4:
+            recurso = "Platino";
+            break;
+        case 5:
+            recurso = "Roca";
+            break;
+        case 6:
+            recurso = "Carbon";
+            break;
+    }
+
+    return recurso;
+}

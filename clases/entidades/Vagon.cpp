@@ -97,7 +97,7 @@ void quitarLingotes(ptrVagon vagon, int cantidad)
     ptrCaja ultimaCaja;
     ListaGen listaCajas = getCajas(vagon);
 
-    while(cantidad > 0)
+    while(cantidad > 0 && !listaVacia(getCajas(vagon)))
     {
         ultimaCaja = (ptrCaja)getUltimo(listaCajas);
         cantUltimaCaja = getCantidad(ultimaCaja);

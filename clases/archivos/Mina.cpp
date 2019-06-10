@@ -207,5 +207,13 @@ void tickMina(ptrMina mina, ptrLocomotora locomotora)
             }
             i++;
         }
+        if (agregado == false)
+        {
+            for (i=0;i<getSize(getLstCajas(mina));i++)
+            {
+                delCaja((ptrCaja)getObjeto(getLstCajas(mina), i));
+                delObjeto(getLstCajas(mina), i);
+            }
+        }
     }
 }

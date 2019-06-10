@@ -201,13 +201,14 @@ int main()
         }
         if(tecla != 'q')
         {
+            //Mover la locomotora y agregar vagones si se debe
             moverLocomotora(locomotora);
 
             //Bandidos
             i=0;
             while(i<getSize(lstBandidos))
             {
-                if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros) == 1)
+                if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros, perder) == 1)
                 {
                     //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos bandidos en el mismo ciclo
                     //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
@@ -217,6 +218,9 @@ int main()
                 }
                 i++;
             }
+
+            //Actualizar cantidad de recursos recolectados
+            actualizarCantRecursos(locomotora);
 
             //Monedas
             i=0;

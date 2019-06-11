@@ -1,6 +1,6 @@
 #ifndef LOCOMOTORA_H_INCLUDED
 #define LOCOMOTORA_H_INCLUDED
-
+#include <SDL_image.h>
 #include "../listas/ListaGen.h"
 #include "Vagon.h"
 
@@ -13,7 +13,7 @@ typedef struct locomotoraStruct* ptrLocomotora;
 
     return: puntero a nueva ptrLocomotora
 */
-ptrLocomotora newLocomotora();
+ptrLocomotora newLocomotora(SDL_Renderer* renderer);
 
 /*
     PRE: locomotora debe apuntar a una estructura existente
@@ -41,6 +41,11 @@ int* getXY(ptrLocomotora locomotora);
     xy: array de valores int, tiene que tener como mínimo 2 posiciones
 */
 void setXY(ptrLocomotora locomotora, int xy[]);
+
+SDL_Texture* getImagen(ptrLocomotora locomotora);
+SDL_Rect* getRectImagen(ptrLocomotora locomotora);
+void setImagen(ptrLocomotora locomotora,SDL_Texture* imagen);
+void setRectImagen(ptrLocomotora locomotora);
 
 /*
     PRE: locomotora tiene que apuntar a una estructura locomotoraStruct

@@ -12,6 +12,12 @@
 #include <stdio.h>
 #include <time.h>
 #include <cstdlib>
+#include <SDL.H>
+#include <SDL_image.h>
+#include <string>
+
+#define xSize 800
+#define ySize 600
 
 /*Esto solo se usa para la pantalla de prueba -------------*/
 #include <windows.h>
@@ -20,6 +26,17 @@ void gotoxy(int x, int y);
 
 
 using namespace std;
+
+//Key press surfaces constants
+enum KeyPressSurfaces
+{
+    KEY_PRESS_SURFACE_DEFAULT,
+    KEY_PRESS_SURFACE_UP,
+    KEY_PRESS_SURFACE_DOWN,
+    KEY_PRESS_SURFACE_LEFT,
+    KEY_PRESS_SURFACE_RIGHT,
+    KEY_PRESS_SURFACE_TOTAL
+};
 
 //Tests
 void testParametros();
@@ -31,7 +48,7 @@ void testBandido();
 /*-------------------*/
 void cargarMinas(ListaGen lstMinas);
 
-int main()
+int main(int argv, char** args)
 {
     //Tests
 
@@ -44,7 +61,94 @@ int main()
 
     /*------------------------------------------------*/
     //Declaraciones
-    ptrParametros parametros = newParametros();
+
+    if(SDL_Init(SDL_INIT_EVERYTHING) >= 0 ){
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"OK","SDL INICIADO",NULL);
+    }
+
+    bool gameOver = false;
+    SDL_Window* window = NULL;
+    SDL_Renderer* renderer = NULL;
+    SDL_Surface* screenSurface = NULL;
+    SDL_Surface* background = NULL;
+    SDL_Texture *backgroundTexture = NULL;
+    SDL_Texture *newLocomotoraTexture = NULL;
+    ptrLocomotora locomotora = NULL;
+
+    SDL_Event event;
+    int eventType;
+
+    window =  SDL_CreateWindow("Test SDL",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,xSize,ySize,SDL_WINDOW_SHOWN);
+
+    renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+    screenSurface = SDL_GetWindowSurface( window );
+
+    background = IMG_Load("img/suelo_3.png");
+    backgroundTexture = SDL_CreateTextureFromSurface(renderer,background);
+
+    locomotora = newLocomotora(renderer);
+
+    while(!gameOver){
+
+        if(SDL_PollEvent(&event)){
+            eventType = event.type;
+            if(eventType == SDL_QUIT){
+                gameOver = true;
+            }
+
+                    else if( event.type == SDL_KEYDOWN )
+                    {
+                        switch( event.key.keysym.sym )
+                        {
+                            case SDLK_UP:
+                             if(getDireccionLocomotora(locomotora)!=1){
+                                setDireccionLocomotora(locomotora, 3);
+                                setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/arr/0.png"));
+                             }
+                            break;
+
+                            case SDLK_DOWN:
+                            if(getDireccionLocomotora(locomotora)!=3){
+                                setDireccionLocomotora(locomotora, 1);
+                                setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/aba/0.png"));
+                            }
+                            break;
+
+                            case SDLK_LEFT:
+                             if(getDireccionLocomotora(locomotora)!=0){
+                                    setDireccionLocomotora(locomotora, 2);
+                                    setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/izq/0.png"));
+                             }
+                            break;
+
+                            case SDLK_RIGHT:
+                          if(getDireccionLocomotora(locomotora)!=2) {
+                                setDireccionLocomotora(locomotora, 0);
+                                setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/der/0.png"));
+                          }
+                            break;
+
+                            default:
+
+                            break;
+                        }
+                    }
+        }
+    moverLocomotora(locomotora);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+    SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
+    SDL_RenderPresent(renderer);
+    SDL_Delay(200);
+    }
+
+
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
+    SDL_Quit();
+	return 0;
+
+    /* ptrParametros parametros = newParametros();
     ptrComanda comanda = newComanda();
     ListaGen lstMinas = newListaGen();
     ptrLocomotora locomotora = newLocomotora();
@@ -263,7 +367,9 @@ int main()
     for(i=0;i<getSize(lstMonedas);i++) delMoneda((ptrMoneda)getObjeto(lstMonedas, i));
     eliminarListaGen(lstMonedas);
     return 0;
+    */
 }
+
 
 void testParametros()
 {
@@ -345,29 +451,7 @@ void testVagon()
     delVagon(vagon);
 }
 
-void testLocomotora()
-{
-    ptrLocomotora locomotora = newLocomotora();
-    int xy[2];
-    xy[0]=5;
-    xy[1]=5;
 
-    setXY(locomotora, xy);
-    setDireccionLocomotora(locomotora, 3);
-
-    addObjeto(getVagones(locomotora), newVagon(5,6,3,5));
-    addObjeto(getVagones(locomotora), newVagon(5,7,3,5));
-
-    setDireccionLocomotora(locomotora, 0);
-    moverLocomotora(locomotora);
-    moverLocomotora(locomotora);
-
-    setDireccionLocomotora(locomotora, 1);
-    moverLocomotora(locomotora);
-    moverLocomotora(locomotora);
-
-    delLocomotora(locomotora);
-}
 
 void testBandido()
 {

@@ -1,5 +1,7 @@
 #include "Locomotora.h"
 #include <iostream>
+#include <SDL.H>
+#include <SDL_image.h>
 
 struct locomotoraStruct
 {
@@ -10,22 +12,31 @@ struct locomotoraStruct
     bool agregarVagon;
     int cantRecursos[6];
     int monedas;
+    int widthHeight[2];
+    SDL_Texture *imagen;
+    SDL_Rect *rectImg = new SDL_Rect();
 };
 
-ptrLocomotora newLocomotora()
+ptrLocomotora newLocomotora(SDL_Renderer *renderer)
 {
     int i;
     ptrLocomotora locomotora = new locomotoraStruct;
 
     locomotora->xy[0] = 0;
     locomotora->xy[1] = 0;
+    locomotora->widthHeight[0] = 40;
+    locomotora->widthHeight[1] = 40;
     locomotora->direccion = 0;
     locomotora->vagones = newListaGen();
     locomotora->hasChumbo = false;
     locomotora->agregarVagon = false;
     for(i=0;i<6;i++) locomotora->cantRecursos[i] = 0;
     locomotora->monedas = 0;
-
+    locomotora->imagen = IMG_LoadTexture(renderer, "img/c1/aba/0.png");
+    locomotora->rectImg->x = locomotora->xy[0] * locomotora->widthHeight[0];
+    locomotora->rectImg->y = locomotora->xy[1] * locomotora->widthHeight[1];
+    locomotora->rectImg->w =locomotora->widthHeight[0];
+    locomotora->rectImg->h =locomotora->widthHeight[1];
     return locomotora;
 }
 
@@ -44,6 +55,28 @@ int* getXY(ptrLocomotora locomotora)
     return locomotora->xy;
 }
 
+SDL_Texture* getImagen(ptrLocomotora locomotora)
+{
+    return locomotora->imagen;
+}
+
+void setImagen(ptrLocomotora locomotora, SDL_Texture* imagen)
+{
+    locomotora->imagen = imagen;
+}
+
+SDL_Rect* getRectImagen(ptrLocomotora locomotora)
+{
+    return locomotora->rectImg;
+}
+
+void setRectImagen(ptrLocomotora locomotora){
+    locomotora->rectImg->x = locomotora->xy[0] * locomotora->widthHeight[0];
+    locomotora->rectImg->y = locomotora->xy[1] * locomotora->widthHeight[1];
+    locomotora->rectImg->w =locomotora->widthHeight[0];
+    locomotora->rectImg->h =locomotora->widthHeight[1];
+}
+
 void setXY(ptrLocomotora locomotora, int xy[])
 {
     locomotora->xy[0] = xy[0];
@@ -59,6 +92,7 @@ void setDireccionLocomotora(ptrLocomotora locomotora, int direccion)
 {
     locomotora->direccion = direccion;
 }
+
 
 ListaGen getVagones(ptrLocomotora locomotora)
 {
@@ -169,18 +203,22 @@ void moverLocomotora(ptrLocomotora locomotora)
         //Derecha
         case 0:
             locomotora->xy[0]++;
+            setRectImagen(locomotora);
             break;
         //Abajo
         case 1:
             locomotora->xy[1]++;
+              setRectImagen(locomotora);
             break;
         //Izquierda
         case 2:
             locomotora->xy[0]--;
+               setRectImagen(locomotora);
             break;
         //Arriba
         case 3:
             locomotora->xy[1]--;
+             setRectImagen(locomotora);
             break;
     }
 

@@ -780,7 +780,7 @@
 
 1560390740 d:\mis documentos\github\unla-ayed\clases\archivos\comanda.h
 
-1560394902 source:d:\mis documentos\github\unla-ayed\clases\archivos\mina.cpp
+1560397561 source:d:\mis documentos\github\unla-ayed\clases\archivos\mina.cpp
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -792,7 +792,7 @@
 	"../entidades/Caja.h"
 	"../entidades/Vagon.h"
 
-1560397413 d:\mis documentos\github\unla-ayed\clases\archivos\mina.h
+1560397561 d:\mis documentos\github\unla-ayed\clases\archivos\mina.h
 	"../entidades/Locomotora.h"
 	"../listas/ListaGen.h"
 
@@ -841,10 +841,10 @@
 	<SDL.H>
 	<SDL_image.h>
 
-1560390740 source:d:\mis documentos\github\unla-ayed\clases\entidades\moneda.cpp
+1560397526 source:d:\mis documentos\github\unla-ayed\clases\entidades\moneda.cpp
 	"Moneda.h"
 
-1560390740 d:\mis documentos\github\unla-ayed\clases\entidades\moneda.h
+1560397526 d:\mis documentos\github\unla-ayed\clases\entidades\moneda.h
 	"../archivos/Parametros.h"
 	"Locomotora.h"
 
@@ -863,7 +863,7 @@
 	<stdlib.h>
 	"ListaGen.h"
 
-1560396456 source:d:\mis documentos\github\unla-ayed\main.cpp
+1560453965 source:d:\mis documentos\github\unla-ayed\main.cpp
 	<iostream>
 	"clases/archivos/Parametros.h"
 	"clases/archivos/Comanda.h"

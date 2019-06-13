@@ -9,9 +9,14 @@ struct vagonStruct
     ListaGen cajas;
     int direccion;
     int capacidad;
+    SDL_Texture *imagen;
+    SDL_Rect *rectImg = new SDL_Rect();
+    int widthHeight[2];
+
+
 };
 
-ptrVagon newVagon(int x, int y, int direccion, int capacidad)
+ptrVagon newVagon(SDL_Renderer* renderer,int x, int y, int direccion, int capacidad)
 {
     ptrVagon vagon = new vagonStruct;
     vagon->xy[0]=x;
@@ -20,6 +25,10 @@ ptrVagon newVagon(int x, int y, int direccion, int capacidad)
     vagon->cajas = newListaGen();
     vagon->direccion = direccion;
     vagon->capacidad = capacidad;
+    vagon->widthHeight[0]=40;
+    vagon->widthHeight[1]=40;
+    vagon->imagen=IMG_LoadTexture(renderer,"img/c2/arr/1.png");
+
     return vagon;
 }
 
@@ -135,6 +144,25 @@ void moverVagon(ptrVagon vagon)
         case 3:
             vagon->xy[1]--;
             break;
+    }
+
+
+      SDL_Texture* getImagen(ptrVagon vagon)
+{
+    return vagon->imagen;
+}
+
+    SDL_Rect* getRectImagen(ptrVagon vagon)
+{
+    return vagon->rectImg;
+}
+
+    void setRectImagen(ptrVagon vagon)
+    {
+    vagon->rectImg->x = vagon->xy[0] * vagon->widthHeight[0];
+    vagon->rectImg->y = vagon->xy[1] * vagon->widthHeight[1];
+    vagon->rectImg->w =vagon->widthHeight[0];
+    vagon->rectImg->h =vagon->widthHeight[1];
     }
     /*std::cout<<"Direccion Vagon: "<<vagon->direccion<<std::endl;
     std::cout<<"X Vagon: "<<vagon->xy[0]<<std::endl;

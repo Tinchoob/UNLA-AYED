@@ -78,6 +78,7 @@ int main(int argv, char** args)
     ptrBandido bandido = NULL;
     ptrMoneda monedaPtr = NULL;
     ptrMina mina1=NULL;
+    ptrVagon vagon1=NULL;
 
     SDL_Event event;
     int eventType;
@@ -215,6 +216,8 @@ int main(int argv, char** args)
         {
             mina1=(ptrMina)getObjeto(lstMinas,i);
             SDL_RenderCopy(renderer,getImagen(mina1),NULL,getRectImagen(mina1));
+            tickMina((ptrMina)getObjeto(lstMinas,i),locomotora);
+
         }
 
 
@@ -234,7 +237,12 @@ int main(int argv, char** args)
             }
             i++;
         }
+        if (getPosXE(parametros)==getXY(locomotora)[0] && getPosYE(parametros)==getXY(locomotora)[1] && getMonedas(locomotora)>0)
+        {
+            setAgregarVagon(locomotora, true);
 
+            SDL_RenderCopy(renderer,getImagen(vagon1),NULL,getRectImagen(vagon1));
+        }
         //Monedas
         i=0;
         while(i<getSize(lstMonedas))

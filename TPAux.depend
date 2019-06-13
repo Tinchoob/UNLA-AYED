@@ -852,7 +852,7 @@
 	"../archivos/Parametros.h"
 	"Locomotora.h"
 
-1560467021 source:d:\mis documentos\github\unla-ayed\clases\entidades\vagon.cpp
+1560469641 source:d:\mis documentos\github\unla-ayed\clases\entidades\vagon.cpp
 	"vagon.h"
 	"caja.h"
 	<iostream>
@@ -870,7 +870,7 @@
 	<stdlib.h>
 	"ListaGen.h"
 
-1560463761 source:d:\mis documentos\github\unla-ayed\main.cpp
+1560469641 source:d:\mis documentos\github\unla-ayed\main.cpp
 	<iostream>
 	"clases/archivos/Parametros.h"
 	"clases/archivos/Comanda.h"

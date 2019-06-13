@@ -239,6 +239,20 @@ getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVag
         {
             temp = getDireccionVagon((ptrVagon)getObjeto(getVagones(locomotora), i));
             setDireccionVagon(vagon, ultDireccionMov);
+            switch(ultDireccionMov){
+
+                case 1:setImagen(vagon,IMG_LoadTexture(renderer, "img/c2/aba/0.png"));
+                       break;
+
+                case 2:setImagen(vagon,IMG_LoadTexture(renderer, "img/c2/izq/0.png"));
+                       break;
+
+                case 3:setImagen(vagon,IMG_LoadTexture(renderer, "img/c2/arr/0.png"));
+                       break;
+
+                case 0:setImagen(vagon,IMG_LoadTexture(renderer, "img/c2/izq/0.png"));
+                       break;
+            }
             ultDireccionMov = temp;
         }
         else

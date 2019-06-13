@@ -84,6 +84,7 @@ int getDireccionVagon(ptrVagon vagon)
 void setDireccionVagon(ptrVagon vagon, int direccion)
 {
     vagon->direccion = direccion;
+
 }
 
 int getCapacidad(ptrVagon vagon)

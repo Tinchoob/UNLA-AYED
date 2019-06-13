@@ -26,6 +26,7 @@ ptrMina newMina()
     mina->contadorIntervalos = 0;
     mina->contadorProduccion = 0;
     mina->lstCajas = newListaGen();
+
     return mina;
 }
 

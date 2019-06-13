@@ -33,15 +33,16 @@
 1560122735 c:\users\tincho\documents\unla-ayed\clases\archivos\parametros.h
 	<stdio.h>
 
-1560122735 source:c:\users\tincho\documents\unla-ayed\clases\entidades\bandido.cpp
+1560389854 source:c:\users\tincho\documents\unla-ayed\clases\entidades\bandido.cpp
 	"Bandido.h"
 	"../listas/ListaGen.h"
 	"../funciones/Funciones.h"
 	<iostream>
 	<ctype.h>
 	<cstdlib>
+	<SDL_image.h>
 
-1560122735 c:\users\tincho\documents\unla-ayed\clases\entidades\bandido.h
+1560387684 c:\users\tincho\documents\unla-ayed\clases\entidades\bandido.h
 	"Locomotora.h"
 	"../archivos/Parametros.h"
 
@@ -60,7 +61,7 @@
 
 1560122735 c:\users\tincho\documents\unla-ayed\clases\entidades\caja.h
 
-1560221861 source:c:\users\tincho\documents\unla-ayed\clases\entidades\locomotora.cpp
+1560387254 source:c:\users\tincho\documents\unla-ayed\clases\entidades\locomotora.cpp
 	"Locomotora.h"
 	<iostream>
 	<SDL.H>
@@ -88,7 +89,7 @@
 	<stdlib.h>
 	"ListaGen.h"
 
-1560220178 source:c:\users\tincho\documents\unla-ayed\main.cpp
+1560387346 source:c:\users\tincho\documents\unla-ayed\main.cpp
 	<iostream>
 	"clases/archivos/Parametros.h"
 	"clases/archivos/Comanda.h"

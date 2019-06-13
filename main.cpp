@@ -202,7 +202,6 @@ int main(int argv, char** args)
 
         SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
         SDL_RenderCopy(renderer, imagenEstacion, NULL, rectEstacion);
-        SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
 
 
         for(i = 0; i<getSize(lstBandidos); i++)
@@ -229,13 +228,7 @@ int main(int argv, char** args)
             SDL_RenderCopy(renderer,getImagen(vagon1),NULL,getRectImagen(vagon1));
         }
 
-        SDL_RenderPresent(renderer);
-
-        if (getPosXE(parametros) == getXY(locomotora)[0] && getPosYE(parametros) == getXY(locomotora)[1] && getMonedas(locomotora)>0){
-            setAgregarVagon(locomotora, true);
-            }
-
-        i=0;
+            i=0;
 
         while(i<getSize(lstBandidos))
         {
@@ -264,6 +257,15 @@ int main(int argv, char** args)
             }
             i++;
         }
+
+
+        if (getPosXE(parametros) == getXY(locomotora)[0] && getPosYE(parametros) == getXY(locomotora)[1] && getMonedas(locomotora)>0){
+            setAgregarVagon(locomotora, true);
+            }
+
+
+        SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
+        SDL_RenderPresent(renderer);
 
         SDL_Delay(250);
     }

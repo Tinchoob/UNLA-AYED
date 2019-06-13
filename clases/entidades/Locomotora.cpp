@@ -35,7 +35,7 @@ ptrLocomotora newLocomotora(SDL_Renderer *renderer)
     for(i=0; i<6; i++)
         locomotora->cantRecursos[i] = 0;
     locomotora->monedas = 0;
-    locomotora->imagen = IMG_LoadTexture(renderer, "img/c1/aba/0.png");
+    locomotora->imagen = IMG_LoadTexture(renderer, "img/c1/der/0.png");
     locomotora->rectImg->x = locomotora->xy[0] * locomotora->widthHeight[0];
     locomotora->rectImg->y = locomotora->xy[1] * locomotora->widthHeight[1];
     locomotora->rectImg->w =locomotora->widthHeight[0];

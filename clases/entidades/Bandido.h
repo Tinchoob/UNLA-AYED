@@ -20,9 +20,10 @@ typedef struct bandidoStruct* ptrBandido;
     tiempoVida: valor int
     xy: array de valores int, también acepta punteros int*
     parametros: puntero a estructura de tipo parametrosStruct
+    renderer: SDL renderer necesario para la carga de imagenes del bandido
     return: puntero a nueva bandidoStruct
 */
-ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros);
+ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros,SDL_Renderer* renderer);
 
 /*
     PRE: bandido debe apuntar a una estructura existente
@@ -34,12 +35,56 @@ void delBandido(ptrBandido bandido);
 
 /*
     PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se devuelve el valor la textura de imagen del bandido
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    return: valor texture
+*/
+
+SDL_Texture* getImagen(ptrBandido bandido);
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se le asigna el valor enviado por imagen
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    imagen: textura de la imagen del bandido
+*/
+
+void setImagen(ptrBandido bandido, SDL_Texture* imagen);
+
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se devuelve el valor del rect del bandido
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    return: valor rect
+*/
+
+SDL_Rect* getRectImagen(ptrBandido bandido);
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se le asigna el valor al rect del bandido
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+*/
+
+void setRectImagen(ptrBandido bandido);
+
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
     POST: Se devuelve el valor de tipoRecurso
 
     bandido: puntero a una estructura de tipo bandidoStruct
     return: valor int
 */
+
+
 int getTipoRecurso(ptrBandido bandido);
+
 
 /*
     PRE: bandido tiene que apuntar a una estructura bandidoStruct, el valor de tipoRecurso debe estar en un rango de 1 a 6

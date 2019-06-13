@@ -62,7 +62,8 @@ int main(int argv, char** args)
     /*------------------------------------------------*/
     //Declaraciones
 
-    if(SDL_Init(SDL_INIT_EVERYTHING) >= 0 ){
+    if(SDL_Init(SDL_INIT_EVERYTHING) >= 0 )
+    {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"OK","SDL INICIADO",NULL);
     }
 
@@ -74,9 +75,14 @@ int main(int argv, char** args)
     SDL_Texture *backgroundTexture = NULL;
     SDL_Texture *newLocomotoraTexture = NULL;
     ptrLocomotora locomotora = NULL;
-
+    ptrBandido bandido = NULL;
     SDL_Event event;
     int eventType;
+    int i, j, k, ticksUltBandido=0, ticksUltMoneda=0;
+    bool vagon, mina, estacion, bandido2, moneda;
+    int xy[2];
+    bool perder = false;
+
 
     window =  SDL_CreateWindow("Test SDL",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,xSize,ySize,SDL_WINDOW_SHOWN);
 
@@ -87,66 +93,126 @@ int main(int argv, char** args)
     backgroundTexture = SDL_CreateTextureFromSurface(renderer,background);
 
     locomotora = newLocomotora(renderer);
+    ptrParametros parametros = newParametros();
+    ptrComanda comanda = newComanda();
+    ListaGen lstMinas = newListaGen();
+    ListaGen lstBandidos = newListaGen();
+    ListaGen lstMonedas = newListaGen();
 
-    while(!gameOver){
 
-        if(SDL_PollEvent(&event)){
+    cargarParametros(parametros);
+    cargarComanda(comanda);
+    cargarMinas(lstMinas);
+
+    while(!gameOver)
+    {
+        //handle key events
+        while( SDL_PollEvent( &event ) != 0 )
+        {
             eventType = event.type;
-            if(eventType == SDL_QUIT){
+            if(eventType == SDL_QUIT)
+            {
                 gameOver = true;
             }
 
-                    else if( event.type == SDL_KEYDOWN )
+            else if( event.type == SDL_KEYDOWN )
+            {
+                switch( event.key.keysym.sym )
+                {
+                case SDLK_UP:
+                    if(getDireccionLocomotora(locomotora)!=1)
                     {
-                        switch( event.key.keysym.sym )
-                        {
-                            case SDLK_UP:
-                             if(getDireccionLocomotora(locomotora)!=1){
-                                setDireccionLocomotora(locomotora, 3);
-                                setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/arr/0.png"));
-                             }
-                            break;
-
-                            case SDLK_DOWN:
-                            if(getDireccionLocomotora(locomotora)!=3){
-                                setDireccionLocomotora(locomotora, 1);
-                                setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/aba/0.png"));
-                            }
-                            break;
-
-                            case SDLK_LEFT:
-                             if(getDireccionLocomotora(locomotora)!=0){
-                                    setDireccionLocomotora(locomotora, 2);
-                                    setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/izq/0.png"));
-                             }
-                            break;
-
-                            case SDLK_RIGHT:
-                          if(getDireccionLocomotora(locomotora)!=2) {
-                                setDireccionLocomotora(locomotora, 0);
-                                setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/der/0.png"));
-                          }
-                            break;
-
-                            default:
-
-                            break;
-                        }
+                        setDireccionLocomotora(locomotora, 3);
+                        setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/arr/0.png"));
                     }
+                    break;
+
+                case SDLK_DOWN:
+                    if(getDireccionLocomotora(locomotora)!=3)
+                    {
+                        setDireccionLocomotora(locomotora, 1);
+                        setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/aba/0.png"));
+                    }
+                    break;
+
+                case SDLK_LEFT:
+                    if(getDireccionLocomotora(locomotora)!=0)
+                    {
+                        setDireccionLocomotora(locomotora, 2);
+                        setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/izq/0.png"));
+                    }
+                    break;
+
+                case SDLK_RIGHT:
+                    if(getDireccionLocomotora(locomotora)!=2)
+                    {
+                        setDireccionLocomotora(locomotora, 0);
+                        setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/der/0.png"));
+                    }
+                    break;
+
+                default:
+
+                    break;
+                }
+            }
         }
-    moverLocomotora(locomotora);
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
-    SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
-    SDL_RenderPresent(renderer);
-    SDL_Delay(200);
+
+           //Manejo Bandidos
+        ticksUltBandido++;
+
+        if(rand()%2==1 || ticksUltBandido>=getIB(parametros))
+        {
+            ticksUltBandido = 0;
+            xy[0] = rand()%getTX(parametros) + 1;
+            xy[1] = rand()%getTY(parametros) + 1;
+            addObjeto(lstBandidos, newBandido((rand()%6)+1, (rand()%getP(parametros))+1, (rand()%getVB(parametros))+1, xy, parametros,renderer));
+        }
+
+        //Manejo monedas
+
+        ticksUltMoneda++;
+        if(rand()%2==1 || ticksUltMoneda>=getIM(parametros))
+        {
+            ticksUltMoneda = 0;
+            addObjeto(lstMonedas, newMoneda(rand()%getTX(parametros) + 1, rand()%getTY(parametros) + 1, rand()%getVM(parametros) + 1, parametros));
+        }
+
+
+        moverLocomotora(locomotora);
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+        SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
+        for(i = 0; i<getSize(lstBandidos); i++)
+        {
+            bandido = (ptrBandido)getObjeto(lstBandidos, i);
+            SDL_RenderCopy(renderer,getImagen(bandido),NULL,getRectImagen(bandido));
+        }
+        SDL_RenderPresent(renderer);
+
+        i=0;
+
+        while(i<getSize(lstBandidos))
+        {
+            if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros) == 1)
+            {
+                //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos bandidos en el mismo ciclo
+                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
+                delBandido((ptrBandido)getObjeto(lstBandidos,i));
+                delObjeto(lstBandidos, i);
+                i--;
+            }
+            i++;
+        }
+
+        SDL_Delay(250);
     }
 
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-	return 0;
+    return 0;
 
     /* ptrParametros parametros = newParametros();
     ptrComanda comanda = newComanda();
@@ -426,7 +492,8 @@ void testMina()
     cout<<getCodItem((ptrMina)getObjeto(lista, 1))<<endl;
     cout<<getIP((ptrMina)getObjeto(lista, 1))<<endl;
     seq = getSeq((ptrMina)getObjeto(lista, 1));
-    for(i=0;i<5;i++) cout<<seq[i]<<endl;
+    for(i=0; i<5; i++)
+        cout<<seq[i]<<endl;
     delMina((ptrMina)getObjeto(lista, 0));
     delMina((ptrMina)getObjeto(lista, 1));
     eliminarListaGen(lista);
@@ -440,7 +507,7 @@ void testVagon()
 
     setTipoRecurso(vagon, 1);
 
-    for(i=0;i<3;i++)
+    for(i=0; i<3; i++)
     {
         caja = newCaja(0,1);
         setTipoRecurso(caja, 1);
@@ -453,7 +520,7 @@ void testVagon()
 
 
 
-void testBandido()
+/*void testBandido()
 {
     ptrParametros parametros = newParametros();
     cargarParametros(parametros);
@@ -475,16 +542,16 @@ void testBandido()
 
     delParametros(parametros);
     delBandido(bandido);
-}
+}*/
 
 /*---------Pantalla de prueba---------*/
 void gotoxy(int x, int y)
 {
-  static HANDLE h = NULL;
-  if(!h)
-    h = GetStdHandle(STD_OUTPUT_HANDLE);
-  COORD c = { x, y };
-  SetConsoleCursorPosition(h,c);
+    static HANDLE h = NULL;
+    if(!h)
+        h = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD c = { x, y };
+    SetConsoleCursorPosition(h,c);
 }
 /*---------Pantalla de prueba---------*/
 

@@ -30,7 +30,8 @@ ptrLocomotora newLocomotora(SDL_Renderer *renderer)
     locomotora->vagones = newListaGen();
     locomotora->hasChumbo = false;
     locomotora->agregarVagon = false;
-    for(i=0;i<6;i++) locomotora->cantRecursos[i] = 0;
+    for(i=0; i<6; i++)
+        locomotora->cantRecursos[i] = 0;
     locomotora->monedas = 0;
     locomotora->imagen = IMG_LoadTexture(renderer, "img/c1/aba/0.png");
     locomotora->rectImg->x = locomotora->xy[0] * locomotora->widthHeight[0];
@@ -45,7 +46,8 @@ void delLocomotora(ptrLocomotora locomotora)
     int i;
     ListaGen vagones = getVagones(locomotora);
 
-    for(i=0;i<getSize(vagones);i++) delVagon((ptrVagon)getObjeto(vagones,i));
+    for(i=0; i<getSize(vagones); i++)
+        delVagon((ptrVagon)getObjeto(vagones,i));
     eliminarListaGen(vagones);
     delete locomotora;
 }
@@ -53,6 +55,12 @@ void delLocomotora(ptrLocomotora locomotora)
 int* getXY(ptrLocomotora locomotora)
 {
     return locomotora->xy;
+}
+
+void setXY(ptrLocomotora locomotora, int xy[])
+{
+    locomotora->xy[0] = xy[0];
+    locomotora->xy[1] = xy[1];
 }
 
 SDL_Texture* getImagen(ptrLocomotora locomotora)
@@ -70,18 +78,14 @@ SDL_Rect* getRectImagen(ptrLocomotora locomotora)
     return locomotora->rectImg;
 }
 
-void setRectImagen(ptrLocomotora locomotora){
+void setRectImagen(ptrLocomotora locomotora)
+{
     locomotora->rectImg->x = locomotora->xy[0] * locomotora->widthHeight[0];
     locomotora->rectImg->y = locomotora->xy[1] * locomotora->widthHeight[1];
     locomotora->rectImg->w =locomotora->widthHeight[0];
     locomotora->rectImg->h =locomotora->widthHeight[1];
 }
 
-void setXY(ptrLocomotora locomotora, int xy[])
-{
-    locomotora->xy[0] = xy[0];
-    locomotora->xy[1] = xy[1];
-}
 
 int getDireccionLocomotora(ptrLocomotora locomotora)
 {
@@ -132,7 +136,8 @@ int* getCantRecursos(ptrLocomotora locomotora)
 void setCantRecursos(ptrLocomotora locomotora, int cantRecursos[])
 {
     int i;
-    for (i=0;i<6;i++) locomotora->cantRecursos[i] = cantRecursos[i];
+    for (i=0; i<6; i++)
+        locomotora->cantRecursos[i] = cantRecursos[i];
 }
 
 int getMonedas(ptrLocomotora locomotora)
@@ -193,38 +198,38 @@ void moverLocomotora(ptrLocomotora locomotora)
 
     if (getAgregarVagon(locomotora) && !listaVacia(getVagones(locomotora)))
         nuevoVagon = newVagon(getXY((ptrVagon)getUltimo(getVagones(locomotora)))[0],
-        getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))),
-        5*getMonedas(locomotora));
+                              getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))),
+                              5*getMonedas(locomotora));
     else if (getAgregarVagon(locomotora))
         nuevoVagon = newVagon(getXY(locomotora)[0], getXY(locomotora)[1], getDireccionLocomotora(locomotora), 5*getMonedas(locomotora));
 
     switch(getDireccionLocomotora(locomotora))
     {
-        //Derecha
-        case 0:
-            locomotora->xy[0]++;
-            setRectImagen(locomotora);
-            break;
-        //Abajo
-        case 1:
-            locomotora->xy[1]++;
-              setRectImagen(locomotora);
-            break;
-        //Izquierda
-        case 2:
-            locomotora->xy[0]--;
-               setRectImagen(locomotora);
-            break;
-        //Arriba
-        case 3:
-            locomotora->xy[1]--;
-             setRectImagen(locomotora);
-            break;
+    //Derecha
+    case 0:
+        locomotora->xy[0]++;
+        setRectImagen(locomotora);
+        break;
+    //Abajo
+    case 1:
+        locomotora->xy[1]++;
+        setRectImagen(locomotora);
+        break;
+    //Izquierda
+    case 2:
+        locomotora->xy[0]--;
+        setRectImagen(locomotora);
+        break;
+    //Arriba
+    case 3:
+        locomotora->xy[1]--;
+        setRectImagen(locomotora);
+        break;
     }
 
     //Los vagones se mueven acuerdo a su direccion, cuando hay uno desigual se setea DESPUES de moverse, para que en el proximo ciclo se mueva bien
     ultDireccionMov = getDireccionLocomotora(locomotora);
-    for (i=0;i<getSize(getVagones(locomotora));i++)
+    for (i=0; i<getSize(getVagones(locomotora)); i++)
     {
         vagon = (ptrVagon)getObjeto(getVagones(locomotora),i);
         moverVagon(vagon);
@@ -235,7 +240,8 @@ void moverLocomotora(ptrLocomotora locomotora)
             setDireccionVagon(vagon, ultDireccionMov);
             ultDireccionMov = temp;
         }
-        else ultDireccionMov = getDireccionVagon((ptrVagon)getObjeto(getVagones(locomotora), i));
+        else
+            ultDireccionMov = getDireccionVagon((ptrVagon)getObjeto(getVagones(locomotora), i));
     }
 
     if(getAgregarVagon(locomotora))

@@ -76,6 +76,7 @@ int main(int argv, char** args)
     SDL_Texture *newLocomotoraTexture = NULL;
     ptrLocomotora locomotora = NULL;
     ptrBandido bandido = NULL;
+    ptrMoneda monedaPtr = NULL;
     SDL_Event event;
     int eventType;
     int i, j, k, ticksUltBandido=0, ticksUltMoneda=0;
@@ -158,7 +159,7 @@ int main(int argv, char** args)
             }
         }
 
-           //Manejo Bandidos
+        //Manejo Bandidos
         ticksUltBandido++;
 
         if(rand()%2==1 || ticksUltBandido>=getIB(parametros))
@@ -170,16 +171,17 @@ int main(int argv, char** args)
         }
 
         //Manejo monedas
-
         ticksUltMoneda++;
+
         if(rand()%2==1 || ticksUltMoneda>=getIM(parametros))
         {
             ticksUltMoneda = 0;
-            addObjeto(lstMonedas, newMoneda(rand()%getTX(parametros) + 1, rand()%getTY(parametros) + 1, rand()%getVM(parametros) + 1, parametros));
+            addObjeto(lstMonedas, newMoneda(rand()%getTX(parametros) + 1, rand()%getTY(parametros) + 1, rand()%getVM(parametros) + 1, parametros,renderer));
         }
 
 
         moverLocomotora(locomotora);
+        actualizarCantRecursos(locomotora);
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
         SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
@@ -188,18 +190,38 @@ int main(int argv, char** args)
             bandido = (ptrBandido)getObjeto(lstBandidos, i);
             SDL_RenderCopy(renderer,getImagen(bandido),NULL,getRectImagen(bandido));
         }
+         for(i = 0; i<getSize(lstMonedas); i++)
+        {
+            monedaPtr = (ptrMoneda)getObjeto(lstMonedas, i);
+            SDL_RenderCopy(renderer,getImagen(monedaPtr),NULL,getRectImagen(monedaPtr));
+        }
         SDL_RenderPresent(renderer);
 
         i=0;
 
         while(i<getSize(lstBandidos))
         {
-            if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros) == 1)
+            if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros,perder) == 1)
             {
                 //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos bandidos en el mismo ciclo
                 //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
                 delBandido((ptrBandido)getObjeto(lstBandidos,i));
                 delObjeto(lstBandidos, i);
+                i--;
+            }
+            i++;
+        }
+
+        //Monedas
+        i=0;
+        while(i<getSize(lstMonedas))
+        {
+            if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora) == 1)
+            {
+                //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos monedas en el mismo ciclo
+                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
+                delMoneda((ptrMoneda)getObjeto(lstMonedas,i));
+                delObjeto(lstMonedas, i);
                 i--;
             }
             i++;

@@ -19,7 +19,49 @@ typedef struct monedaStruct* ptrMoneda;
     parametros: puntero a parametrosStruct
     return: puntero a monedaStruct
 */
-ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros);
+ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros,SDL_Renderer* renderer);
+
+
+/*
+    PRE: moneda tiene que apuntar a una estructura minaStruct
+    POST: Se devuelve el valor la textura de imagen del moneda
+
+    moneda: puntero a una estructura de tipo minaStruc
+    return: valor texture
+*/
+
+SDL_Texture* getImagen(ptrMoneda moneda);
+
+/*
+    PRE: moneda tiene que apuntar a una estructura monedaStruct
+    POST: Se le asigna el valor enviado por imagen
+
+    moneda: puntero a una estructura de tipo monedaStruct
+    imagen: textura de la imagen del moneda
+*/
+
+void setImagen(ptrMoneda moneda, SDL_Texture* imagen);
+
+
+/*
+    PRE: moneda tiene que apuntar a una estructura monedaStruct
+    POST: Se devuelve el valor del rect del moneda
+
+    moneda: puntero a una estructura de tipo monedaStruct
+    return: valor rect
+*/
+
+SDL_Rect* getRectImagen(ptrMoneda moneda);
+
+/*
+    PRE: moneda tiene que apuntar a una estructura monedaStruct
+    POST: Se le asigna el valor al rect del moneda
+
+    moneda: puntero a una estructura de tipo monedaStruct
+*/
+
+void setRectImagen(ptrMoneda moneda);
+
 
 /*
     PRE: moneda debe apuntar a una estructura existente

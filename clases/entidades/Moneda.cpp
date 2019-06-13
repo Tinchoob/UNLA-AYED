@@ -5,24 +5,53 @@ struct monedaStruct
     int xy[2];
     int tiempoVida;
     ptrParametros parametros;
+    int widthHeight[2];
+    SDL_Texture *imagen;
+    SDL_Rect *rectImg = new SDL_Rect();
 };
 
-ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros)
+ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros,SDL_Renderer* renderer)
 {
     int xy[2];
     ptrMoneda moneda = new monedaStruct;
-
+    moneda->widthHeight[0] = 40;
+    moneda->widthHeight[1] = 40;
     moneda->parametros = parametros;
     xy[0] = x;
     xy[1] = y;
     setXY(moneda, xy);
     setTiempoVida(moneda, tiempoVida);
+    setImagen(moneda,IMG_LoadTexture(renderer, "img/moneda.png"));
+    setRectImagen(moneda);
     return moneda;
 }
 
 void delMoneda(ptrMoneda moneda)
 {
     delete moneda;
+}
+
+SDL_Texture* getImagen(ptrMoneda moneda)
+{
+    return moneda->imagen;
+}
+
+void setImagen(ptrMoneda moneda, SDL_Texture* imagen)
+{
+    moneda->imagen = imagen;
+}
+
+SDL_Rect* getRectImagen(ptrMoneda moneda)
+{
+    return moneda->rectImg;
+}
+
+void setRectImagen(ptrMoneda moneda)
+{
+    moneda->rectImg->x = moneda->xy[0] * moneda->widthHeight[0];
+    moneda->rectImg->y = moneda->xy[1] * moneda->widthHeight[1];
+    moneda->rectImg->w = moneda->widthHeight[0];
+    moneda->rectImg->h = moneda->widthHeight[1];
 }
 
 int* getXY(ptrMoneda moneda)

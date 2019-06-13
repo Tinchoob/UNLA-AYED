@@ -163,7 +163,7 @@ void setMonedas(ptrLocomotora locomotora, int monedas);
 
     locomotora: puntero a una estructura de tipo locomotoraStruct
 */
-void moverLocomotora(ptrLocomotora locomotora);
+void moverLocomotora(SDL_Renderer* renderer, ptrLocomotora locomotora);
 
 /*
     PRE: locomotora tiene que apuntar a una estructura locomotoraStruct, tipoRecurso debe contener valores entre 1 y 6 inclusive

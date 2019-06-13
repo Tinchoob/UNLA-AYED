@@ -1,4 +1,5 @@
 #include "Locomotora.h"
+#include "Vagon.h"
 #include <iostream>
 #include <SDL.H>
 #include <SDL_image.h>
@@ -13,6 +14,7 @@ struct locomotoraStruct
     int cantRecursos[6];
     int monedas;
     int widthHeight[2];
+
     SDL_Texture *imagen;
     SDL_Rect *rectImg = new SDL_Rect();
 };
@@ -191,17 +193,16 @@ void setMonedas(ptrLocomotora locomotora, int monedas)
     V2 = 6;5
     V2 = 5;5
 */
-void moverLocomotora(ptrLocomotora locomotora)
+void moverLocomotora(SDL_Renderer* renderer, ptrLocomotora locomotora)
 {
     int i, ultDireccionMov, temp;
     ptrVagon vagon, nuevoVagon;
 
     if (getAgregarVagon(locomotora) && !listaVacia(getVagones(locomotora)))
-        nuevoVagon = newVagon(getXY((ptrVagon)getUltimo(getVagones(locomotora)))[0],
-                              getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))),
-                              5*getMonedas(locomotora));
+        nuevoVagon = newVagon(renderer,getXY((ptrVagon)getUltimo(getVagones(locomotora)))[0],
+getXY((ptrVagon)getUltimo(getVagones(locomotora)))[1], getDireccionVagon((ptrVagon)getUltimo(getVagones(locomotora))),5*getMonedas(locomotora));
     else if (getAgregarVagon(locomotora))
-        nuevoVagon = newVagon(getXY(locomotora)[0], getXY(locomotora)[1], getDireccionLocomotora(locomotora), 5*getMonedas(locomotora));
+        nuevoVagon = newVagon(renderer,getXY(locomotora)[0], getXY(locomotora)[1], getDireccionLocomotora(locomotora), 5*getMonedas(locomotora));
 
     switch(getDireccionLocomotora(locomotora))
     {

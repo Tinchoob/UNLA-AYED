@@ -2,6 +2,9 @@
 #define VAGON_H_INCLUDED
 
 #include "../listas/ListaGen.h"
+#include <ctype.h>
+#include <cstdlib>
+#include <SDL_image.h>
 
 struct vagonStruct;
 typedef struct vagonStruct* ptrVagon;
@@ -18,7 +21,7 @@ typedef struct vagonStruct* ptrVagon;
     capacidad: valor int
     return: puntero a nueva vagonStruct
 */
-ptrVagon newVagon(int x, int y, int direccion, int capacidad);
+ptrVagon newVagon(SDL_Renderer* renderer,int x, int y, int direccion, int capacidad);
 
 /*
     PRE: vagon debe apuntar a una estructura existente
@@ -140,5 +143,45 @@ void quitarLingotes(ptrVagon vagon, int cantidad);
     vagon: puntero a una estructura de tipo vagonStruct
 */
 void moverVagon(ptrVagon vagon);
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se devuelve el valor la textura de imagen del bandido
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    return: valor texture
+*/
+
+SDL_Texture* getImagen(ptrVagon vagon);
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se le asigna el valor enviado por imagen
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    imagen: textura de la imagen del bandido
+*/
+
+void setImagen(ptrVagon vagon, SDL_Texture* imagen);
+
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se devuelve el valor del rect del bandido
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+    return: valor rect
+*/
+
+SDL_Rect* getRectImagen(ptrVagon vagon);
+
+/*
+    PRE: bandido tiene que apuntar a una estructura bandidoStruct
+    POST: Se le asigna el valor al rect del bandido
+
+    bandido: puntero a una estructura de tipo bandidoStruct
+*/
+
+void setRectImagen(ptrVagon vagon);
 
 #endif // VAGON_H_INCLUDED

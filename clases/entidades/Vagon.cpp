@@ -1,6 +1,12 @@
+// VAGON.CPP IGNA
+
 #include "vagon.h"
 #include "caja.h"
+
 #include <iostream>
+#include <ctype.h>
+#include <cstdlib>
+#include <SDL_image.h>
 
 struct vagonStruct
 {
@@ -9,11 +15,10 @@ struct vagonStruct
     ListaGen cajas;
     int direccion;
     int capacidad;
+
+    int widthHeight[2];
     SDL_Texture *imagen;
     SDL_Rect *rectImg = new SDL_Rect();
-    int widthHeight[2];
-
-
 };
 
 ptrVagon newVagon(SDL_Renderer* renderer,int x, int y, int direccion, int capacidad)
@@ -145,26 +150,27 @@ void moverVagon(ptrVagon vagon)
             vagon->xy[1]--;
             break;
     }
+}
 
-
-      SDL_Texture* getImagen(ptrVagon vagon)
-{
+SDL_Texture* getImagen(ptrVagon vagon){
     return vagon->imagen;
 }
 
-    SDL_Rect* getRectImagen(ptrVagon vagon)
-{
+void setImagen(ptrVagon vagon, SDL_Texture* imagen){
+    vagon->imagen = imagen;
+}
+
+SDL_Rect* getRectImagen(ptrVagon vagon){
     return vagon->rectImg;
 }
 
-    void setRectImagen(ptrVagon vagon)
-    {
+void setRectImagen(ptrVagon vagon){
     vagon->rectImg->x = vagon->xy[0] * vagon->widthHeight[0];
     vagon->rectImg->y = vagon->xy[1] * vagon->widthHeight[1];
     vagon->rectImg->w =vagon->widthHeight[0];
     vagon->rectImg->h =vagon->widthHeight[1];
-    }
+}
     /*std::cout<<"Direccion Vagon: "<<vagon->direccion<<std::endl;
     std::cout<<"X Vagon: "<<vagon->xy[0]<<std::endl;
     std::cout<<"Y Vagon: "<<vagon->xy[1]<<std::endl;*/
-}
+

@@ -106,14 +106,15 @@ int main(int argv, char** args)
     SDL_Texture* imagenEstacion = IMG_LoadTexture(renderer, "img/estation.png");
     SDL_Rect* rectEstacion = new SDL_Rect();
 
+    cargarParametros(parametros);
+    cargarComanda(comanda);
+    cargarMinas(renderer,lstMinas);
+
     rectEstacion->x = getPosXE(parametros) * 40;
     rectEstacion->y = getPosYE(parametros) * 40;
     rectEstacion->w = 40;
     rectEstacion->h = 40;
 
-    cargarParametros(parametros);
-    cargarComanda(comanda);
-    cargarMinas(renderer,lstMinas);
 
     while(!gameOver)
     {
@@ -170,15 +171,15 @@ int main(int argv, char** args)
         }
 
         //Manejo Bandidos
-        ticksUltBandido++;
-
-        if(rand()%2==1 || ticksUltBandido>=getIB(parametros))
-        {
-            ticksUltBandido = 0;
-            xy[0] = rand()%getTX(parametros) + 1;
-            xy[1] = rand()%getTY(parametros) + 1;
-            addObjeto(lstBandidos, newBandido((rand()%6)+1, (rand()%getP(parametros))+1, (rand()%getVB(parametros))+1, xy, parametros,renderer));
-        }
+//        ticksUltBandido++;
+//
+//        if(rand()%2==1 || ticksUltBandido>=getIB(parametros))
+//        {
+//            ticksUltBandido = 0;
+//            xy[0] = rand()%getTX(parametros) + 1;
+//            xy[1] = rand()%getTY(parametros) + 1;
+//            addObjeto(lstBandidos, newBandido((rand()%6)+1, (rand()%getP(parametros))+1, (rand()%getVB(parametros))+1, xy, parametros,renderer));
+//        }
 
         //Manejo monedas
         ticksUltMoneda++;
@@ -190,7 +191,7 @@ int main(int argv, char** args)
         }
 
 
-        moverLocomotora(locomotora);
+        moverLocomotora(renderer,locomotora);
 
         actualizarCantRecursos(locomotora);
         SDL_RenderClear(renderer);
@@ -216,12 +217,19 @@ int main(int argv, char** args)
         {
             mina1=(ptrMina)getObjeto(lstMinas,i);
             SDL_RenderCopy(renderer,getImagen(mina1),NULL,getRectImagen(mina1));
-            tickMina((ptrMina)getObjeto(lstMinas,i),locomotora);
-
         }
 
+        for(i=0;i<getSize(getVagones(locomotora));i++)
+        {
+            vagon1 = (ptrVagon)getObjeto(getVagones(locomotora),i);
+            SDL_RenderCopy(renderer,getImagen(vagon1),NULL,getRectImagen(vagon1));
+        }
 
         SDL_RenderPresent(renderer);
+
+        if (getPosXE(parametros) == getXY(locomotora)[0] && getPosYE(parametros) == getXY(locomotora)[1] && getMonedas(locomotora)>0){
+            setAgregarVagon(locomotora, true);
+            }
 
         i=0;
 
@@ -237,12 +245,7 @@ int main(int argv, char** args)
             }
             i++;
         }
-        if (getPosXE(parametros)==getXY(locomotora)[0] && getPosYE(parametros)==getXY(locomotora)[1] && getMonedas(locomotora)>0)
-        {
-            setAgregarVagon(locomotora, true);
 
-            SDL_RenderCopy(renderer,getImagen(vagon1),NULL,getRectImagen(vagon1));
-        }
         //Monedas
         i=0;
         while(i<getSize(lstMonedas))
@@ -556,24 +559,24 @@ void testComanda()
     eliminarListaGen(lista);
 }*/
 
-void testVagon()
-{
-    int i;
-    ptrVagon vagon = newVagon(0,0,0,5);
-    ptrCaja caja;
-
-    setTipoRecurso(vagon, 1);
-
-    for(i=0; i<3; i++)
-    {
-        caja = newCaja(0,1);
-        setTipoRecurso(caja, 1);
-        setCantidad(caja, i+1);
-        addObjeto(getCajas(vagon), caja);
-    }
-    cout<<cantidadTotalLingotes(vagon)<<endl;
-    delVagon(vagon);
-}
+//void testVagon()
+//{
+//    int i;
+//    ptrVagon vagon = newVagon(0,0,0,5);
+//    ptrCaja caja;
+//
+//    setTipoRecurso(vagon, 1);
+//
+//    for(i=0; i<3; i++)
+//    {
+//        caja = newCaja(0,1);
+//        setTipoRecurso(caja, 1);
+//        setCantidad(caja, i+1);
+//        addObjeto(getCajas(vagon), caja);
+//    }
+//    cout<<cantidadTotalLingotes(vagon)<<endl;
+//    delVagon(vagon);
+//}
 
 
 /*void testBandido()

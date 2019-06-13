@@ -186,7 +186,8 @@ void leerLineaMina(FILE* fMina, ptrMina mina);
     PRE: mina tiene que apuntar a una estructura minaStruct, locomotora tiene que apuntar a una estructura locomotoraStruct
     POST: Se ejecuta una cuenta de ticks desde la ultima vez que se spawneo una caja, en caso de que se haya
     alcanzado el intervalo de producción de la mina, se genera una nueva caja acorde a la secuencia de la mina,
-    siempre y cuando haya menos de 5 cajas esperando ser retiradas
+    siempre y cuando haya menos de 5 cajas esperando ser retiradas. Si la locomotora está posicionada sobre la mina, se carga la ultima caja
+    que se produjo en el primer vagón que esté disponible, si hay un vagón disponible, se elimina toda la producción actualmente almacenada.
 
     mina: puntero a una minaStruct
     locomotora: puntero a una locomotoraStruct

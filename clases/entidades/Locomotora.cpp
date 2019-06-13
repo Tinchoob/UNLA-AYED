@@ -250,8 +250,54 @@ void moverLocomotora(ptrLocomotora locomotora)
         setMonedas(locomotora, 0);
         addObjeto(getVagones(locomotora), nuevoVagon);
     }
-    //Lineas de testeo de la rutina de movimiento
-    /*std::cout<<"Direccion Locomotora: "<<locomotora->direccion<<std::endl;
-    std::cout<<"X Locomotora: "<<locomotora->xy[0]<<std::endl;
-    std::cout<<"Y Locomotora: "<<locomotora->xy[1]<<std::endl;*/
+}
+
+//Devuelve 0 si la operación fue exitosa, 1 si no hay suficientes lingotes
+int quitarLingotes(ptrLocomotora locomotora, int cantidad, int tipoRecurso)
+{
+    int ret, i;
+    ptrVagon vActual;
+
+    //std::cout<<"Quitar lingotes - Locomotora"<<std::endl;
+    if (cantidad <= locomotora->cantRecursos[tipoRecurso-1])
+    {
+        ret = 0;
+        i = getSize(getVagones(locomotora))-1;
+        while (i>=0 && cantidad>0)
+        {
+            vActual = (ptrVagon)getObjeto(getVagones(locomotora), i);
+            if (getTipoRecurso(vActual) == tipoRecurso)
+            {
+                if (cantidad > cantidadTotalLingotes(vActual))
+                {
+                    quitarLingotes(vActual, cantidadTotalLingotes(vActual));
+                    cantidad = cantidad - cantidadTotalLingotes(vActual);
+                }
+                else
+                {
+                    quitarLingotes(vActual, cantidad);
+                    cantidad = 0;
+                }
+            }
+            i--;
+        }
+    }
+    else ret = 1;
+
+    return ret;
+}
+
+void actualizarCantRecursos(ptrLocomotora locomotora)
+{
+    int i;
+    ptrVagon vActual;
+
+    for (i=0;i<6;i++) locomotora->cantRecursos[i] = 0;
+
+    for (i=0;i<getSize(getVagones(locomotora));i++)
+    {
+        vActual = (ptrVagon)getObjeto(getVagones(locomotora), i);
+        if (getTipoRecurso(vActual)!=0)
+            locomotora->cantRecursos[getTipoRecurso(vActual)-1] = locomotora->cantRecursos[getTipoRecurso(vActual)-1] + cantidadTotalLingotes(vActual);
+    }
 }

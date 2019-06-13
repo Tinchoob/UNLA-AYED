@@ -141,10 +141,10 @@ void setParametros(ptrBandido bandido, ptrParametros parametros)
     bandido->parametros = parametros;
 }
 
-int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros)
+int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros, bool &perder)
 {
     int ret, i;
-    char defender;
+    char defender = 0;
     bool trenEnRango=false;
 
     trenEnRango = enRango(bandido->xy, getA(parametros), getXY(locomotora));
@@ -157,28 +157,27 @@ int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros para
 
     if (trenEnRango)
     {
-        std::cout<<"Eh wachin dame todo! (Dar/Resistirse? (D/R))"<<std::endl;
-        std::cin>>defender;
-        if (defender>90)
-            defender = defender - 32;
-        if (defender=='D')
+        while (defender!='D' && defender!='R')
         {
-            //
-        }
-        else if (defender=='R')
-        {
-            if (getHasChumbo(locomotora))
+            std::cout<<"Eh wachin dame "<<bandido->cantidad<<" de "<<tipoRecursoStr(bandido->tipoRecurso)<<"! (Dar/Resistirse? (D/R)): ";
+            std::cin>>defender;
+            if (defender>90) defender = defender - 32;
+            if (defender=='R' || quitarLingotes(locomotora, getCantidad(bandido), getTipoRecurso(bandido))==1)
             {
-                std::cout<<"Se ha usado el chumbo de la inimputabilidad, come plomo gato"<<std::endl;
-                setHasChumbo(locomotora, false);
-                system("pause");
-            }
-            else
-            {
-                if(!listaVacia(getVagones(locomotora)))
+                if (getHasChumbo(locomotora))
                 {
-                    delVagon((ptrVagon)getUltimo(getVagones(locomotora)));
-                    delObjeto(getVagones(locomotora), getSize(getVagones(locomotora)) - 1);
+                    std::cout<<"Se ha usado el chumbo de la inimputabilidad, come plomo gato"<<std::endl;
+                    setHasChumbo(locomotora, false);
+                    system("pause");
+                }
+                else
+                {
+                    if(!listaVacia(getVagones(locomotora)))
+                    {
+                        delVagon((ptrVagon)getUltimo(getVagones(locomotora)));
+                        delObjeto(getVagones(locomotora), getSize(getVagones(locomotora)) - 1);
+                    }
+                    else perder = true;
                 }
             }
         }

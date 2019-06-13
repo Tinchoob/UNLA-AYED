@@ -165,6 +165,23 @@ void setMonedas(ptrLocomotora locomotora, int monedas);
 */
 void moverLocomotora(ptrLocomotora locomotora);
 
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct, tipoRecurso debe contener valores entre 1 y 6 inclusive
+    POST: Se quita la cantidad de lingotes especificada de los vagones del tren y se devuelve 0, indicando una operación exitosa,
+    alternativamente, si el tren no tiene suficientes lingotes para realizar la operación, se devuelve 1 y no se quitan lingotes
 
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+    cantidad: valor int
+    tipoRecurso: valor int
+*/
+int quitarLingotes(ptrLocomotora locomotora, int cantidad, int tipoRecurso);
+
+/*
+    PRE: locomotora tiene que apuntar a una estructura locomotoraStruct
+    POST: Se actualizan los valores de locomotora->cantRecursos según los lingotes contenidos en los vagones del tren
+
+    locomotora: puntero a una estructura de tipo locomotoraStruct
+*/
+void actualizarCantRecursos(ptrLocomotora locomotora);
 
 #endif // LOCOMOTORA_H_INCLUDED

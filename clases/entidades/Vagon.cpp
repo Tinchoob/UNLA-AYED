@@ -136,18 +136,22 @@ void moverVagon(ptrVagon vagon)
         //Derecha
         case 0:
             vagon->xy[0]++;
+            setRectImagen(vagon);
             break;
         //Abajo
         case 1:
             vagon->xy[1]++;
+            setRectImagen(vagon);
             break;
         //Izquierda
         case 2:
             vagon->xy[0]--;
+            setRectImagen(vagon);
             break;
         //Arriba
         case 3:
             vagon->xy[1]--;
+            setRectImagen(vagon);
             break;
     }
 }

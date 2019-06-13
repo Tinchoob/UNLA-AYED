@@ -136,6 +136,7 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 3);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/arr/0.png"));
+
                     }
                     break;
 
@@ -144,6 +145,7 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 1);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/aba/0.png"));
+
                     }
                     break;
 
@@ -152,6 +154,7 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 2);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/izq/0.png"));
+
                     }
                     break;
 
@@ -160,6 +163,8 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 0);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/der/0.png"));
+
+
                     }
                     break;
 

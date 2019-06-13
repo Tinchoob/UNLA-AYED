@@ -102,6 +102,13 @@ int main(int argv, char** args)
     ListaGen lstBandidos = newListaGen();
     ListaGen lstMonedas = newListaGen();
 
+    SDL_Texture* imagenEstacion = IMG_LoadTexture(renderer, "img/estation.png");
+    SDL_Rect* rectEstacion = new SDL_Rect();
+
+    rectEstacion->x = getPosXE(parametros) * 40;
+    rectEstacion->y = getPosYE(parametros) * 40;
+    rectEstacion->w = 40;
+    rectEstacion->h = 40;
 
     cargarParametros(parametros);
     cargarComanda(comanda);
@@ -188,7 +195,9 @@ int main(int argv, char** args)
         SDL_RenderClear(renderer);
 
         SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
+        SDL_RenderCopy(renderer, imagenEstacion, NULL, rectEstacion);
         SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
+
 
         for(i = 0; i<getSize(lstBandidos); i++)
         {
@@ -218,7 +227,7 @@ int main(int argv, char** args)
             if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros,perder) == 1)
             {
                 //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos bandidos en el mismo ciclo
-                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
+                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaciï¿½n
                 delBandido((ptrBandido)getObjeto(lstBandidos,i));
                 delObjeto(lstBandidos, i);
                 i--;
@@ -233,7 +242,7 @@ int main(int argv, char** args)
             if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora) == 1)
             {
                 //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos monedas en el mismo ciclo
-                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
+                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaciï¿½n
                 delMoneda((ptrMoneda)getObjeto(lstMonedas,i));
                 delObjeto(lstMonedas, i);
                 i--;
@@ -417,7 +426,7 @@ int main(int argv, char** args)
                 if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros, perder) == 1)
                 {
                     //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos bandidos en el mismo ciclo
-                    //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
+                    //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaciï¿½n
                     delBandido((ptrBandido)getObjeto(lstBandidos,i));
                     delObjeto(lstBandidos, i);
                     i--;
@@ -435,7 +444,7 @@ int main(int argv, char** args)
                 if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora) == 1)
                 {
                     //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos monedas en el mismo ciclo
-                    //dado que i sigue corriendo pero cantNodos se reduce por cada eliminación
+                    //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaciï¿½n
                     delMoneda((ptrMoneda)getObjeto(lstMonedas,i));
                     delObjeto(lstMonedas, i);
                     i--;
@@ -443,7 +452,7 @@ int main(int argv, char** args)
                 i++;
             }
 
-            //Producción de las minas
+            //Producciï¿½n de las minas
             for (i=0;i<getSize(lstMinas);i++) tickMina((ptrMina)getObjeto(lstMinas, i), locomotora);
 
             //Chequeos para ver si pierde el jugador

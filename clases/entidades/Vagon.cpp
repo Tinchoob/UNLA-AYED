@@ -33,7 +33,7 @@ ptrVagon newVagon(SDL_Renderer* renderer,int x, int y, int direccion, int capaci
     vagon->widthHeight[0]=40;
     vagon->widthHeight[1]=40;
     vagon->imagen=IMG_LoadTexture(renderer,"img/c2/arr/1.png");
-
+    setRectImagen(vagon);
     return vagon;
 }
 

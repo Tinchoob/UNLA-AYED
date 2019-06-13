@@ -796,15 +796,18 @@
 	"../entidades/Locomotora.h"
 	"../listas/ListaGen.h"
 
-1560391352 d:\mis documentos\github\unla-ayed\clases\entidades\locomotora.h
+1560463771 d:\mis documentos\github\unla-ayed\clases\entidades\locomotora.h
 	<SDL_image.h>
 	"../listas/ListaGen.h"
 	"Vagon.h"
 
 1560390740 d:\mis documentos\github\unla-ayed\clases\listas\listagen.h
 
-1560390740 d:\mis documentos\github\unla-ayed\clases\entidades\vagon.h
+1560463766 d:\mis documentos\github\unla-ayed\clases\entidades\vagon.h
 	"../listas/ListaGen.h"
+	<ctype.h>
+	<cstdlib>
+	<SDL_image.h>
 
 1560391352 d:\mis documentos\github\unla-ayed\clases\funciones\funciones.h
 
@@ -835,8 +838,9 @@
 1560390740 source:d:\mis documentos\github\unla-ayed\clases\entidades\caja.cpp
 	"caja.h"
 
-1560391352 source:d:\mis documentos\github\unla-ayed\clases\entidades\locomotora.cpp
+1560466230 source:d:\mis documentos\github\unla-ayed\clases\entidades\locomotora.cpp
 	"Locomotora.h"
+	"Vagon.h"
 	<iostream>
 	<SDL.H>
 	<SDL_image.h>
@@ -848,10 +852,13 @@
 	"../archivos/Parametros.h"
 	"Locomotora.h"
 
-1560391352 source:d:\mis documentos\github\unla-ayed\clases\entidades\vagon.cpp
+1560467021 source:d:\mis documentos\github\unla-ayed\clases\entidades\vagon.cpp
 	"vagon.h"
 	"caja.h"
 	<iostream>
+	<ctype.h>
+	<cstdlib>
+	<SDL_image.h>
 
 1560391352 source:d:\mis documentos\github\unla-ayed\clases\funciones\funciones.cpp
 	"Funciones.h"
@@ -863,7 +870,7 @@
 	<stdlib.h>
 	"ListaGen.h"
 
-1560453965 source:d:\mis documentos\github\unla-ayed\main.cpp
+1560463761 source:d:\mis documentos\github\unla-ayed\main.cpp
 	<iostream>
 	"clases/archivos/Parametros.h"
 	"clases/archivos/Comanda.h"

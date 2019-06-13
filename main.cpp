@@ -46,7 +46,7 @@ void testVagon();
 void testBandido();
 
 /*-------------------*/
-void cargarMinas(ListaGen lstMinas);
+void cargarMinas(SDL_Renderer* renderer ,ListaGen lstMinas);
 
 int main(int argv, char** args)
 {
@@ -77,6 +77,8 @@ int main(int argv, char** args)
     ptrLocomotora locomotora = NULL;
     ptrBandido bandido = NULL;
     ptrMoneda monedaPtr = NULL;
+    ptrMina mina1=NULL;
+
     SDL_Event event;
     int eventType;
     int i, j, k, ticksUltBandido=0, ticksUltMoneda=0;
@@ -103,7 +105,7 @@ int main(int argv, char** args)
 
     cargarParametros(parametros);
     cargarComanda(comanda);
-    cargarMinas(lstMinas);
+    cargarMinas(renderer,lstMinas);
 
     while(!gameOver)
     {
@@ -181,20 +183,32 @@ int main(int argv, char** args)
 
 
         moverLocomotora(locomotora);
+
         actualizarCantRecursos(locomotora);
         SDL_RenderClear(renderer);
+
         SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
         SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
+
         for(i = 0; i<getSize(lstBandidos); i++)
         {
             bandido = (ptrBandido)getObjeto(lstBandidos, i);
             SDL_RenderCopy(renderer,getImagen(bandido),NULL,getRectImagen(bandido));
         }
+
          for(i = 0; i<getSize(lstMonedas); i++)
         {
             monedaPtr = (ptrMoneda)getObjeto(lstMonedas, i);
             SDL_RenderCopy(renderer,getImagen(monedaPtr),NULL,getRectImagen(monedaPtr));
         }
+
+        for(i=0;i<getSize(lstMinas);i++)
+        {
+            mina1=(ptrMina)getObjeto(lstMinas,i);
+            SDL_RenderCopy(renderer,getImagen(mina1),NULL,getRectImagen(mina1));
+        }
+
+
         SDL_RenderPresent(renderer);
 
         i=0;
@@ -495,7 +509,7 @@ void testComanda()
     delComanda(comanda);
 }
 
-void testMina()
+/*void testMina()
 {
     int i,j;
     FILE* fMina;
@@ -523,7 +537,7 @@ void testMina()
     delMina((ptrMina)getObjeto(lista, 0));
     delMina((ptrMina)getObjeto(lista, 1));
     eliminarListaGen(lista);
-}
+}*/
 
 void testVagon()
 {
@@ -581,7 +595,7 @@ void gotoxy(int x, int y)
 /*---------Pantalla de prueba---------*/
 
 /*--------------------------------------------------------*/
-void cargarMinas(ListaGen lstMinas)
+void cargarMinas(SDL_Renderer* renderer, ListaGen lstMinas)
 {
     int i;
     FILE* fMina;
@@ -590,7 +604,7 @@ void cargarMinas(ListaGen lstMinas)
     fMina=fopen("minas.txt","r");
     while(!feof(fMina))
     {
-        addObjeto(lstMinas,newMina());
+        addObjeto(lstMinas,newMina(renderer));
         leerLineaMina(fMina, (ptrMina)getObjeto(lstMinas, i));
         i++;
 

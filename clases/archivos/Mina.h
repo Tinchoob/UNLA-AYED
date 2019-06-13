@@ -15,7 +15,7 @@ typedef struct minaStruct* ptrMina;
 
     Los valores internos se deben setear uno a uno con los set
 */
-ptrMina newMina();
+ptrMina newMina(SDL_Renderer* renderer);
 
 /*
     PRE: mina debe apuntar a una estructura existente
@@ -193,5 +193,35 @@ void leerLineaMina(FILE* fMina, ptrMina mina);
     locomotora: puntero a una locomotoraStruct
 */
 void tickMina(ptrMina mina, ptrLocomotora locomotora);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se devuelve el valor la textura de imagen de la mina
+
+    mina: puntero a una estructura de tipo minaStruct
+    return: valor texture
+*/
+
+SDL_Texture* getImagen(ptrMina mina);
+
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se devuelve el valor del rect de la mina
+
+    mina: puntero a una estructura de tipo minaStruct
+    return: valor rect
+*/
+
+SDL_Rect* getRectImagen(ptrMina mina);
+
+/*
+    PRE: mina tiene que apuntar a una estructura minaStruct
+    POST: Se le asigna el valor al rect de la mina
+
+    mina: puntero a una estructura de tipo minaStruct
+*/
+
+void setRectImagen(ptrMina mina);
 
 #endif // MINA_H_INCLUDED

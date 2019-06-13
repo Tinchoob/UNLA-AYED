@@ -771,3 +771,114 @@
 	"begin_code.h"
 	"close_code.h"
 
+1560390740 source:d:\mis documentos\github\unla-ayed\clases\archivos\comanda.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Comanda.h"
+
+1560390740 d:\mis documentos\github\unla-ayed\clases\archivos\comanda.h
+
+1560394902 source:d:\mis documentos\github\unla-ayed\clases\archivos\mina.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"Mina.h"
+	<SDL.H>
+	<SDL_image.h>
+	"../funciones/Funciones.h"
+	"../entidades/Caja.h"
+	"../entidades/Vagon.h"
+
+1560397413 d:\mis documentos\github\unla-ayed\clases\archivos\mina.h
+	"../entidades/Locomotora.h"
+	"../listas/ListaGen.h"
+
+1560391352 d:\mis documentos\github\unla-ayed\clases\entidades\locomotora.h
+	<SDL_image.h>
+	"../listas/ListaGen.h"
+	"Vagon.h"
+
+1560390740 d:\mis documentos\github\unla-ayed\clases\listas\listagen.h
+
+1560390740 d:\mis documentos\github\unla-ayed\clases\entidades\vagon.h
+	"../listas/ListaGen.h"
+
+1560391352 d:\mis documentos\github\unla-ayed\clases\funciones\funciones.h
+
+1560390740 d:\mis documentos\github\unla-ayed\clases\entidades\caja.h
+
+1560390740 source:d:\mis documentos\github\unla-ayed\clases\archivos\parametros.cpp
+	<iostream>
+	<stdlib.h>
+	<string.h>
+	"Parametros.h"
+
+1560390740 d:\mis documentos\github\unla-ayed\clases\archivos\parametros.h
+	<stdio.h>
+
+1560391439 source:d:\mis documentos\github\unla-ayed\clases\entidades\bandido.cpp
+	"Bandido.h"
+	"../listas/ListaGen.h"
+	"../funciones/Funciones.h"
+	<iostream>
+	<ctype.h>
+	<cstdlib>
+	<SDL_image.h>
+
+1560391352 d:\mis documentos\github\unla-ayed\clases\entidades\bandido.h
+	"Locomotora.h"
+	"../archivos/Parametros.h"
+
+1560390740 source:d:\mis documentos\github\unla-ayed\clases\entidades\caja.cpp
+	"caja.h"
+
+1560391352 source:d:\mis documentos\github\unla-ayed\clases\entidades\locomotora.cpp
+	"Locomotora.h"
+	<iostream>
+	<SDL.H>
+	<SDL_image.h>
+
+1560390740 source:d:\mis documentos\github\unla-ayed\clases\entidades\moneda.cpp
+	"Moneda.h"
+
+1560390740 d:\mis documentos\github\unla-ayed\clases\entidades\moneda.h
+	"../archivos/Parametros.h"
+	"Locomotora.h"
+
+1560391352 source:d:\mis documentos\github\unla-ayed\clases\entidades\vagon.cpp
+	"vagon.h"
+	"caja.h"
+	<iostream>
+
+1560391352 source:d:\mis documentos\github\unla-ayed\clases\funciones\funciones.cpp
+	"Funciones.h"
+	<string.h>
+
+1560390740 source:d:\mis documentos\github\unla-ayed\clases\listas\listagen.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	"ListaGen.h"
+
+1560396456 source:d:\mis documentos\github\unla-ayed\main.cpp
+	<iostream>
+	"clases/archivos/Parametros.h"
+	"clases/archivos/Comanda.h"
+	"clases/archivos/Mina.h"
+	"clases/listas/ListaGen.h"
+	"clases/entidades/Vagon.h"
+	"clases/entidades/Locomotora.h"
+	"clases/entidades/Caja.h"
+	"clases/entidades/Bandido.h"
+	"clases/entidades/Moneda.h"
+	<stdio.h>
+	<time.h>
+	<cstdlib>
+	<SDL.H>
+	<SDL_image.h>
+	<string>
+	<windows.h>
+

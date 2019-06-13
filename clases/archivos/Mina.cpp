@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Mina.h"
+#include <SDL.H>
+#include <SDL_image.h>
 #include "../funciones/Funciones.h"
 #include "../entidades/Caja.h"
 #include "../entidades/Vagon.h"
@@ -14,19 +16,24 @@ struct minaStruct
     int codItem; //Codigo del item que va a producir.
     int IP; //Intervalo de produccion.
     int seq[5]; //Especificacion de la secuencia de produccion. Siempre serán 5 en total.
-
+    SDL_Texture *imagen;
+    SDL_Rect *rectImg = new SDL_Rect();
+    int widthHeight[2];
     int contadorIntervalos; //Contador interno para tickMina, para saber cuando spawnear una caja
     int contadorProduccion; //Contador interno para tickMina, para saber en que parte de la secuencia de producción se está
     ListaGen lstCajas; //Lista de cajas producidas por la mina y que están en esperando se las retire
 };
 
-ptrMina newMina()
+ptrMina newMina(SDL_Renderer* renderer)
 {
     ptrMina mina = new minaStruct;
     mina->contadorIntervalos = 0;
     mina->contadorProduccion = 0;
     mina->lstCajas = newListaGen();
+    mina->widthHeight[0]=40;
+    mina->widthHeight[1]=40;
 
+    mina->imagen=IMG_LoadTexture(renderer,"img/mina.png");
     return mina;
 }
 
@@ -171,6 +178,8 @@ void leerLineaMina(FILE* fMina, ptrMina mina)
         delete valor;
     }
     setSeq(mina,seq);
+    setRectImagen(mina);
+
 }
 
 void tickMina(ptrMina mina, ptrLocomotora locomotora)
@@ -218,3 +227,22 @@ void tickMina(ptrMina mina, ptrLocomotora locomotora)
         }
     }
 }
+
+
+    SDL_Texture* getImagen(ptrMina mina)
+{
+    return mina->imagen;
+}
+
+    SDL_Rect* getRectImagen(ptrMina mina)
+{
+    return mina->rectImg;
+}
+
+    void setRectImagen(ptrMina mina)
+    {
+    mina->rectImg->x = mina->posX * mina->widthHeight[0];
+    mina->rectImg->y = mina->posY * mina->widthHeight[1];
+    mina->rectImg->w =mina->widthHeight[0];
+    mina->rectImg->h =mina->widthHeight[1];
+    }

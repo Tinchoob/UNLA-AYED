@@ -70,20 +70,18 @@ int main(int argv, char** args)
     bool gameOver = false;
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
-    SDL_Surface* screenSurface = NULL;
+    //SDL_Surface* screenSurface = NULL;
     SDL_Surface* background = NULL;
     SDL_Texture *backgroundTexture = NULL;
-    SDL_Texture *newLocomotoraTexture = NULL;
     ptrLocomotora locomotora = NULL;
     ptrBandido bandido = NULL;
     ptrMoneda monedaPtr = NULL;
-    ptrMina mina1=NULL;
-    ptrVagon vagon1=NULL;
+    ptrMina mina=NULL;
+    ptrVagon vagon=NULL;
 
     SDL_Event event;
     int eventType;
-    int i, j, k, ticksUltBandido=0, ticksUltMoneda=0;
-    bool vagon, mina, estacion, bandido2, moneda;
+    int i, ticksUltBandido=0, ticksUltMoneda=0;
     int xy[2];
     bool perder = false;
 
@@ -91,7 +89,7 @@ int main(int argv, char** args)
     window =  SDL_CreateWindow("Test SDL",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,xSize,ySize,SDL_WINDOW_SHOWN);
 
     renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
-    screenSurface = SDL_GetWindowSurface( window );
+   // screenSurface = SDL_GetWindowSurface( window );
 
     background = IMG_Load("img/suelo_3.png");
     backgroundTexture = SDL_CreateTextureFromSurface(renderer,background);
@@ -186,7 +184,6 @@ int main(int argv, char** args)
         moverLocomotora(renderer,locomotora);
 
         SDL_RenderClear(renderer);
-
         SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
         SDL_RenderCopy(renderer, imagenEstacion, NULL, rectEstacion);
 
@@ -197,17 +194,17 @@ int main(int argv, char** args)
 
         for(i=0; i<getSize(lstMinas); i++)
         {
-            mina1=(ptrMina)getObjeto(lstMinas,i);
-            SDL_RenderCopy(renderer,getImagen(mina1),NULL,getRectImagen(mina1));
+            mina=(ptrMina)getObjeto(lstMinas,i);
+            SDL_RenderCopy(renderer,getImagen(mina),NULL,getRectImagen(mina));
         }
 
         for(i=0; i<getSize(getVagones(locomotora)); i++)
         {
-            vagon1 = (ptrVagon)getObjeto(getVagones(locomotora),i);
-            SDL_RenderCopy(renderer,getImagen(vagon1),NULL,getRectImagen(vagon1));
+            vagon = (ptrVagon)getObjeto(getVagones(locomotora),i);
+            SDL_RenderCopy(renderer,getImagen(vagon),NULL,getRectImagen(vagon));
         }
 
-                //Agregar bandidos a pantalla
+        //Agregar bandidos a pantalla
            for(i = 0; i<getSize(lstBandidos); i++)
         {
             bandido = (ptrBandido)getObjeto(lstBandidos, i);
@@ -224,7 +221,6 @@ int main(int argv, char** args)
             xy[1] = rand()%getTY(parametros) + 1;
             addObjeto(lstBandidos, newBandido((rand()%6)+1, (rand()%getP(parametros))+1, (rand()%getVB(parametros))+1, xy, parametros,renderer));
         }
-
 
 
         //Imprimir monedas en pantalla
@@ -294,6 +290,16 @@ int main(int argv, char** args)
 
         SDL_Delay(250);
     }
+
+    delParametros(parametros);
+    delComanda(comanda);
+    for(i=0;i<getSize(lstMinas);i++) delMina((ptrMina)getObjeto(lstMinas, i));
+    eliminarListaGen(lstMinas);
+    delLocomotora(locomotora);
+    for(i=0;i<getSize(lstBandidos);i++) delBandido((ptrBandido)getObjeto(lstBandidos, i));
+    eliminarListaGen(lstBandidos);
+    for(i=0;i<getSize(lstMonedas);i++) delMoneda((ptrMoneda)getObjeto(lstMonedas, i));
+    eliminarListaGen(lstMonedas);
 
 
     SDL_DestroyWindow(window);

@@ -3,6 +3,7 @@
 
 #include "Locomotora.h"
 #include "../archivos/Parametros.h"
+#include <SDL.h>
 #include <SDL_mixer.h>
 
 struct bandidoStruct;
@@ -177,9 +178,10 @@ void setParametros(ptrBandido bandido, ptrParametros parametros);
     bandido: puntero a una estructura de tipo bandidoStruct
     locomotora: puntero a una estructura de tipo locomotoraStruct
     perder: valor bool
+    renderer: puntero a SDL_Renderer
     return: valor int, indica con 0 que el bandido sigue vivo o con 1 que fue eliminado de la memoria
 */
-int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros, bool &perder);
+int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros, bool &perder, SDL_Renderer* renderer);
 
 
 #endif // BANDIDO_H_INCLUDED

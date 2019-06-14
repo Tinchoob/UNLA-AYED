@@ -6,7 +6,10 @@
 #include <iostream>
 #include <ctype.h>
 #include <cstdlib>
+#include <string>
+#include <sstream>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 struct bandidoStruct
 {
@@ -143,11 +146,25 @@ void setParametros(ptrBandido bandido, ptrParametros parametros)
     bandido->parametros = parametros;
 }
 
-int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros, bool &perder)
+int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros parametros, bool &perder, SDL_Renderer* renderer)
 {
     int ret, i;
     char defender = 0;
     bool trenEnRango=false;
+    SDL_Event event;
+    int eventType;
+
+    TTF_Font* font = TTF_OpenFont("arial.ttf", 16);
+    SDL_Color white = {255, 255, 255};
+    SDL_Surface* surfaceMessageBandido;
+    SDL_Texture* messageBandido;
+    SDL_Rect messageBandidoRect;
+    std::stringstream textBandido;
+
+    messageBandidoRect.x = 0;
+    messageBandidoRect.y = 400;
+    messageBandidoRect.w = 500;
+    messageBandidoRect.h = 20;
 
     trenEnRango = enRango(bandido->xy, getA(parametros), getXY(locomotora));
     i=0;
@@ -159,31 +176,35 @@ int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros para
 
     if (trenEnRango)
     {
+        textBandido<<"Eh wachin dame "<<bandido->cantidad<<" de "<<tipoRecursoStr(bandido->tipoRecurso)<<"! (Dar/Resistirse? (D/R))";
+        surfaceMessageBandido = TTF_RenderText_Solid(font, textBandido.str().c_str(), white);
+        messageBandido = SDL_CreateTextureFromSurface(renderer, surfaceMessageBandido);
+        SDL_RenderCopy(renderer, messageBandido, NULL, &messageBandidoRect);
+        SDL_RenderPresent(renderer);
+
         Mix_PlayChannel( -1, bandido->sonidoBandido, 0 );
-        while (defender!='D' && defender!='R')
+        do
         {
-            std::cout<<"Eh wachin dame "<<bandido->cantidad<<" de "<<tipoRecursoStr(bandido->tipoRecurso)<<"! (Dar/Resistirse? (D/R)): ";
-            std::cin>>defender;
-            if (defender>90) defender = defender - 32;
-            if (defender=='R' || quitarLingotes(locomotora, getCantidad(bandido), getTipoRecurso(bandido))==1)
+            SDL_WaitEvent(&event);
+            eventType = event.type;
+
+            if(event.type == SDL_KEYDOWN)
             {
-                if (getHasChumbo(locomotora))
+                if (event.key.keysym.sym == SDLK_r || event.key.keysym.sym == SDLK_d)
                 {
-                    std::cout<<"Se ha usado el chumbo de la inimputabilidad, come plomo gato"<<std::endl;
-                    setHasChumbo(locomotora, false);
-                    system("pause");
-                }
-                else
-                {
-                    if(!listaVacia(getVagones(locomotora)))
+                    if (quitarLingotes(locomotora, getCantidad(bandido), getTipoRecurso(bandido)) == 1)
                     {
-                        delVagon((ptrVagon)getUltimo(getVagones(locomotora)));
-                        delObjeto(getVagones(locomotora), getSize(getVagones(locomotora)) - 1);
+                        if(!listaVacia(getVagones(locomotora)))
+                        {
+                            delVagon((ptrVagon)getUltimo(getVagones(locomotora)));
+                            delObjeto(getVagones(locomotora), getSize(getVagones(locomotora)) - 1);
+                        }
+                        else perder = true;
                     }
-                    else perder = true;
                 }
             }
         }
+        while(event.key.keysym.sym != SDLK_d && event.key.keysym.sym != SDLK_r);
         bandido->tiempoVida = 0;
     }
     bandido->tiempoVida = bandido->tiempoVida-1;

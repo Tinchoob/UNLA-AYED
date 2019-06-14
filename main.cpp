@@ -53,7 +53,7 @@ int main(int argv, char** args)
 
     if(SDL_Init(SDL_INIT_EVERYTHING) >= 0 )
     {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"OK","Clash of Unla",NULL);
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"Comienza el juego","Clash of Unla",NULL);
     }
 
     if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
@@ -104,6 +104,10 @@ int main(int argv, char** args)
     cargarParametros(parametros);
     cargarComanda(comanda);
     cargarMinas(renderer,lstMinas);
+
+    stringstream condicionGanar;
+    condicionGanar<<"Oro: "<<getOro(comanda)<<"Plata: "<<getPlata(comanda)<<"Bronce: "<<getBronce(comanda)<<"Platino: "<<getPlatino(comanda)<<"Roca: "<<getRoca(comanda)<<"Carbon: "<<getCarbon(comanda);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"Objetivos",condicionGanar.str().c_str(),NULL);
 
     rectEstacion->x = getPosXE(parametros) * 40;
     rectEstacion->y = getPosYE(parametros) * 40;

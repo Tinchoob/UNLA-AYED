@@ -3,6 +3,7 @@
 
 #include "Locomotora.h"
 #include "../archivos/Parametros.h"
+#include <SDL_mixer.h>
 
 struct bandidoStruct;
 typedef struct bandidoStruct* ptrBandido;
@@ -23,7 +24,7 @@ typedef struct bandidoStruct* ptrBandido;
     renderer: SDL renderer necesario para la carga de imagenes del bandido
     return: puntero a nueva bandidoStruct
 */
-ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros,SDL_Renderer* renderer);
+ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros,SDL_Renderer* renderer,Mix_Chunk* sonidoVillano);
 
 /*
     PRE: bandido debe apuntar a una estructura existente

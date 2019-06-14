@@ -3,6 +3,7 @@
 
 #include "../archivos/Parametros.h"
 #include "Locomotora.h"
+#include <SDL_mixer.h>
 
 struct monedaStruct;
 typedef struct monedaStruct* ptrMoneda;
@@ -17,9 +18,10 @@ typedef struct monedaStruct* ptrMoneda;
     y: valor int
     tiempoVida: valor int
     parametros: puntero a parametrosStruct
+    sonidoMoneda: Sonido de la moneda al ser recogida
     return: puntero a monedaStruct
 */
-ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros,SDL_Renderer* renderer);
+ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros,SDL_Renderer* renderer,Mix_Chunk *sonidoMoneda);
 
 
 /*

@@ -18,15 +18,17 @@ struct bandidoStruct
     int widthHeight[2];
     SDL_Texture *imagen;
     SDL_Rect *rectImg = new SDL_Rect();
+    Mix_Chunk *sonidoBandido;
 };
 
-ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros,SDL_Renderer* renderer)
+ptrBandido newBandido(int tipoRecurso, int cantidad, int tiempoVida, int xy[], ptrParametros parametros,SDL_Renderer* renderer,Mix_Chunk *sonidoBandido)
 {
     ptrBandido bandido = new bandidoStruct;
     bandido->widthHeight[0] = 40;
     bandido->widthHeight[1] = 40;
     setTipoRecurso(bandido, tipoRecurso);
     bandido->parametros = parametros;
+    bandido->sonidoBandido = sonidoBandido;
     setCantidad(bandido, cantidad);
     setTiempoVida(bandido, tiempoVida);
     setXY(bandido, xy);
@@ -157,6 +159,7 @@ int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros para
 
     if (trenEnRango)
     {
+        Mix_PlayChannel( -1, bandido->sonidoBandido, 0 );
         while (defender!='D' && defender!='R')
         {
             std::cout<<"Eh wachin dame "<<bandido->cantidad<<" de "<<tipoRecursoStr(bandido->tipoRecurso)<<"! (Dar/Resistirse? (D/R)): ";

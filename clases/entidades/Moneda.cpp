@@ -8,15 +8,17 @@ struct monedaStruct
     int widthHeight[2];
     SDL_Texture *imagen;
     SDL_Rect *rectImg = new SDL_Rect();
+    Mix_Chunk *sonidoMoneda;
 };
 
-ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros,SDL_Renderer* renderer)
+ptrMoneda newMoneda(int x, int y, int tiempoVida, ptrParametros parametros,SDL_Renderer* renderer,Mix_Chunk *sonidoMoneda)
 {
     int xy[2];
     ptrMoneda moneda = new monedaStruct;
     moneda->widthHeight[0] = 40;
     moneda->widthHeight[1] = 40;
     moneda->parametros = parametros;
+    moneda->sonidoMoneda = sonidoMoneda;
     xy[0] = x;
     xy[1] = y;
     setXY(moneda, xy);
@@ -98,6 +100,7 @@ int tickMoneda(ptrMoneda moneda, ptrLocomotora locomotora)
 
     if(getXY(locomotora)[0]==getXY(moneda)[0] && getXY(locomotora)[1]==getXY(moneda)[1])
     {
+        Mix_PlayChannel( -1, moneda->sonidoMoneda, 0 );
         setMonedas(locomotora, getMonedas(locomotora) + 1);
         moneda->tiempoVida = 0;
     }

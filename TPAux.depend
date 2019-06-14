@@ -430,7 +430,7 @@
 	<stdlib.h>
 	"ListaGen.h"
 
-1560530898 source:d:\mis documentos\github\unla-ayed\main.cpp
+1560533413 source:d:\mis documentos\github\unla-ayed\main.cpp
 	<iostream>
 	"clases/archivos/Parametros.h"
 	"clases/archivos/Comanda.h"
@@ -441,6 +441,7 @@
 	"clases/entidades/Caja.h"
 	"clases/entidades/Bandido.h"
 	"clases/entidades/Moneda.h"
+	<sstream>
 	<stdio.h>
 	<time.h>
 	<cstdlib>

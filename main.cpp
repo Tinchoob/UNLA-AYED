@@ -9,7 +9,7 @@
 #include "clases/entidades/Bandido.h"
 #include "clases/entidades/Moneda.h"
 
-
+#include <sstream>
 #include <stdio.h>
 #include <time.h>
 #include <cstdlib>
@@ -334,28 +334,44 @@ int main(int argv, char** args)
         //Mensaje de recursos
 
         //Oro
-        surfaceMessageOro = TTF_RenderText_Solid(font, "Oro:"+ std::to_string(getCantRecursos(locomotora)[0]), White);
+        stringstream textOro;
+        textOro<<"Oro:"<<getCantRecursos(locomotora)[0];
+        surfaceMessageOro = TTF_RenderText_Solid(font, textOro.str().c_str(), White);
         MessageOro = SDL_CreateTextureFromSurface(renderer, surfaceMessageOro);
         SDL_RenderCopy(renderer, MessageOro, NULL, &Message_rectOro);
 
         //Plata
-        surfaceMessagePlata = TTF_RenderText_Solid(font, "Plata:"+getCantRecursos(locomotora)[1], White);
+        stringstream textPlata;
+        textPlata<<"Plata:"<<getCantRecursos(locomotora)[1];
+        surfaceMessagePlata = TTF_RenderText_Solid(font, textPlata.str().c_str(), White);
         MessagePlata = SDL_CreateTextureFromSurface(renderer, surfaceMessagePlata);
         SDL_RenderCopy(renderer, MessagePlata, NULL, &Message_rectPlata);
 
-        surfaceMessageBronce = TTF_RenderText_Solid(font, "Bronce:"+getCantRecursos(locomotora)[2], White);
+        //Bronce
+        stringstream textBronce;
+        textBronce<<"Bronce:"<<getCantRecursos(locomotora)[2];
+        surfaceMessageBronce = TTF_RenderText_Solid(font,textBronce.str().c_str(), White);
         MessageBronce = SDL_CreateTextureFromSurface(renderer, surfaceMessageBronce);
         SDL_RenderCopy(renderer, MessageBronce, NULL, &Message_rectBronce);
 
-        surfaceMessagePlatino = TTF_RenderText_Solid(font, "Platino:"+getCantRecursos(locomotora)[3], White);
+        //Platino
+        stringstream textPlatino;
+        textPlatino<<"Platino:"<<getCantRecursos(locomotora)[3];
+        surfaceMessagePlatino = TTF_RenderText_Solid(font, textPlatino.str().c_str(), White);
         MessagePlatino = SDL_CreateTextureFromSurface(renderer, surfaceMessagePlatino);
         SDL_RenderCopy(renderer, MessagePlatino, NULL, &Message_rectPlatino);
 
-        surfaceMessageRoca = TTF_RenderText_Solid(font, "Roca:"+getCantRecursos(locomotora)[4], White);
+        //Roca
+        stringstream textRoca;
+        textRoca<<"Roca:"<<getCantRecursos(locomotora)[4];
+        surfaceMessageRoca = TTF_RenderText_Solid(font, textRoca.str().c_str(), White);
         MessageRoca = SDL_CreateTextureFromSurface(renderer, surfaceMessageRoca);
         SDL_RenderCopy(renderer, MessageRoca, NULL, &Message_rectRoca);
 
-        surfaceMessageCarbon = TTF_RenderText_Solid(font, "Carbon:"+getCantRecursos(locomotora)[5], White);
+        //Carbon
+        stringstream textCarbon;
+        textCarbon<<"Carbon:"<<getCantRecursos(locomotora)[5];
+        surfaceMessageCarbon = TTF_RenderText_Solid(font, textCarbon.str().c_str(), White);
         MessageCarbon = SDL_CreateTextureFromSurface(renderer, surfaceMessageCarbon);
         SDL_RenderCopy(renderer, MessageCarbon, NULL, &Message_rectCarbon);
 

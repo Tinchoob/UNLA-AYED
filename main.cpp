@@ -9,6 +9,7 @@
 #include "clases/entidades/Bandido.h"
 #include "clases/entidades/Moneda.h"
 
+
 #include <stdio.h>
 #include <time.h>
 #include <cstdlib>
@@ -114,16 +115,63 @@ int main(int argv, char** args)
 
     //----------------------------------------------Mensaje de prueba------------------------------------------------------------
     TTF_Init(); //Inicializa SDL_TTF
-    TTF_Font* font = TTF_OpenFont("times.ttf", 16); //Si en esta linea se pone una fuente que no se pueda encontrar vuela todo
+    TTF_Font* font = TTF_OpenFont("arial.ttf", 16); //Si en esta linea se pone una fuente que no se pueda encontrar vuela todo
     SDL_Color White = {255, 255, 255}; //Color del texto
-    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "Hola Mundo", White);
-    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    //ORO
+    SDL_Surface* surfaceMessageOro = TTF_RenderText_Solid(font, "Oro:"+getCantRecursos(locomotora)[0], White);
+    SDL_Texture* MessageOro = SDL_CreateTextureFromSurface(renderer, surfaceMessageOro);
 
-    SDL_Rect Message_rect; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
-    Message_rect.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
-    Message_rect.y = 0;
-    Message_rect.w = 500;
-    Message_rect.h = 50;
+    SDL_Rect Message_rectOro; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    Message_rectOro.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    Message_rectOro.y = 0;
+    Message_rectOro.w = 50;
+    Message_rectOro.h = 20;
+    //PLATA
+    SDL_Surface* surfaceMessagePlata = TTF_RenderText_Solid(font, "Plata:"+getCantRecursos(locomotora)[1], White);
+    SDL_Texture* MessagePlata = SDL_CreateTextureFromSurface(renderer, surfaceMessagePlata);
+
+    SDL_Rect Message_rectPlata; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    Message_rectPlata.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    Message_rectPlata.y = 20;
+    Message_rectPlata.w = 60;
+    Message_rectPlata.h = 20;
+    //BRONCE
+    SDL_Surface* surfaceMessageBronce = TTF_RenderText_Solid(font, "Bronce:"+getCantRecursos(locomotora)[2], White);
+    SDL_Texture* MessageBronce = SDL_CreateTextureFromSurface(renderer, surfaceMessageBronce);
+
+    SDL_Rect Message_rectBronce; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    Message_rectBronce.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    Message_rectBronce.y = 40;
+    Message_rectBronce.w = 80;
+    Message_rectBronce.h = 20;
+    //PLATINO
+    SDL_Surface* surfaceMessagePlatino = TTF_RenderText_Solid(font, "Platino:"+getCantRecursos(locomotora)[3], White);
+    SDL_Texture* MessagePlatino = SDL_CreateTextureFromSurface(renderer, surfaceMessagePlatino);
+
+    SDL_Rect Message_rectPlatino; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    Message_rectPlatino.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    Message_rectPlatino.y = 60;
+    Message_rectPlatino.w = 80;
+    Message_rectPlatino.h = 20;
+    //ROCA
+    SDL_Surface* surfaceMessageRoca = TTF_RenderText_Solid(font, "Roca:"+getCantRecursos(locomotora)[4], White);
+    SDL_Texture* MessageRoca = SDL_CreateTextureFromSurface(renderer, surfaceMessageRoca);
+
+    SDL_Rect Message_rectRoca; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    Message_rectRoca.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    Message_rectRoca.y = 80;
+    Message_rectRoca.w = 60;
+    Message_rectRoca.h = 20;
+    //CARBON
+    SDL_Surface* surfaceMessageCarbon = TTF_RenderText_Solid(font, "Carbon:"+getCantRecursos(locomotora)[5], White);
+    SDL_Texture* MessageCarbon = SDL_CreateTextureFromSurface(renderer, surfaceMessageCarbon);
+
+    SDL_Rect Message_rectCarbon; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    Message_rectCarbon.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    Message_rectCarbon.y = 100;
+    Message_rectCarbon.w = 80;
+    Message_rectCarbon.h = 20;
+
     //----------------------------------------------Mensaje de prueba------------------------------------------------------------
 
     srand(time(NULL)); //INICIALIZA LA SEMILLA RANDOM
@@ -250,7 +298,7 @@ int main(int argv, char** args)
 
         i=0;
 
-        while(i<getSize(lstBandidos))
+      /*  while(i<getSize(lstBandidos))
         {
             if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros,perder) == 1)
             {
@@ -262,7 +310,7 @@ int main(int argv, char** args)
             }
             i++;
         }
-
+*/
         //Monedas
         i=0;
         while(i<getSize(lstMonedas))
@@ -313,7 +361,17 @@ int main(int argv, char** args)
         SDL_RenderPresent(renderer);
 
         //----------------------------------------------Mensaje de prueba------------------------------------------------------------
-        SDL_RenderCopy(renderer, Message, NULL, &Message_rect); //Renderizar mensaje de prueba
+        SDL_RenderCopy(renderer, MessageOro, NULL, &Message_rectOro);
+        SDL_RenderPresent(renderer);
+        SDL_RenderCopy(renderer, MessagePlata, NULL, &Message_rectPlata);
+        SDL_RenderPresent(renderer);
+        SDL_RenderCopy(renderer, MessageBronce, NULL, &Message_rectBronce);
+        SDL_RenderPresent(renderer);
+        SDL_RenderCopy(renderer, MessagePlatino, NULL, &Message_rectPlatino);
+        SDL_RenderPresent(renderer);
+        SDL_RenderCopy(renderer, MessageRoca, NULL, &Message_rectRoca);
+        SDL_RenderPresent(renderer);
+        SDL_RenderCopy(renderer, MessageCarbon, NULL, &Message_rectCarbon);
         SDL_RenderPresent(renderer);
         //----------------------------------------------Mensaje de prueba------------------------------------------------------------
 
@@ -350,8 +408,18 @@ int main(int argv, char** args)
     eliminarListaGen(lstMonedas);
 
     //----------------------------------------------Mensaje de prueba------------------------------------------------------------
-    SDL_FreeSurface(surfaceMessage); //Hay que liberar todos los recursos que se van creando para esta cosa
-    SDL_DestroyTexture(Message);
+    SDL_FreeSurface(surfaceMessageOro); //Hay que liberar todos los recursos que se van creando para esta cosa
+    SDL_DestroyTexture(MessageOro);
+    SDL_FreeSurface(surfaceMessagePlata);
+    SDL_DestroyTexture(MessagePlata);
+    SDL_FreeSurface(surfaceMessageBronce);
+    SDL_DestroyTexture(MessageBronce);
+    SDL_FreeSurface(surfaceMessagePlatino);
+    SDL_DestroyTexture(MessagePlatino);
+    SDL_FreeSurface(surfaceMessageRoca);
+    SDL_DestroyTexture(MessageRoca);
+    SDL_FreeSurface(surfaceMessageCarbon);
+    SDL_DestroyTexture(MessageCarbon);
     TTF_Quit(); //También hay que decirle a SDL_TTF que se cierre
     //----------------------------------------------Mensaje de prueba------------------------------------------------------------
 

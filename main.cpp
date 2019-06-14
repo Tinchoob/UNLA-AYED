@@ -285,6 +285,12 @@ int main(int argv, char** args)
             }
         }
 
+        if(getCantRecursos(locomotora)[0] >= getOro(comanda) && getCantRecursos(locomotora)[1] >= getPlata(comanda)
+            && getCantRecursos(locomotora)[2] >= getBronce(comanda) && getCantRecursos(locomotora)[3] >= getPlatino(comanda)
+            && getCantRecursos(locomotora)[4] >= getRoca(comanda) && getCantRecursos(locomotora)[5] >= getRoca(comanda)){
+                ganar=true;
+        }
+
 
         SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
         SDL_RenderPresent(renderer);

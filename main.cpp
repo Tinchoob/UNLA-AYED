@@ -172,6 +172,16 @@ int main(int argv, char** args)
     Message_rectCarbon.w = 80;
     Message_rectCarbon.h = 20;
 
+    //MONEDA
+    SDL_Surface* surfaceMessageMoneda;
+    SDL_Texture* messageMoneda;
+
+    SDL_Rect message_rectMoneda; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    message_rectMoneda.x = 700; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    message_rectMoneda.y = 0;
+    message_rectMoneda.w = 100;
+    message_rectMoneda.h = 20;
+
     //----------------------------------------------Mensaje de prueba------------------------------------------------------------
 
     srand(time(NULL)); //INICIALIZA LA SEMILLA RANDOM
@@ -325,7 +335,7 @@ int main(int argv, char** args)
 
         if(getCantRecursos(locomotora)[0] >= getOro(comanda) && getCantRecursos(locomotora)[1] >= getPlata(comanda)
                 && getCantRecursos(locomotora)[2] >= getBronce(comanda) && getCantRecursos(locomotora)[3] >= getPlatino(comanda)
-                && getCantRecursos(locomotora)[4] >= getRoca(comanda) && getCantRecursos(locomotora)[5] >= getRoca(comanda))
+                && getCantRecursos(locomotora)[4] >= getRoca(comanda) && getCantRecursos(locomotora)[5] >= getCarbon(comanda))
         {
             ganar=true;
         }
@@ -378,6 +388,13 @@ int main(int argv, char** args)
         MessageCarbon = SDL_CreateTextureFromSurface(renderer, surfaceMessageCarbon);
         SDL_RenderCopy(renderer, MessageCarbon, NULL, &Message_rectCarbon);
 
+        //Monedas
+         stringstream textMonedas;
+         textMonedas<<"Monedas:"<<getMonedas(locomotora);
+         surfaceMessageMoneda = TTF_RenderText_Solid(font, textMonedas.str().c_str(), White);
+         messageMoneda = SDL_CreateTextureFromSurface(renderer, surfaceMessageMoneda);
+         SDL_RenderCopy(renderer, messageMoneda, NULL, &message_rectMoneda);
+
 
         SDL_RenderPresent(renderer);
 
@@ -423,22 +440,15 @@ int main(int argv, char** args)
         SDL_DestroyTexture(MessageRoca);
         SDL_FreeSurface(surfaceMessageCarbon);
         SDL_DestroyTexture(MessageCarbon);
-        SDL_Delay(1000*getS(parametros));
+        SDL_Delay(200*getS(parametros));
     }
 
-  /*  string message = "";
-
-
     if(perder){
-     message.assign("Perdiste!");}
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"Juego Finalizado","Perdiste!",NULL);
+    }
      else if(ganar){
-        message.assign("Ganaste!");
+             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"Juego Finalizado","Ganaste!",NULL);
      }
-
-     if(!message.empty()){
-           SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"OK","Clash of Unla",NULL);
-     }
-*/
 
     Mix_FreeChunk( sonidoVillano );
     Mix_FreeChunk( sonidoMoneda );

@@ -161,7 +161,7 @@ int tickBandido(ptrBandido bandido, ptrLocomotora locomotora, ptrParametros para
     SDL_Rect messageBandidoRect;
     std::stringstream textBandido;
 
-    messageBandidoRect.x = 0;
+    messageBandidoRect.x = 150;
     messageBandidoRect.y = 400;
     messageBandidoRect.w = 500;
     messageBandidoRect.h = 20;

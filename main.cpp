@@ -46,7 +46,7 @@ void testVagon();
 void testBandido();
 
 /*-------------------*/
-void cargarMinas(SDL_Renderer* renderer ,ListaGen lstMinas);
+void cargarMinas(SDL_Renderer* renderer,ListaGen lstMinas);
 
 int main(int argv, char** args)
 {
@@ -116,7 +116,7 @@ int main(int argv, char** args)
     rectEstacion->h = 40;
 
 
-    while(!gameOver)
+    while(!gameOver && !perder)
     {
         //handle key events
         while( SDL_PollEvent( &event ) != 0 )
@@ -163,7 +163,6 @@ int main(int argv, char** args)
                         setDireccionLocomotora(locomotora, 0);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/der/0.png"));
 
-
                     }
                     break;
 
@@ -174,16 +173,6 @@ int main(int argv, char** args)
             }
         }
 
-        //Manejo Bandidos
-//        ticksUltBandido++;
-//
-//        if(rand()%2==1 || ticksUltBandido>=getIB(parametros))
-//        {
-//            ticksUltBandido = 0;
-//            xy[0] = rand()%getTX(parametros) + 1;
-//            xy[1] = rand()%getTY(parametros) + 1;
-//            addObjeto(lstBandidos, newBandido((rand()%6)+1, (rand()%getP(parametros))+1, (rand()%getVB(parametros))+1, xy, parametros,renderer));
-//        }
 
         //Manejo monedas
         ticksUltMoneda++;
@@ -194,41 +183,59 @@ int main(int argv, char** args)
             addObjeto(lstMonedas, newMoneda(rand()%getTX(parametros) + 1, rand()%getTY(parametros) + 1, rand()%getVM(parametros) + 1, parametros,renderer));
         }
 
-
         moverLocomotora(renderer,locomotora);
 
-        actualizarCantRecursos(locomotora);
         SDL_RenderClear(renderer);
 
         SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
         SDL_RenderCopy(renderer, imagenEstacion, NULL, rectEstacion);
 
-
-        for(i = 0; i<getSize(lstBandidos); i++)
+        if (getPosXE(parametros) == getXY(locomotora)[0] && getPosYE(parametros) == getXY(locomotora)[1] && getMonedas(locomotora)>0)
         {
-            bandido = (ptrBandido)getObjeto(lstBandidos, i);
-            SDL_RenderCopy(renderer,getImagen(bandido),NULL,getRectImagen(bandido));
+            setAgregarVagon(locomotora, true);
         }
 
-         for(i = 0; i<getSize(lstMonedas); i++)
-        {
-            monedaPtr = (ptrMoneda)getObjeto(lstMonedas, i);
-            SDL_RenderCopy(renderer,getImagen(monedaPtr),NULL,getRectImagen(monedaPtr));
-        }
-
-        for(i=0;i<getSize(lstMinas);i++)
+        for(i=0; i<getSize(lstMinas); i++)
         {
             mina1=(ptrMina)getObjeto(lstMinas,i);
             SDL_RenderCopy(renderer,getImagen(mina1),NULL,getRectImagen(mina1));
         }
 
-        for(i=0;i<getSize(getVagones(locomotora));i++)
+        for(i=0; i<getSize(getVagones(locomotora)); i++)
         {
             vagon1 = (ptrVagon)getObjeto(getVagones(locomotora),i);
             SDL_RenderCopy(renderer,getImagen(vagon1),NULL,getRectImagen(vagon1));
         }
 
-            i=0;
+                //Agregar bandidos a pantalla
+           for(i = 0; i<getSize(lstBandidos); i++)
+        {
+            bandido = (ptrBandido)getObjeto(lstBandidos, i);
+            SDL_RenderCopy(renderer,getImagen(bandido),NULL,getRectImagen(bandido));
+        }
+
+        //Manejo Bandidos
+        ticksUltBandido++;
+
+        if(rand()%2==1 || ticksUltBandido>=getIB(parametros))
+        {
+            ticksUltBandido = 0;
+            xy[0] = rand()%getTX(parametros) + 1;
+            xy[1] = rand()%getTY(parametros) + 1;
+            addObjeto(lstBandidos, newBandido((rand()%6)+1, (rand()%getP(parametros))+1, (rand()%getVB(parametros))+1, xy, parametros,renderer));
+        }
+
+
+
+        //Imprimir monedas en pantalla
+
+           for(i = 0; i<getSize(lstMonedas); i++)
+        {
+            monedaPtr = (ptrMoneda)getObjeto(lstMonedas, i);
+            SDL_RenderCopy(renderer,getImagen(monedaPtr),NULL,getRectImagen(monedaPtr));
+        }
+
+        i=0;
 
         while(i<getSize(lstBandidos))
         {
@@ -258,10 +265,28 @@ int main(int argv, char** args)
             i++;
         }
 
+        actualizarCantRecursos(locomotora);
 
-        if (getPosXE(parametros) == getXY(locomotora)[0] && getPosYE(parametros) == getXY(locomotora)[1] && getMonedas(locomotora)>0){
-            setAgregarVagon(locomotora, true);
+
+        //Producci�n de las minas
+        for (i=0; i<getSize(lstMinas); i++)
+            tickMina((ptrMina)getObjeto(lstMinas, i), locomotora);
+
+        //Chequeos para ver si pierde el jugador
+        if (getXY(locomotora)[0]<0 || getXY(locomotora)[1]<0 || getXY(locomotora)[0]>getTX(parametros)
+                || getXY(locomotora)[1]>getTY(parametros))
+            perder = true;
+        else
+        {
+            i=0;
+            while (!perder && i<getSize(getVagones(locomotora)))
+            {
+                if (getXY(locomotora)[0] == getXY((ptrVagon)getObjeto(getVagones(locomotora), i))[0]
+                        && getXY(locomotora)[1] == getXY((ptrVagon)getObjeto(getVagones(locomotora), i))[1])
+                    perder = true;
+                i++;
             }
+        }
 
 
         SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));

@@ -296,35 +296,6 @@ int main(int argv, char** args)
             SDL_RenderCopy(renderer,getImagen(monedaPtr),NULL,getRectImagen(monedaPtr));
         }
 
-        i=0;
-
-      /*  while(i<getSize(lstBandidos))
-        {
-            if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros,perder) == 1)
-            {
-                //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos bandidos en el mismo ciclo
-                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaci�n
-                delBandido((ptrBandido)getObjeto(lstBandidos,i));
-                delObjeto(lstBandidos, i);
-                i--;
-            }
-            i++;
-        }
-*/
-        //Monedas
-        i=0;
-        while(i<getSize(lstMonedas))
-        {
-            if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora) == 1)
-            {
-                //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos monedas en el mismo ciclo
-                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaci�n
-                delMoneda((ptrMoneda)getObjeto(lstMonedas,i));
-                delObjeto(lstMonedas, i);
-                i--;
-            }
-            i++;
-        }
 
         actualizarCantRecursos(locomotora);
 
@@ -357,23 +328,69 @@ int main(int argv, char** args)
         }
 
 
+        //Locomotora al final para que este encima de todo
         SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
+
+        //Mensaje de recursos
+
+        //Oro
+        surfaceMessageOro = TTF_RenderText_Solid(font, "Oro:"+ std::to_string(getCantRecursos(locomotora)[0]), White);
+        MessageOro = SDL_CreateTextureFromSurface(renderer, surfaceMessageOro);
+        SDL_RenderCopy(renderer, MessageOro, NULL, &Message_rectOro);
+
+        //Plata
+        surfaceMessagePlata = TTF_RenderText_Solid(font, "Plata:"+getCantRecursos(locomotora)[1], White);
+        MessagePlata = SDL_CreateTextureFromSurface(renderer, surfaceMessagePlata);
+        SDL_RenderCopy(renderer, MessagePlata, NULL, &Message_rectPlata);
+
+        surfaceMessageBronce = TTF_RenderText_Solid(font, "Bronce:"+getCantRecursos(locomotora)[2], White);
+        MessageBronce = SDL_CreateTextureFromSurface(renderer, surfaceMessageBronce);
+        SDL_RenderCopy(renderer, MessageBronce, NULL, &Message_rectBronce);
+
+        surfaceMessagePlatino = TTF_RenderText_Solid(font, "Platino:"+getCantRecursos(locomotora)[3], White);
+        MessagePlatino = SDL_CreateTextureFromSurface(renderer, surfaceMessagePlatino);
+        SDL_RenderCopy(renderer, MessagePlatino, NULL, &Message_rectPlatino);
+
+        surfaceMessageRoca = TTF_RenderText_Solid(font, "Roca:"+getCantRecursos(locomotora)[4], White);
+        MessageRoca = SDL_CreateTextureFromSurface(renderer, surfaceMessageRoca);
+        SDL_RenderCopy(renderer, MessageRoca, NULL, &Message_rectRoca);
+
+        surfaceMessageCarbon = TTF_RenderText_Solid(font, "Carbon:"+getCantRecursos(locomotora)[5], White);
+        MessageCarbon = SDL_CreateTextureFromSurface(renderer, surfaceMessageCarbon);
+        SDL_RenderCopy(renderer, MessageCarbon, NULL, &Message_rectCarbon);
+
+
         SDL_RenderPresent(renderer);
 
-        //----------------------------------------------Mensaje de prueba------------------------------------------------------------
-        SDL_RenderCopy(renderer, MessageOro, NULL, &Message_rectOro);
-        SDL_RenderPresent(renderer);
-        SDL_RenderCopy(renderer, MessagePlata, NULL, &Message_rectPlata);
-        SDL_RenderPresent(renderer);
-        SDL_RenderCopy(renderer, MessageBronce, NULL, &Message_rectBronce);
-        SDL_RenderPresent(renderer);
-        SDL_RenderCopy(renderer, MessagePlatino, NULL, &Message_rectPlatino);
-        SDL_RenderPresent(renderer);
-        SDL_RenderCopy(renderer, MessageRoca, NULL, &Message_rectRoca);
-        SDL_RenderPresent(renderer);
-        SDL_RenderCopy(renderer, MessageCarbon, NULL, &Message_rectCarbon);
-        SDL_RenderPresent(renderer);
-        //----------------------------------------------Mensaje de prueba------------------------------------------------------------
+        i=0;
+        while(i<getSize(lstBandidos))
+        {
+            if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros,perder) == 1)
+            {
+                //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos bandidos en el mismo ciclo
+                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaci�n
+                delBandido((ptrBandido)getObjeto(lstBandidos,i));
+                delObjeto(lstBandidos, i);
+                i--;
+            }
+            i++;
+        }
+
+
+        //Monedas
+        i=0;
+        while(i<getSize(lstMonedas))
+        {
+            if (tickMoneda((ptrMoneda)getObjeto(lstMonedas,i), locomotora) == 1)
+            {
+                //No usar for para esto, sino la lista se vuelve loca si hay que eliminar dos monedas en el mismo ciclo
+                //dado que i sigue corriendo pero cantNodos se reduce por cada eliminaci�n
+                delMoneda((ptrMoneda)getObjeto(lstMonedas,i));
+                delObjeto(lstMonedas, i);
+                i--;
+            }
+            i++;
+        }
 
         SDL_Delay(250);
     }

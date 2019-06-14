@@ -1,12 +1,12 @@
 S=2
 P=6
-A=3
+A=1
 posXE=8
 posYE=7
 IM=2
 VM=30
-IB=9
-VB=10
+IB=12
+VB=3
 IP=3
 TX=78
 TY=17

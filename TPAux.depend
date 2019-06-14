@@ -430,7 +430,7 @@
 	<stdlib.h>
 	"ListaGen.h"
 
-1560533413 source:d:\mis documentos\github\unla-ayed\main.cpp
+1560533941 source:d:\mis documentos\github\unla-ayed\main.cpp
 	<iostream>
 	"clases/archivos/Parametros.h"
 	"clases/archivos/Comanda.h"

@@ -379,7 +379,7 @@ int main(int argv, char** args)
         SDL_RenderPresent(renderer);
 
         i=0;
-        while(i<getSize(lstBandidos))
+        /*while(i<getSize(lstBandidos))
         {
             if (tickBandido((ptrBandido)getObjeto(lstBandidos,i), locomotora, parametros,perder) == 1)
             {
@@ -391,7 +391,7 @@ int main(int argv, char** args)
             }
             i++;
         }
-
+        */
 
         //Monedas
         i=0;

@@ -182,7 +182,7 @@ void leerLineaMina(FILE* fMina, ptrMina mina)
 
 }
 
-void tickMina(ptrMina mina, ptrLocomotora locomotora)
+void tickMina(ptrMina mina, ptrLocomotora locomotora,bool &stopLocomotora)
 {
     int i;
     int* cantRecursos;
@@ -200,6 +200,7 @@ void tickMina(ptrMina mina, ptrLocomotora locomotora)
 
     if(getXY(locomotora)[0] == mina->posX && getXY(locomotora)[1] == mina->posY && !listaVacia(mina->lstCajas))
     {
+        stopLocomotora = true;
         i = 0;
         agregado = false;
         while(i<getSize(getVagones(locomotora)) && !agregado)

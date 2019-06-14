@@ -64,10 +64,11 @@ int main(int argv, char** args)
 
     if(SDL_Init(SDL_INIT_EVERYTHING) >= 0 )
     {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"OK","SDL INICIADO",NULL);
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION,"OK","Clash of Unla",NULL);
     }
 
     bool gameOver = false;
+    bool stopLocomotora = false;
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
     //SDL_Surface* screenSurface = NULL;
@@ -89,10 +90,9 @@ int main(int argv, char** args)
     window =  SDL_CreateWindow("Test SDL",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,xSize,ySize,SDL_WINDOW_SHOWN);
 
     renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
-   // screenSurface = SDL_GetWindowSurface( window );
+    // screenSurface = SDL_GetWindowSurface( window );
 
-    background = IMG_Load("img/suelo_3.png");
-    backgroundTexture = SDL_CreateTextureFromSurface(renderer,background);
+    backgroundTexture = IMG_LoadTexture(renderer, "img/suelo_3.png");
 
     locomotora = newLocomotora(renderer);
     ptrParametros parametros = newParametros();
@@ -112,7 +112,6 @@ int main(int argv, char** args)
     rectEstacion->y = getPosYE(parametros) * 40;
     rectEstacion->w = 40;
     rectEstacion->h = 40;
-
 
     while(!gameOver && !perder)
     {
@@ -134,6 +133,7 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 3);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/arr/0.png"));
+                        stopLocomotora = false;
                     }
                     break;
 
@@ -142,7 +142,7 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 1);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/aba/0.png"));
-
+                        stopLocomotora = false;
                     }
                     break;
 
@@ -151,7 +151,7 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 2);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/izq/0.png"));
-
+                        stopLocomotora = false;
                     }
                     break;
 
@@ -160,7 +160,7 @@ int main(int argv, char** args)
                     {
                         setDireccionLocomotora(locomotora, 0);
                         setImagen(locomotora,IMG_LoadTexture(renderer, "img/c1/der/0.png"));
-
+                        stopLocomotora = false;
                     }
                     break;
 
@@ -181,7 +181,7 @@ int main(int argv, char** args)
             addObjeto(lstMonedas, newMoneda(rand()%getTX(parametros) + 1, rand()%getTY(parametros) + 1, rand()%getVM(parametros) + 1, parametros,renderer));
         }
 
-        moverLocomotora(renderer,locomotora);
+        if(!stopLocomotora)moverLocomotora(renderer,locomotora);
 
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
@@ -189,6 +189,7 @@ int main(int argv, char** args)
 
         if (getPosXE(parametros) == getXY(locomotora)[0] && getPosYE(parametros) == getXY(locomotora)[1] && getMonedas(locomotora)>0)
         {
+            stopLocomotora = true;
             setAgregarVagon(locomotora, true);
         }
 
@@ -205,7 +206,7 @@ int main(int argv, char** args)
         }
 
         //Agregar bandidos a pantalla
-           for(i = 0; i<getSize(lstBandidos); i++)
+        for(i = 0; i<getSize(lstBandidos); i++)
         {
             bandido = (ptrBandido)getObjeto(lstBandidos, i);
             SDL_RenderCopy(renderer,getImagen(bandido),NULL,getRectImagen(bandido));
@@ -225,7 +226,7 @@ int main(int argv, char** args)
 
         //Imprimir monedas en pantalla
 
-           for(i = 0; i<getSize(lstMonedas); i++)
+        for(i = 0; i<getSize(lstMonedas); i++)
         {
             monedaPtr = (ptrMoneda)getObjeto(lstMonedas, i);
             SDL_RenderCopy(renderer,getImagen(monedaPtr),NULL,getRectImagen(monedaPtr));
@@ -266,7 +267,7 @@ int main(int argv, char** args)
 
         //Producci�n de las minas
         for (i=0; i<getSize(lstMinas); i++)
-            tickMina((ptrMina)getObjeto(lstMinas, i), locomotora);
+            tickMina((ptrMina)getObjeto(lstMinas, i), locomotora,stopLocomotora);
 
         //Chequeos para ver si pierde el jugador
         if (getXY(locomotora)[0]<0 || getXY(locomotora)[1]<0 || getXY(locomotora)[0]>getTX(parametros)
@@ -293,12 +294,15 @@ int main(int argv, char** args)
 
     delParametros(parametros);
     delComanda(comanda);
-    for(i=0;i<getSize(lstMinas);i++) delMina((ptrMina)getObjeto(lstMinas, i));
+    for(i=0; i<getSize(lstMinas); i++)
+        delMina((ptrMina)getObjeto(lstMinas, i));
     eliminarListaGen(lstMinas);
     delLocomotora(locomotora);
-    for(i=0;i<getSize(lstBandidos);i++) delBandido((ptrBandido)getObjeto(lstBandidos, i));
+    for(i=0; i<getSize(lstBandidos); i++)
+        delBandido((ptrBandido)getObjeto(lstBandidos, i));
     eliminarListaGen(lstBandidos);
-    for(i=0;i<getSize(lstMonedas);i++) delMoneda((ptrMoneda)getObjeto(lstMonedas, i));
+    for(i=0; i<getSize(lstMonedas); i++)
+        delMoneda((ptrMoneda)getObjeto(lstMonedas, i));
     eliminarListaGen(lstMonedas);
 
 

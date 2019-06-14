@@ -191,8 +191,9 @@ void leerLineaMina(FILE* fMina, ptrMina mina);
 
     mina: puntero a una minaStruct
     locomotora: puntero a una locomotoraStruct
+    stopLocomotora: bool para decidir si la locomotora debe detenerse en la mina
 */
-void tickMina(ptrMina mina, ptrLocomotora locomotora);
+void tickMina(ptrMina mina, ptrLocomotora locomotora, bool &stopLocomotora);
 
 /*
     PRE: mina tiene que apuntar a una estructura minaStruct

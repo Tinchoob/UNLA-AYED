@@ -15,6 +15,7 @@
 #include <SDL.H>
 #include <SDL_mixer.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <string>
 
 #define xSize 800
@@ -111,6 +112,21 @@ int main(int argv, char** args)
     sonidoMoneda = Mix_LoadWAV( "sound/moneda.wav" );
     sonidoVillano = Mix_LoadWAV( "sound/villano.wav" );
 
+    //----------------------------------------------Mensaje de prueba------------------------------------------------------------
+    TTF_Init(); //Inicializa SDL_TTF
+    TTF_Font* font = TTF_OpenFont("times.ttf", 16); //Si en esta linea se pone una fuente que no se pueda encontrar vuela todo
+    SDL_Color White = {255, 255, 255}; //Color del texto
+    SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "Hola Mundo", White);
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+    SDL_Rect Message_rect; //"Cuadro" en donde va a ir el texto, con sus coordenadas y tamaño,
+    Message_rect.x = 0; // si se hace muy grande para el mensaje que se quiere mostrar se ve mal
+    Message_rect.y = 0;
+    Message_rect.w = 500;
+    Message_rect.h = 50;
+    //----------------------------------------------Mensaje de prueba------------------------------------------------------------
+
+    srand(time(NULL)); //INICIALIZA LA SEMILLA RANDOM
     while(!gameOver && !perder && !ganar)
     {
         //handle key events
@@ -296,6 +312,11 @@ int main(int argv, char** args)
         SDL_RenderCopy(renderer,getImagen(locomotora),NULL,getRectImagen(locomotora));
         SDL_RenderPresent(renderer);
 
+        //----------------------------------------------Mensaje de prueba------------------------------------------------------------
+        SDL_RenderCopy(renderer, Message, NULL, &Message_rect); //Renderizar mensaje de prueba
+        SDL_RenderPresent(renderer);
+        //----------------------------------------------Mensaje de prueba------------------------------------------------------------
+
         SDL_Delay(250);
     }
 
@@ -328,6 +349,11 @@ int main(int argv, char** args)
         delMoneda((ptrMoneda)getObjeto(lstMonedas, i));
     eliminarListaGen(lstMonedas);
 
+    //----------------------------------------------Mensaje de prueba------------------------------------------------------------
+    SDL_FreeSurface(surfaceMessage); //Hay que liberar todos los recursos que se van creando para esta cosa
+    SDL_DestroyTexture(Message);
+    TTF_Quit(); //También hay que decirle a SDL_TTF que se cierre
+    //----------------------------------------------Mensaje de prueba------------------------------------------------------------
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
